@@ -1,0 +1,192 @@
+/* 全局設置 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* header 區域 */
+header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1920px;
+  height: 193px;
+  padding: 0 312px 32px;
+  background-color: #fff;
+  margin: 0 auto;
+}
+
+.checkout-menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1293px;
+  height: 161px;
+  gap: 24px;
+}
+
+.checkout-menuTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 92px;
+}
+
+.checkout-menuTopTitle {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 288px;
+  height: 88px;
+  padding: 8px 12px;
+}
+
+.checkout-toolBarTopTitleImg {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  width: 264px;
+  height: 72px;
+}
+
+.checkout-menuTopIcon {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 0;
+}
+
+.checkout-menuTopIcon > i {
+  font-size: 36px;
+}
+
+.checkout-menuBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 864px;
+  height: 45px;
+  margin: 0 auto;
+}
+
+.checkout-dropdown-navbar {
+  border: none;
+  background: #fff;
+  font-family: "noto sans tc", sans-serif;
+  color: #000;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+/* Banner 與主要內容 */
+.checkout-banner {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.checkout-bannerImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+}
+
+.checkout-bannerText {
+  text-align: center;
+  font-family: "noto sans tc", sans-serif;
+  color: #fafafa;
+  font-weight: 700;
+  font-size: 80px;
+}
+
+/* Container 主要內容 */
+.checkout-container {
+  padding: 40px 0;
+  margin: 40px 312px;
+  width: 100%;
+  max-width: 1296px;
+  border-radius: 20px;
+  background-color: rgba(243, 217, 216, 1);
+}
+
+.checkout-containercontentbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 80px auto 40px;
+  width: 100%;
+  max-width: 1192px;
+  gap: 32px;
+  border-radius: 24px;
+  background-color: #fff;
+  position: relative;
+}
+
+/* 內部內容區塊 */
+.checkout-containercontentbox2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 980px;
+  gap: 30px;
+  margin: 60px 0;
+}
+
+.checkout-containercontentbox2text2,
+.checkout-containercontentbox2text {
+  width: 836px;
+  padding: 20px 32px;
+  background-color: #fff;
+  border: 1px solid rgba(242, 160, 158, 1);
+  border-radius: 20px;
+}
+
+.checkout-containercontentbox2title2,
+.checkout-containercontentbox2title {
+  font-family: "noto sans tc", sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #000;
+}
+
+/* 返回首頁按鈕 */
+.checkout-submit-button {
+  display: inline-block;
+  text-align: center;
+  width: 104px;
+  height: 50px;
+  border: none;
+  border-radius: 100px;
+  background-color: rgba(231, 173, 172, 1);
+  color: #fff;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: "noto sans tc", sans-serif;
+  line-height: 50px;
+  text-decoration: none;
+  margin: 40px auto;
+}
+
+/* 輔助樣式 */
+.position-absolute {
+  position: absolute !important;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 0 20px 32px;
+  }
+  .checkout-container {
+    margin: 40px 20px;
+  }
+}
