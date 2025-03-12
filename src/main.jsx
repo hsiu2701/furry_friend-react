@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { createHashRouter, RouterProvider } from "react-router";
 import routes from "./routes/index.jsx";
-import "./index.css";
+// import "./index.css";
 import "./assets/all.scss";
 // 要自訂JS ,先關掉"bootstrap"
 import "bootstrap";
