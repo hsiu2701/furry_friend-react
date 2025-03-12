@@ -1,0 +1,150 @@
+// nav
+.logo {
+  float: left;
+}
+
+.logo-style {
+  display: block;
+  width: 192px;
+  height: 58px;
+  background-image: url(/public/images/logo-1a41d290.png);
+  background-position: center;
+  background-size: cover;
+  text-indent: 101%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+  .logo-style {
+    width: 299px;
+    height: 99px;
+  }
+}
+.header-icon {
+  display: inline-block;
+  color: #e7adac;
+  font-size: 30px;
+}
+.header-icon:hover {
+  color: #888888;
+}
+@media (min-width: 992px) {
+  .header-icon {
+    font-size: 44px;
+  }
+}
+
+.badge-style {
+  font-size: 0.5rem;
+}
+@media (min-width: 992px) {
+  .badge-style {
+    font-size: 0.65rem;
+  }
+}
+
+.ion-me {
+  margin-right: 100px;
+}
+@media (min-width: 992px) {
+  .ion-me {
+    margin-right: 0px;
+  }
+}
+
+@media (min-width: 992px) {
+  .nav-ps {
+    margin: 0 auto;
+  }
+  .me-120 {
+    margin-right: 120px;
+  }
+}
+
+.register {
+  margin-top: 146.98px;
+}
+
+.position-nav {
+  position: absolute;
+  top: -50px;
+  right: 30px;
+  border: 0px;
+}
+
+.dropdown-item:hover {
+  background-color: #f3d9d8 !important;
+}
+
+// footer
+.media {
+  font-size: 47px;
+}
+
+.footer-h {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+@media (min-width: 992px) {
+  .footer-h {
+    padding-top: 80px;
+    padding-bottom: 64px;
+  }
+}
+
+.media-br {
+  border-top: 1px solid #f2a09e;
+}
+
+@media (min-width: 768px) {
+  .media-br {
+    border-top: 0px;
+  }
+}
+
+.footer-br {
+  border-top: 0px;
+}
+@media (min-width: 768px) {
+  .footer-br {
+    border-top: 1px solid #f2a09e;
+  }
+}
+
+.footer-fs {
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-fs {
+    font-size: 1.5rem;
+  }
+}
+.footer-w {
+  width: 265.77px;
+}
+
+@media (min-width: 768px) {
+  .footer-w {
+    width: 552px;
+  }
+}
+
+.link-style {
+  display: inline-block;
+  color: #1e1e1e;
+}
+
+.footer-active:after {
+  color: #f2a09e;
+}
+
+.haver-brand-01:hover {
+  color: #f2a09e;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
