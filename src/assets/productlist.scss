@@ -1,0 +1,84 @@
+@media (min-width: 768px) {
+  .banner-product {
+    background-image: url("https://images.unsplash.com/photo-1676135959746-375e6e37c069?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-position: center;
+    background-size: cover;
+    height: 562px;
+    background-position: 50% 38%;
+  }
+
+  .banner-img {
+    height: 972px;
+  }
+}
+
+.banner-product-mt {
+  margin-top: 290px;
+}
+@media (min-width: 768px) {
+  .banner-product-mt {
+    margin-top: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-effect:hover {
+    background-color: #e7adac;
+  }
+}
+
+// 商品列表
+
+.accordion-button:focus,
+.accordion-button:not(.collapsed) {
+  background-color: transparent;
+  box-shadow: none;
+}
+.accordion-button {
+  padding: 6px 20px 0px 20px;
+}
+.accordion-body button {
+  padding: 0px 6px 6px 0px;
+}
+.accordion-item {
+  border-bottom: none; /* 移除下方的線條 */
+}
+
+//卡片
+.product-cards {
+  gap: 24px;
+}
+
+// 商品按鈕
+/* 設定最大高度，超過則滾動 */
+.mobilelist {
+  max-height: 400px; /* 可依需求調整 */
+  overflow-y: auto; /* 啟用垂直滾動 */
+  border-top: 1px solid #ddd; /* 可選，加上分隔線 */
+  padding: 10px;
+}
+
+.offcanvas-custom {
+  --bs-offcanvas-height: 50vh;
+}
+
+// 商品廣告
+.product-ad {
+  background-size: cover;
+  background-position: 60% 60%;
+  height: 368px;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .banner-img {
+    height: 396px;
+  }
+}
+.advertisement-text {
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.2509803922);
+  margin: 120px 0px 0px 80px;
+}
+
+.btn-ms {
+  margin-left: 80px;
+}
