@@ -4,7 +4,9 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+// 更新環境變數名稱並提供預設值
+const BASE_URL =
+  import.meta.env.VITE_API_URL ;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 export default function Checkout() {
@@ -41,14 +43,20 @@ export default function Checkout() {
     return cartData.carts.length === 0;
   }, [cartData.carts]);
 
-  // 獲取購物車資料
+  // 獲取購物車資料 - 更新為使用 v2 API
   useEffect(() => {
     const getCart = async () => {
       try {
         setApiError("");
-        const res = await axios.get(`${BASE_URL}/api/${API_PATH}/cart`);
+        console.log(`正在獲取購物車資料: ${BASE_URL}/v2/api/${API_PATH}/cart`);
+
+        const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
+        console.log("購物車回應資料:", res.data);
+
         if (res.data.success) {
           setCartData(res.data.data);
+        } else {
+          setApiError(res.data.message || "獲取購物車失敗");
         }
       } catch (error) {
         console.error("獲取購物車失敗:", error);
@@ -147,9 +155,9 @@ export default function Checkout() {
               <div className="text-center py-5">
                 <h3>您的購物車是空的</h3>
                 <p className="mt-3">請先加入商品再進行結帳</p>
-                <a href="/#/" className="btn btn-primary mt-3">
+                <Link to="/" className="btn btn-primary mt-3">
                   開始購物
-                </a>
+                </Link>
               </div>
             ) : (
               <div className="checkout-containercontentbox2">
@@ -159,12 +167,12 @@ export default function Checkout() {
                     <h3 className="checkout-containercontentbox2title2">
                       購物車摘要
                     </h3>
-                    <a
-                      href="/#/cart"
+                    <Link
+                      to="/cart"
                       className="btn btn-outline-secondary btn-sm"
                     >
                       編輯購物車
-                    </a>
+                    </Link>
                   </div>
                   <div
                     className="checkout-vertical-group"
@@ -348,12 +356,11 @@ export default function Checkout() {
 
             {/* 提交按鈕區域 - 固定在表單下方 */}
             {!isCartEmpty && (
-              <div className="d-flex justify-content-between w-100 px-4 mb-4">
-                <a href="/#/cart" className="btn btn-outline-secondary">
+              <div className="d-flex w-100 px-4  mb-4 justify-content-end">
+                <Link to="/cart" className="btn btn-outline-secondary">
                   返回購物車
-                </a>
+                </Link>
 
-                {/* 使用 a 標籤替代 Link */}
                 <Link
                   to="/checkout-payment"
                   className="checkout-submit-button d-flex align-items-center justify-content-center"

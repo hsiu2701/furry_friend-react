@@ -229,6 +229,7 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   color: #333;
 }
 
+/* 主要內容區塊 - 保持原始結構，僅微調間距 */
 .checkout-banner .checkout-container > .checkout-containercontentbox {
   display: flex;
   justify-content: center;
@@ -240,6 +241,7 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   gap: 32px;
   border-radius: 24px;
   background-color: white;
+  padding: 20px 30px 60px; /* 增加內邊距，特別是底部為按鈕預留空間 */
 }
 
 .checkout-banner
@@ -266,6 +268,7 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   background-image: url("./cat.png");
 }
 
+/* 保持原有的布局但增加間距 */
 .checkout-banner
   .checkout-container
   > .checkout-containercontentbox
@@ -278,6 +281,7 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   gap: 30px;
 }
 
+/* 表單部分 - 保持原有布局 */
 .checkout-banner
   .checkout-container
   > .checkout-containercontentbox
@@ -287,6 +291,8 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   flex-direction: column;
   width: 836px;
   background-color: white;
+  padding: 10px 20px; /* 增加一些內邊距 */
+  margin-bottom: 20px; /* 增加與下方內容的間距 */
 }
 
 .checkout-banner
@@ -300,6 +306,7 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   font-size: 28px;
   font-family: "noto sans tc";
   color: black;
+  margin-bottom: 15px; /* 增加與下方內容的間距 */
 }
 
 .checkout-banner
@@ -317,7 +324,7 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   color: black;
 }
 
-/* 送貨資訊框 */
+/* 送貨資訊框 - 保持原有布局 */
 .checkout-banner
   .checkout-container
   > .checkout-containercontentbox
@@ -329,10 +336,11 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   width: 836px;
   border: 1px solid rgba(242, 160, 158, 1);
   border-radius: 20px;
-  gap: 0px;
+  gap: 10px;
+  margin-bottom: 20px; /* 增加與下方內容的間距 */
 }
 
-/* 垂直排列的群組 */
+/* 垂直排列的群組 - 微調間距 */
 .checkout-vertical-group {
   color: black;
   font-weight: 500;
@@ -340,8 +348,8 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   font-family: "noto sans tc";
   display: flex;
   flex-direction: column;
-  gap: 0px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 /* 性別設定 水平排列的群組 */
@@ -357,16 +365,17 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   gap: 15px;
 }
 
-/* 輸入框 */
+/* 輸入框 - 增加內邊距 */
 .checkout-inputbox {
   border-radius: 4px;
   border: 2px solid rgba(136, 136, 136, 1);
+  padding: 8px 12px;
 }
 
 /* 輸入容器 */
 .checkout-input-container {
   position: relative;
-  margin-bottom: 0.5rem;
+  margin-bottom: 16px;
 }
 
 /* 錯誤訊息 */
@@ -377,18 +386,53 @@ header > .checkout-menu > .checkout-menuBottom .checkout-dropdown-navbar {
   font-size: 14px;
 }
 
-/* 按鈕 */
+/* 按鈕區域樣式 - 修正按鈕位置問題 */
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  .d-flex.justify-content-between {
+  width: 100%;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+/* 按鈕 - 修正文字居中問題 */
 .checkout-submit-button {
-  width: 104px;
+  width: auto;
+  min-width: 104px;
   height: 50px;
   border: none;
   border-radius: 100px;
   background-color: rgba(231, 173, 172, 1);
-  margin-left: -80px;
-  margin-top: 977px;
-  margin-bottom: 40px;
+  padding: 0 20px;
+  display: flex !important; /* 強制使用flex布局 */
+  align-items: center !important; /* 強制垂直居中 */
+  justify-content: center !important; /* 強制水平居中 */
   font-weight: 500;
   font-size: 20px;
   font-family: "noto sans tc";
   color: white;
+  margin: 0;
+}
+
+/* 返回購物車按鈕 */
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  .btn.btn-outline-secondary {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  margin-right: 15px;
+}
+
+/* 設置這些樣式到特定的按鈕容器 */
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > div:last-child {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
 }
