@@ -3,8 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Paginationss from "../assets/components/Paginationss";
-// Import Swiper styles
+// import Paginationss from "../assets/components/Paginationss";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -17,9 +16,8 @@ function ProductList() {
   // 載入產品資料
   const [products, setProducts] = useState([]);
   //追蹤當前頁數
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageInfo, setPageInfo] = useState({});
-  //列表
+  const [loading, setLoading] = useState(false);
 
   // nav
   const location = useLocation();
@@ -30,22 +28,50 @@ function ProductList() {
   );
 
   const getProducts = async (page = 1) => {
+    if (loading) return;
+    setLoading(true);
     try {
-      const res = await axios.get(
-        `${API_URL}/v2/api/${API_PATH}/products?page=${page}`
+      const params = { page };
+      if (selectedCategory !== "全部") {
+        params.category = selectedCategory;
+      }
+
+      const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
+        params,
+      });
+
+      setProducts((prevProducts) =>
+        page === 1 ? res.data.products : [...prevProducts, ...res.data.products]
       );
-      setProducts(res.data.products || []);
-      setPageInfo(res.data.pagination || {});
+      setPageInfo(res.data.pagination);
     } catch (error) {
       console.error("取得產品失敗", error);
-      alert("取得產品失敗");
+    } finally {
+      setLoading(false);
     }
   };
 
-  //初始 取
+  //取得資料
   useEffect(() => {
-    getProducts(currentPage);
-  }, [currentPage]);
+    getProducts(1);
+  }, [selectedCategory]);
+
+  //滾動產品
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 100 &&
+        pageInfo.has_next &&
+        !loading
+      ) {
+        getProducts(pageInfo.current_page + 1);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pageInfo, loading]);
 
   //  BANNER
   const categoryMappings = {
@@ -86,12 +112,6 @@ function ProductList() {
       introduction: "帶這毛孩安心出遊~  不讓蟲蟲靠近",
     },
   ]);
-
-  const handlePageChange = (page) => {
-    if (page !== currentPage) {
-      setCurrentPage(page);
-    }
-  };
 
   // 商品列表按鈕
   useEffect(() => {
@@ -140,12 +160,6 @@ function ProductList() {
       setSelectedCategory(categoryFromUrl);
     }
   }, [categoryFromUrl]);
-
-  // 產品列表資料引入
-  const filteredProducts = products.filter((product) => {
-    if (selectedCategory === "全部") return product;
-    return product.category === selectedCategory;
-  });
 
   //BANNER
 
@@ -855,9 +869,9 @@ function ProductList() {
 
           <div className="col-md-9">
             <div className="row">
-              <div className="d-flex justify-content-center justify-content-lg-between flex-wrap product-cards ">
-                {filteredProducts.map((product) => (
-                  <div className="product-card px-2 mt-1  " key={product.id}>
+              <div className="d-flex justify-content-start  flex-wrap product-cards ">
+                {products.map((product) => (
+                  <div className="product-card px-2 mt-1" key={product.id}>
                     <div className="product-tumb d-flex justify-content-center align-items-end">
                       <img src={product.imageUrl} alt={product.title} />
                     </div>
@@ -872,7 +886,6 @@ function ProductList() {
                           </Link>
                         </h4>
                       </div>
-
                       <div className="product-bottom-details">
                         <div className="product-price text-brand-01">
                           <p>${product.price}</p>
@@ -897,12 +910,12 @@ function ProductList() {
                   </div>
                 ))}
               </div>
-              <div className="pt-9">
+              {/* <div className="pt-9">
                 <Paginationss
                   pageInfo={pageInfo}
                   handlePageChange={handlePageChange}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
