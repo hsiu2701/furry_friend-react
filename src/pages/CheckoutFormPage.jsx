@@ -1,32 +1,29 @@
-// eslint-disable-next-line no-unused-vars
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-// import LoadingSpinner from "/pages/LoadingSpinner";
+import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
-function Checkout() {
+
+export default function Checkout() {
   const [cartData, setCartData] = useState({
     carts: [],
     total: 0,
     final_total: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState("");
-  const navigate = useNavigate();
+  const tempOrderId = "temp-order-id"; // 臨時訂單ID，用於開發階段
 
   const {
     register,
-    handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     watch,
   } = useForm({
-    mode: "onChange", // 即時驗證
+    mode: "onChange",
     defaultValues: {
-      // 從本地存儲加載上次的值（如果有）
       ...JSON.parse(localStorage.getItem("checkoutInfo") || "{}"),
     },
   });
@@ -64,64 +61,27 @@ function Checkout() {
     getCart();
   }, []);
 
-  // 提交訂單資料
-  const onSubmit = handleSubmit(async (data) => {
-    if (isCartEmpty) {
-      setApiError("購物車是空的，請先加入商品");
-      return;
-    }
+  // 保存當前表單內容到 sessionStorage
+  const saveFormToSessionStorage = () => {
+    const formData = {
+      user: {
+        name: formValues.name || "測試用戶",
+        email: formValues.email || "test@example.com",
+        tel: formValues.phone || "0912345678",
+        address: formValues.address || "測試地址",
+      },
+      message: formValues.message || "",
+    };
 
-    try {
-      setIsSubmitting(true);
-      setApiError("");
-
-      // 準備訂單資料
-      const order = {
-        user: {
-          name: data.name,
-          email: data.email,
-          tel: data.phone,
-          address: data.address,
-        },
-        message: data.message,
-      };
-
-      // 建立訂單
-      const res = await axios.post(`${BASE_URL}/api/${API_PATH}/order`, {
-        data: order,
-      });
-
-      if (res.data.success) {
-        // 將訂單資訊儲存到 sessionStorage 以便在下一個頁面使用
-        // (使用 sessionStorage 而非 localStorage 提高安全性)
-        sessionStorage.setItem(
-          "currentOrder",
-          JSON.stringify({
-            orderId: res.data.orderId,
-            orderData: order,
-            total: cartData.final_total,
-            timestamp: new Date().getTime(),
-          })
-        );
-
-        // 導航到付款頁面
-        navigate("/checkout-payment");
-      } else {
-        throw new Error(res.data.message || "建立訂單失敗");
-      }
-    } catch (error) {
-      console.error("建立訂單失敗:", error);
-      setApiError(
-        error.response?.data?.message || "建立訂單時發生錯誤，請稍後再試"
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  });
-
-  // 返回購物車
-  const handleBackToCart = () => {
-    navigate("/cart");
+    sessionStorage.setItem(
+      "currentOrder",
+      JSON.stringify({
+        orderId: tempOrderId,
+        orderData: formData,
+        total: cartData.final_total,
+        timestamp: new Date().getTime(),
+      })
+    );
   };
 
   if (isLoading) {
@@ -137,99 +97,6 @@ function Checkout() {
 
   return (
     <>
-      {/* header */}
-      <header>
-        <div className="checkout-menu">
-          <div className="checkout-menuTop">
-            <div className="checkout-menuTopTitle">
-              <Link to="/">
-                <img
-                  className="checkout-toolBarTopTitleImg"
-                  src="./title.png"
-                  alt="商標"
-                />
-              </Link>
-            </div>
-            <div className="checkout-menuTopIcon">
-              <Link to="/profile">
-                <i className="bi bi-person"></i>
-              </Link>
-              <Link to="/cart">
-                <i className="bi bi-cart3"></i>
-              </Link>
-            </div>
-          </div>
-          <div className="checkout-menuBottom">
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle checkout-dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                狗狗
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/category/dog-food">
-                    狗狗食品
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/category/dog-toys">
-                    狗狗玩具
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="/category/dog-accessories"
-                  >
-                    狗狗配件
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle checkout-dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                貓貓
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/category/cat-food">
-                    貓貓食品
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/category/cat-toys">
-                    貓貓玩具
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="/category/cat-accessories"
-                  >
-                    貓貓配件
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <Link to="/featured" className="checkout-dropdown-navbar">
-              主打商品
-            </Link>
-            <Link to="/pet-school" className="checkout-dropdown-navbar">
-              毛孩教室
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* banner 與主要內容 */}
       <section className="checkout-banner">
         <div
@@ -273,16 +140,16 @@ function Checkout() {
           </div>
 
           <div className="checkout-containercontentbox">
+            <div className="checkout-dog"></div>
+            <div className="checkout-cat"></div>
+
             {isCartEmpty ? (
               <div className="text-center py-5">
                 <h3>您的購物車是空的</h3>
                 <p className="mt-3">請先加入商品再進行結帳</p>
-                <button
-                  className="btn btn-primary mt-3"
-                  onClick={() => navigate("/")}
-                >
+                <a href="/#/" className="btn btn-primary mt-3">
                   開始購物
-                </button>
+                </a>
               </div>
             ) : (
               <div className="checkout-containercontentbox2">
@@ -292,12 +159,12 @@ function Checkout() {
                     <h3 className="checkout-containercontentbox2title2">
                       購物車摘要
                     </h3>
-                    <button
+                    <a
+                      href="/#/cart"
                       className="btn btn-outline-secondary btn-sm"
-                      onClick={handleBackToCart}
                     >
                       編輯購物車
-                    </button>
+                    </a>
                   </div>
                   <div
                     className="checkout-vertical-group"
@@ -374,7 +241,7 @@ function Checkout() {
                   <h3 className="checkout-containercontentbox2title">
                     送貨資訊
                   </h3>
-                  <form id="checkoutForm" onSubmit={onSubmit}>
+                  <div id="checkoutForm">
                     <div className="checkout-vertical-group checkout-input-container">
                       <label htmlFor="email">
                         電子郵件 <span className="text-danger">*</span>
@@ -387,7 +254,7 @@ function Checkout() {
                         }`}
                         placeholder="請輸入E-mail"
                         {...register("email", {
-                          required: "Email 為必填",
+                          required: false, // 開發階段不強制必填
                           pattern: {
                             value:
                               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -412,7 +279,7 @@ function Checkout() {
                           errors.name ? "is-invalid" : ""
                         }`}
                         placeholder="請輸入真實姓名"
-                        {...register("name", { required: "姓名為必填" })}
+                        {...register("name", { required: false })} // 開發階段不強制必填
                       />
                       {errors.name && (
                         <span className="text-danger mt-1">
@@ -432,7 +299,7 @@ function Checkout() {
                         }`}
                         placeholder="請輸入手機號碼"
                         {...register("phone", {
-                          required: "電話為必填",
+                          required: false, // 開發階段不強制必填
                           pattern: {
                             value: /^09\d{8}$/,
                             message: "請輸入有效的手機號碼（如：0912345678）",
@@ -456,7 +323,7 @@ function Checkout() {
                           errors.address ? "is-invalid" : ""
                         }`}
                         placeholder="請輸入完整收件地址"
-                        {...register("address", { required: "地址為必填" })}
+                        {...register("address", { required: false })} // 開發階段不強制必填
                       />
                       {errors.address && (
                         <span className="text-danger mt-1">
@@ -474,39 +341,33 @@ function Checkout() {
                         {...register("message")}
                       ></textarea>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* 提交按鈕 */}
+            {/* 提交按鈕區域 - 固定在表單下方 */}
             {!isCartEmpty && (
-              <div className="d-flex justify-content-between mt-4">
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={handleBackToCart}
-                >
+              <div className="d-flex justify-content-between w-100 px-4 mb-4">
+                <a href="/#/cart" className="btn btn-outline-secondary">
                   返回購物車
-                </button>
-                <button
-                  className="checkout-submit-button"
-                  type="submit"
-                  form="checkoutForm"
-                  disabled={isSubmitting || !isValid}
+                </a>
+
+                {/* 使用 a 標籤替代 Link */}
+                <Link
+                  to="/checkout-payment"
+                  className="checkout-submit-button d-flex align-items-center justify-content-center"
+                  style={{
+                    textDecoration: "none",
+                    width: "auto",
+                    padding: "0.5rem 1.5rem",
+                    height: "50px",
+                    margin: "0",
+                  }}
+                  onClick={saveFormToSessionStorage}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      處理中...
-                    </>
-                  ) : (
-                    "下一步，前往付款"
-                  )}
-                </button>
+                  下一步
+                </Link>
               </div>
             )}
           </div>
@@ -515,5 +376,3 @@ function Checkout() {
     </>
   );
 }
-
-export default Checkout;

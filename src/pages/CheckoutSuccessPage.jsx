@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import LoadingSpinner from "/pages/LoadingSpinner";
+// 移除 Link 的導入
+// import { Link } from "react-router-dom";
+import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
 
-function CheckoutSuccess() {
+export default function CheckoutSuccess() {
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   // 從 sessionStorage 獲取訂單資料
   useEffect(() => {
@@ -44,27 +44,10 @@ function CheckoutSuccess() {
     }
   }, []);
 
-  // 返回首頁
-  const handleReturnHome = () => {
-    // 清除結帳相關的所有數據
+  // 清除結帳資料的函數 - 用於a標籤中的onClick
+  const clearCheckoutData = () => {
     sessionStorage.removeItem("currentOrder");
     localStorage.removeItem("checkoutInfo");
-
-    navigate("/");
-  };
-
-  // 查看訂單
-  const handleViewOrders = () => {
-    navigate("/profile/orders");
-  };
-
-  // 繼續購物
-  const handleContinueShopping = () => {
-    // 清除結帳相關的所有數據
-    sessionStorage.removeItem("currentOrder");
-    localStorage.removeItem("checkoutInfo");
-
-    navigate("/products");
   };
 
   // 計算日期格式
@@ -92,99 +75,6 @@ function CheckoutSuccess() {
 
   return (
     <>
-      {/* header */}
-      <header>
-        <div className="checkout-menu">
-          <div className="checkout-menuTop">
-            <div className="checkout-menuTopTitle">
-              <Link to="/">
-                <img
-                  className="checkout-toolBarTopTitleImg"
-                  src="./title.png"
-                  alt="商標"
-                />
-              </Link>
-            </div>
-            <div className="checkout-menuTopIcon">
-              <Link to="/profile">
-                <i className="bi bi-person"></i>
-              </Link>
-              <Link to="/cart">
-                <i className="bi bi-cart3"></i>
-              </Link>
-            </div>
-          </div>
-          <div className="checkout-menuBottom">
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle checkout-dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                狗狗
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/category/dog-food">
-                    狗狗食品
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/category/dog-toys">
-                    狗狗玩具
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="/category/dog-accessories"
-                  >
-                    狗狗配件
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle checkout-dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                貓貓
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/category/cat-food">
-                    貓貓食品
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/category/cat-toys">
-                    貓貓玩具
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="/category/cat-accessories"
-                  >
-                    貓貓配件
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <Link to="/featured" className="checkout-dropdown-navbar">
-              主打商品
-            </Link>
-            <Link to="/pet-school" className="checkout-dropdown-navbar">
-              毛孩教室
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* banner 與主要內容 */}
       <section className="checkout-banner">
         <div
@@ -195,30 +85,24 @@ function CheckoutSuccess() {
             backgroundPosition: "center",
           }}
         >
-          <div className="checkout-bannerText">訂單完成</div>
+          <div className="checkout-bannerText">
+            {error ? "訂單失敗" : "訂單完成"}
+          </div>
         </div>
 
         {error && (
           <div
-            className="alert alert-danger mx-auto mt-3"
+            className="alert alert-danger mx-auto mt-3 text-center"
             style={{ maxWidth: "900px" }}
           >
             {error}
             {error.includes("付款頁面") && (
-              <button
+              <a
+                href="#/checkout-payment"
                 className="btn btn-outline-danger btn-sm ms-3"
-                onClick={() => navigate("/checkout-payment")}
               >
                 返回付款頁面
-              </button>
-            )}
-            {error.includes("首頁") && (
-              <button
-                className="btn btn-outline-primary btn-sm ms-3"
-                onClick={handleReturnHome}
-              >
-                返回首頁
-              </button>
+              </a>
             )}
           </div>
         )}
@@ -370,32 +254,34 @@ function CheckoutSuccess() {
               </>
             )}
 
-            {/* 操作按鈕 */}
-            <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-              <button
-                type="button"
+            {/* 操作按鈕 - 改為使用a標籤 */}
+            <div
+              className="checkout-buttons"
+              style={{ margin: "30px 30px", display: "flex", gap: "30px" }}
+            >
+              <a
+                href="#/profile/orders"
                 className="btn btn-outline-secondary btn-lg"
-                onClick={handleViewOrders}
               >
-                <i className="fas fa-list-alt me-2"></i>
+                <i className="fas fa-list-alt"></i>
                 查看我的訂單
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="#/"
                 className="btn btn-primary btn-lg"
-                onClick={handleReturnHome}
+                onClick={clearCheckoutData}
               >
-                <i className="fas fa-home me-2"></i>
+                <i className="fas fa-home"></i>
                 返回首頁
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="#/products"
                 className="btn btn-success btn-lg"
-                onClick={handleContinueShopping}
+                onClick={clearCheckoutData}
               >
-                <i className="fas fa-shopping-cart me-2"></i>
+                <i className="fas fa-shopping-cart"></i>
                 繼續購物
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -403,5 +289,3 @@ function CheckoutSuccess() {
     </>
   );
 }
-
-export default CheckoutSuccess;
