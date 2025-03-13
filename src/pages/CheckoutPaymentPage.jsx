@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// 移除 Link 的導入，在必要時使用 a 標籤
+// import { Link } from "react-router-dom";
+import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
 
-// import LoadingSpinner from "../pages/LoadingSpinner";
-
-function CheckoutPayment() {
-  const navigate = useNavigate();
+export default function CheckoutPayment() {
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -139,58 +138,35 @@ function CheckoutPayment() {
     return errors;
   };
 
-  // 處理表單提交
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
+  // 保存付款資訊到 sessionStorage
+  const savePaymentInfoToSessionStorage = () => {
+    if (!orderData || !orderData.orderId) {
+      setError("訂單資料無效，請返回結帳頁面重新操作");
+      return false;
+    }
 
     // 驗證表單
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setFormErrors(validationErrors);
-      return;
+      return false;
     }
 
-    if (!orderData || !orderData.orderId) {
-      setError("訂單資料無效，請返回結帳頁面重新操作");
-      return;
-    }
+    // 將付款信息添加到訂單數據中
+    const paymentInfo = {
+      payment_method: paymentMethod,
+      payment_status: "已付款", // 模擬支付成功
+      payment_date: new Date().toISOString(),
+    };
 
-    setIsSubmitting(true);
+    // 更新 sessionStorage 中的訂單資訊
+    const updatedOrderData = {
+      ...orderData,
+      payment: paymentInfo,
+    };
 
-    try {
-      // 這裡只是模擬付款處理
-      // 在真實場景中，您需要處理與支付網關的整合
-
-      // 將付款信息添加到訂單數據中
-      const paymentInfo = {
-        payment_method: paymentMethod,
-        payment_status: "已付款", // 模擬支付成功
-        payment_date: new Date().toISOString(),
-      };
-
-      // 更新 sessionStorage 中的訂單資訊
-      const updatedOrderData = {
-        ...orderData,
-        payment: paymentInfo,
-      };
-
-      sessionStorage.setItem("currentOrder", JSON.stringify(updatedOrderData));
-
-      // 導航到成功頁面
-      setTimeout(() => {
-        navigate("/checkout-success");
-      }, 1000); // 模擬處理時間
-    } catch (err) {
-      console.error("處理付款失敗:", err);
-      setError(err.response?.data?.message || err.message || "處理付款失敗");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // 返回上一步
-  const handleBack = () => {
-    navigate("/checkout");
+    sessionStorage.setItem("currentOrder", JSON.stringify(updatedOrderData));
+    return true;
   };
 
   if (loading) {
@@ -206,99 +182,6 @@ function CheckoutPayment() {
 
   return (
     <>
-      {/* header */}
-      <header>
-        <div className="checkout-payment-menu">
-          <div className="checkout-payment-menuTop">
-            <div className="checkout-payment-menuTopTitle">
-              <Link to="/">
-                <img
-                  className="checkout-payment-toolBarTopTitleImg"
-                  src="./title.png"
-                  alt="商標"
-                />
-              </Link>
-            </div>
-            <div className="checkout-payment-menuTopIcon">
-              <Link to="/profile">
-                <i className="bi bi-person"></i>
-              </Link>
-              <Link to="/cart">
-                <i className="bi bi-cart3"></i>
-              </Link>
-            </div>
-          </div>
-          <div className="checkout-payment-menuBottom">
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle checkout-payment-dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                狗狗
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/category/dog-food">
-                    狗狗食品
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/category/dog-toys">
-                    狗狗玩具
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="/category/dog-accessories"
-                  >
-                    狗狗配件
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle checkout-payment-dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                貓貓
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/category/cat-food">
-                    貓貓食品
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/category/cat-toys">
-                    貓貓玩具
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="/category/cat-accessories"
-                  >
-                    貓貓配件
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <Link to="/featured" className="checkout-payment-dropdown-navbar">
-              主打商品
-            </Link>
-            <Link to="/pet-school" className="checkout-payment-dropdown-navbar">
-              毛孩教室
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* banner 與主要內容 */}
       <section className="checkout-payment-banner">
         <div
@@ -314,17 +197,17 @@ function CheckoutPayment() {
 
         {error && (
           <div
-            className="alert alert-danger mx-auto mt-3"
+            className="alert alert-danger mx-auto mt-3 text-center"
             style={{ maxWidth: "900px" }}
           >
             {error}
             {error.includes("返回結帳頁面") && (
-              <button
+              <a
+                href="#/checkout"
                 className="btn btn-outline-danger btn-sm ms-3"
-                onClick={handleBack}
               >
                 返回結帳頁面
-              </button>
+              </a>
             )}
           </div>
         )}
@@ -352,6 +235,9 @@ function CheckoutPayment() {
 
           {/* 主要內容區塊 */}
           <div className="checkout-payment-containercontentbox">
+            <div className="checkout-payment-dog"></div>
+            <div className="checkout-payment-cat"></div>
+
             {orderData && (
               <div className="checkout-payment-containercontentbox2">
                 {/* 左側：訂單摘要 */}
@@ -436,7 +322,7 @@ function CheckoutPayment() {
                   <h3 className="checkout-payment-containercontentbox2title">
                     選擇付款方式
                   </h3>
-                  <form onSubmit={handleSubmit}>
+                  <form>
                     {/* 付款方式 Accordion */}
                     <div className="accordion" id="paymentAccordion">
                       <div className="card mb-3 border rounded">
@@ -697,19 +583,46 @@ function CheckoutPayment() {
 
             {/* 操作按鈕 */}
             {orderData && (
-              <div className="d-flex justify-content-between mt-4">
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={handleBack}
-                >
+              <div className="d-flex justify-content-between w-100 px-4 mb-4">
+                {/* 返回按鈕 - 使用 a 標籤替代 Link */}
+                <a href="#/checkout" className="btn btn-outline-secondary">
                   返回填寫資料
-                </button>
-                <button
-                  type="button"
-                  className="checkout-payment-submit-button"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
+                </a>
+
+                {/* 確認付款按鈕 - 使用 a 標籤替代 Link */}
+                <a
+                  href="#/checkout-success"
+                  className="checkout-payment-submit-button d-flex align-items-center justify-content-center"
+                  style={{
+                    textDecoration: "none",
+                    width: "auto",
+                    padding: "0.5rem 1.5rem",
+                    height: "50px",
+                    margin: "0",
+                  }}
+                  onClick={(e) => {
+                    // 如果表單不符合要求，取消導航
+                    if (!savePaymentInfoToSessionStorage()) {
+                      e.preventDefault();
+
+                      if (
+                        paymentMethod === "credit" &&
+                        (!formData.cardNumber ||
+                          !formData.expiryDate ||
+                          !formData.cvc)
+                      ) {
+                        alert("請填寫完整的信用卡資訊");
+                      } else if (
+                        paymentMethod === "mobile" &&
+                        !formData.mobilePaymentMethod
+                      ) {
+                        alert("請選擇行動支付方式");
+                      }
+                    } else {
+                      // 可以添加付款前的加載視覺提示 (可選)
+                      setIsSubmitting(true);
+                    }
+                  }}
                 >
                   {isSubmitting ? (
                     <>
@@ -718,12 +631,12 @@ function CheckoutPayment() {
                         role="status"
                         aria-hidden="true"
                       ></span>
-                      處理付款中...
+                      處理中...
                     </>
                   ) : (
                     "確認付款"
                   )}
-                </button>
+                </a>
               </div>
             )}
           </div>
@@ -732,5 +645,3 @@ function CheckoutPayment() {
     </>
   );
 }
-
-export default CheckoutPayment;

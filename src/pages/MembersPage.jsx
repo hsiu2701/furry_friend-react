@@ -144,79 +144,6 @@ function Members() {
 
   return (
     <>
-      {/* menu */}
-      <header>
-        <div className="menu">
-          <div className="menuTop">
-            <div className="menuTopTitle">
-              <img className="menuTopTitleImg" src="./title.png" alt="標題" />
-            </div>
-            <div className="menuTopIcon">
-              <i className="bi bi-person"></i>
-              <i className="bi bi-cart3"></i>
-            </div>
-          </div>
-          <div className="menuBottom">
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                狗狗
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    1
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    2
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    3
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="dropdown">
-              <button
-                className="btn dropdown-toggle dropdown-navbar"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                貓貓
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    1
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    2
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    3
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="dropdown-navbar">主打商品</div>
-            <div className="dropdown-navbar">毛孩教室</div>
-          </div>
-        </div>
-      </header>
-
       {/* banner */}
       <section className="banner">
         <div className="bannerImg">
@@ -346,6 +273,7 @@ function Members() {
                     <label>出生年月日</label>
                     <div className="horizontal-group">
                       <select
+                        className="inputbox"
                         {...register("birthYear", { required: "必填" })}
                         onChange={handleYearChange}
                       >
@@ -360,6 +288,7 @@ function Members() {
                       </select>
                       <label>年</label>
                       <select
+                        className="inputbox"
                         {...register("birthMonth", { required: "必填" })}
                         onChange={handleMonthChange}
                       >
@@ -373,7 +302,10 @@ function Members() {
                         })}
                       </select>
                       <label>月</label>
-                      <select {...register("birthDay", { required: "必填" })}>
+                      <select
+                        className="inputbox"
+                        {...register("birthDay", { required: "必填" })}
+                      >
                         {Array.from(
                           {
                             length: getDaysInMonth(selectedYear, selectedMonth),
@@ -405,6 +337,7 @@ function Members() {
                       id="password"
                       className="inputbox"
                       type="password"
+                      placeholder="請輸入密碼"
                       {...register("password", {
                         required: "必填",
                         minLength: {
@@ -432,6 +365,7 @@ function Members() {
                       id="confirmPassword"
                       className="inputbox"
                       type="password"
+                      placeholder="請再次輸入密碼"
                       {...register("confirmPassword", {
                         required: "必填",
                         validate: (value) =>

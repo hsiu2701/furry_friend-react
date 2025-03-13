@@ -11,6 +11,9 @@ import "./assets/layout.scss";
 import "./assets/home.scss";
 import "./assets/productlist.scss";
 import "./assets/banners.scss";
+import "./assets/members.scss";
+import "./assets/checkoutform.scss";
+import "./assets/checkoutpayment.scss";
 const router = createHashRouter(routes);
 
 createRoot(document.getElementById("root")).render(
