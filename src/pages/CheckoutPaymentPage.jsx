@@ -53,28 +53,24 @@ export default function CheckoutPayment() {
   }, []);
 
   // 處理表單輸入變更
+  // 處理表單輸入變更的簡化版本
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // 表單資料驗證與格式化
+    // 簡化表單資料處理，保留基本格式化功能
     let updatedValue = value;
 
-    // 根據不同輸入欄位格式化
+    // 根據不同輸入欄位簡單格式化
     if (name === "cardNumber") {
-      // 移除非數字字符並限制為16位
-      updatedValue = value.replace(/\D/g, "").slice(0, 16);
-      // 每4位數字後添加空格 (除了最後一組)
-      updatedValue = updatedValue.replace(/(\d{4})(?=\d)/g, "$1 ");
+      // 保留空格格式化，但允許更短的卡號
+      updatedValue = value.replace(/\D/g, ""); // 移除非數字字符
+      updatedValue = updatedValue.replace(/(\d{4})(?=\d)/g, "$1 "); // 每4位數字後添加空格
     } else if (name === "expiryDate") {
-      // 移除非數字字符並限制為4位
-      updatedValue = value.replace(/\D/g, "").slice(0, 4);
-      // 在前兩位數字後添加斜線
+      // 簡化有效期格式化，保留斜線分隔
+      updatedValue = value.replace(/\D/g, "").slice(0, 4); // 限制為4位數字
       if (updatedValue.length > 2) {
         updatedValue = updatedValue.slice(0, 2) + "/" + updatedValue.slice(2);
       }
-    } else if (name === "cvc") {
-      // 移除非數字字符並限制為3位
-      updatedValue = value.replace(/\D/g, "").slice(0, 3);
     }
 
     setFormData({
@@ -90,6 +86,43 @@ export default function CheckoutPayment() {
       });
     }
   };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   // 表單資料驗證與格式化
+  //   let updatedValue = value;
+
+  //   // 根據不同輸入欄位格式化
+  //   if (name === "cardNumber") {
+  //     // 移除非數字字符並限制為16位
+  //     updatedValue = value.replace(/\D/g, "").slice(0, 16);
+  //     // 每4位數字後添加空格 (除了最後一組)
+  //     updatedValue = updatedValue.replace(/(\d{4})(?=\d)/g, "$1 ");
+  //   } else if (name === "expiryDate") {
+  //     // 移除非數字字符並限制為4位
+  //     updatedValue = value.replace(/\D/g, "").slice(0, 4);
+  //     // 在前兩位數字後添加斜線
+  //     if (updatedValue.length > 2) {
+  //       updatedValue = updatedValue.slice(0, 2) + "/" + updatedValue.slice(2);
+  //     }
+  //   } else if (name === "cvc") {
+  //     // 移除非數字字符並限制為3位
+  //     updatedValue = value.replace(/\D/g, "").slice(0, 3);
+  //   }
+
+  //   setFormData({
+  //     ...formData,
+  //     [name]: updatedValue,
+  //   });
+
+  //   // 清除該欄位的錯誤
+  //   if (formErrors[name]) {
+  //     setFormErrors({
+  //       ...formErrors,
+  //       [name]: null,
+  //     });
+  //   }
+  // };
 
   // 處理付款方式變更
   const handlePaymentMethodChange = (method) => {
@@ -99,37 +132,24 @@ export default function CheckoutPayment() {
   };
 
   // 驗證表單
+  // 簡化的表單驗證函數
   const validateForm = () => {
     const errors = {};
 
     if (paymentMethod === "credit") {
-      if (
-        !formData.cardNumber ||
-        formData.cardNumber.replace(/\s/g, "").length < 16
-      ) {
-        errors.cardNumber = "請輸入完整的信用卡號（16位數字）";
+      // 簡化卡號驗證：只要有輸入內容即可
+      if (!formData.cardNumber || formData.cardNumber.trim() === "") {
+        errors.cardNumber = "請輸入信用卡號";
       }
 
-      if (!formData.expiryDate || formData.expiryDate.length < 5) {
-        errors.expiryDate = "請輸入有效的到期日（MM/YY）";
-      } else {
-        const [month, year] = formData.expiryDate.split("/");
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear() % 100; // 獲取年份的後兩位
-        const currentMonth = currentDate.getMonth() + 1; // 月份從0開始
-
-        if (parseInt(month) < 1 || parseInt(month) > 12) {
-          errors.expiryDate = "月份必須介於1到12之間";
-        } else if (
-          parseInt(year) < currentYear ||
-          (parseInt(year) === currentYear && parseInt(month) < currentMonth)
-        ) {
-          errors.expiryDate = "卡片已過期";
-        }
+      // 簡化到期日驗證：只要有輸入內容即可
+      if (!formData.expiryDate || formData.expiryDate.trim() === "") {
+        errors.expiryDate = "請輸入到期日";
       }
 
-      if (!formData.cvc || formData.cvc.length < 3) {
-        errors.cvc = "請輸入完整的安全碼（3位數字）";
+      // 簡化安全碼驗證：只要有輸入內容即可
+      if (!formData.cvc || formData.cvc.trim() === "") {
+        errors.cvc = "請輸入安全碼";
       }
     } else if (paymentMethod === "mobile" && !formData.mobilePaymentMethod) {
       errors.mobilePaymentMethod = "請選擇一種行動支付方式";
@@ -137,8 +157,48 @@ export default function CheckoutPayment() {
 
     return errors;
   };
+  // const validateForm = () => {
+  //   const errors = {};
+
+  //   if (paymentMethod === "credit") {
+  //     if (
+  //       !formData.cardNumber ||
+  //       formData.cardNumber.replace(/\s/g, "").length < 16
+  //     ) {
+  //       errors.cardNumber = "請輸入完整的信用卡號（16位數字）";
+  //     }
+
+  //     if (!formData.expiryDate || formData.expiryDate.length < 5) {
+  //       errors.expiryDate = "請輸入有效的到期日（MM/YY）";
+  //     } else {
+  //       const [month, year] = formData.expiryDate.split("/");
+  //       const currentDate = new Date();
+  //       const currentYear = currentDate.getFullYear() % 100; // 獲取年份的後兩位
+  //       const currentMonth = currentDate.getMonth() + 1; // 月份從0開始
+
+  //       if (parseInt(month) < 1 || parseInt(month) > 12) {
+  //         errors.expiryDate = "月份必須介於1到12之間";
+  //       } else if (
+  //         parseInt(year) < currentYear ||
+  //         (parseInt(year) === currentYear && parseInt(month) < currentMonth)
+  //       ) {
+  //         errors.expiryDate = "卡片已過期";
+  //       }
+  //     }
+
+  //     if (!formData.cvc || formData.cvc.length < 3) {
+  //       errors.cvc = "請輸入完整的安全碼（3位數字）";
+  //     }
+  //   } else if (paymentMethod === "mobile" && !formData.mobilePaymentMethod) {
+  //     errors.mobilePaymentMethod = "請選擇一種行動支付方式";
+  //   }
+
+  //   return errors;
+  // };
 
   // 保存付款資訊到 sessionStorage
+
+  // eslint-disable-next-line no-unused-vars
   const savePaymentInfoToSessionStorage = () => {
     if (!orderData || !orderData.orderId) {
       setError("訂單資料無效，請返回結帳頁面重新操作");
@@ -581,25 +641,73 @@ export default function CheckoutPayment() {
               </div>
             )}
 
-            {/* 操作按鈕 */}
+            {/* 操作按鈕 - 只需修改這部分 */}
             {orderData && (
-              <div className="d-flex justify-content-between w-100 px-4 mb-4">
-                {/* 返回按鈕 - 使用 a 標籤替代 Link */}
-                <a href="#/checkout" className="btn btn-outline-secondary">
+              <div className="checkout-payment-button-container">
+                {/* 返回按鈕 */}
+                <a href="#/checkout" className="checkout-payment-back-button">
+                  <i className="bi bi-arrow-left me-2"></i>
                   返回填寫資料
                 </a>
 
-                {/* 確認付款按鈕 - 使用 a 標籤替代 Link */}
+                {/* 確認付款按鈕 */}
+                {/* 確認付款按鈕 - 簡化版本 */}
                 <a
                   href="#/checkout-success"
-                  className="checkout-payment-submit-button d-flex align-items-center justify-content-center"
-                  style={{
-                    textDecoration: "none",
-                    width: "auto",
-                    padding: "0.5rem 1.5rem",
-                    height: "50px",
-                    margin: "0",
+                  className="checkout-payment-submit-button"
+                  onClick={(e) => {
+                    // 簡化的表單檢查
+                    const validationErrors = validateForm();
+
+                    if (Object.keys(validationErrors).length > 0) {
+                      e.preventDefault();
+                      setFormErrors(validationErrors);
+
+                      // 簡化的錯誤提示
+                      if (Object.keys(validationErrors).length > 0) {
+                        alert("請填寫所有必填欄位");
+                      }
+                    } else {
+                      // 保存付款信息到sessionStorage
+                      const paymentInfo = {
+                        payment_method: paymentMethod,
+                        payment_status: "已付款", // 模擬支付成功
+                        payment_date: new Date().toISOString(),
+                      };
+
+                      // 更新sessionStorage中的訂單資訊
+                      const updatedOrderData = {
+                        ...orderData,
+                        payment: paymentInfo,
+                      };
+
+                      sessionStorage.setItem(
+                        "currentOrder",
+                        JSON.stringify(updatedOrderData)
+                      );
+                      setIsSubmitting(true);
+                    }
                   }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      處理中...
+                    </>
+                  ) : (
+                    <>
+                      <i className="bi bi-credit-card me-2"></i>
+                      確認付款
+                    </>
+                  )}
+                </a>
+                {/* <a
+                  href="#/checkout-success"
+                  className="checkout-payment-submit-button"
                   onClick={(e) => {
                     // 如果表單不符合要求，取消導航
                     if (!savePaymentInfoToSessionStorage()) {
@@ -634,9 +742,12 @@ export default function CheckoutPayment() {
                       處理中...
                     </>
                   ) : (
-                    "確認付款"
+                    <>
+                      <i className="bi bi-credit-card me-2"></i>
+                      確認付款
+                    </>
                   )}
-                </a>
+                </a> */}
               </div>
             )}
           </div>

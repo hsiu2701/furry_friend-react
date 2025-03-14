@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-// 移除 Link 的導入
-// import { Link } from "react-router-dom";
 import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
 
 export default function CheckoutSuccess() {
@@ -135,21 +133,21 @@ export default function CheckoutSuccess() {
           <div className="checkout-containercontentbox">
             {orderData && (
               <>
-                {/* 訂單成功訊息 */}
+                {/* 訂單成功訊息 - 移除粉紅色圓圈，保留下方文字 */}
                 <div className="text-center my-4">
-                  <div
-                    className="bg-success text-white p-3 rounded-circle d-inline-flex justify-content-center align-items-center mb-3"
-                    style={{ width: "80px", height: "80px" }}
-                  >
-                    <i className="fas fa-check fa-3x"></i>
-                  </div>
                   <h2 className="mt-3">您的訂單已完成！</h2>
                   <p className="text-muted">
                     感謝您的購買，我們將盡快為您處理訂單。
                   </p>
                   <p>
                     <strong>訂單編號：</strong>
-                    <span className="badge bg-secondary p-2">
+                    <span
+                      className="badge p-2"
+                      style={{
+                        backgroundColor: "rgba(231, 173, 172, 1)",
+                        color: "white",
+                      }}
+                    >
                       {orderData.orderId}
                     </span>
                   </p>
@@ -159,7 +157,10 @@ export default function CheckoutSuccess() {
                   </p>
                 </div>
 
-                <div className="row">
+                <div
+                  className="row"
+                  style={{ width: "100%", padding: "0 20px" }}
+                >
                   <div className="col-md-6">
                     <div className="card mb-4">
                       <div className="card-header bg-light">
@@ -241,48 +242,56 @@ export default function CheckoutSuccess() {
                   </div>
                 </div>
 
-                <div className="alert alert-info d-flex align-items-center p-3 mt-2 mb-4">
-                  <i className="fas fa-info-circle fa-lg me-3"></i>
-                  <div>
-                    <strong>訂單確認信已發送至您的郵箱</strong>
-                    <div>
-                      我們已將訂單詳情發送至 {orderData.orderData?.user?.email}
-                      ，請查收。
+                <div className="order-confirmation-box">
+                  <div className="order-confirmation-content">
+                    <i className="fas fa-envelope-open-text confirmation-icon"></i>
+                    <div className="confirmation-text">
+                      <div className="confirmation-title">
+                        訂單確認信已發送至您的郵箱
+                      </div>
+                      <div className="confirmation-detail">
+                        我們已將訂單詳情發送至{" "}
+                        <span className="email-highlight">
+                          {orderData.orderData?.user?.email}
+                        </span>
+                        ，請查收。
+                      </div>
                     </div>
                   </div>
                 </div>
               </>
             )}
 
-            {/* 操作按鈕 - 改為使用a標籤 */}
-            <div
-              className="checkout-buttons"
-              style={{ margin: "30px 30px", display: "flex", gap: "30px" }}
-            >
-              <a
-                href="#/profile/orders"
-                className="btn btn-outline-secondary btn-lg"
-              >
-                <i className="fas fa-list-alt"></i>
-                查看我的訂單
-              </a>
-              <a
-                href="#/"
-                className="btn btn-primary btn-lg"
-                onClick={clearCheckoutData}
-              >
-                <i className="fas fa-home"></i>
-                返回首頁
-              </a>
-              <a
-                href="#/products"
-                className="btn btn-success btn-lg"
-                onClick={clearCheckoutData}
-              >
-                <i className="fas fa-shopping-cart"></i>
-                繼續購物
-              </a>
-            </div>
+            {/* 操作按鈕區塊 - 全新設計 */}
+            {orderData && (
+              <div className="action-buttons-container">
+                <div className="action-buttons-wrapper">
+                  <a
+                    href="#/profile/orders"
+                    className="action-button outline-button"
+                  >
+                    <i className="fas fa-list-alt button-icon"></i>
+                    <span>查看我的訂單</span>
+                  </a>
+                  <a
+                    href="#/"
+                    className="action-button primary-button"
+                    onClick={clearCheckoutData}
+                  >
+                    <i className="fas fa-home button-icon"></i>
+                    <span>返回首頁</span>
+                  </a>
+                  <a
+                    href="#/products"
+                    className="action-button success-button"
+                    onClick={clearCheckoutData}
+                  >
+                    <i className="fas fa-shopping-cart button-icon"></i>
+                    <span>繼續購物</span>
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
