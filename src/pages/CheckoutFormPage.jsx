@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
 
 // 更新環境變數名稱並提供預設值
-const BASE_URL =
-  import.meta.env.VITE_API_URL ;
+const BASE_URL = import.meta.env.VITE_API_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 export default function Checkout() {
