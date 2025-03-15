@@ -1,0 +1,29 @@
+.banner-product {
+  background-image: url(/public/images/72271e5b63c98d0477d4fe035c50069d.jpg);
+  background-position: center;
+  background-size: cover;
+  height: 562px;
+}
+@media (min-width: 768px) {
+  .banner-img {
+    height: 972px;
+  }
+  .banner-product {
+    background-position: 50% 38%;
+  }
+}
+
+.banner-dog-mt {
+  margin-top: 290px;
+}
+@media (min-width: 768px) {
+  .banner-mt {
+    margin-top: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-effect:hover {
+    background-color: #e7adac;
+  }
+}

@@ -1,0 +1,68 @@
+td {
+  vertical-align: middle;
+}
+
+.price-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-outline-danger {
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: #dc3545;
+  padding: 0.3rem 0.6rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ms-2 {
+  margin-left: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  border-bottom: 2px solid #ddd;
+}
+
+tbody tr:not(:last-child) {
+  border-bottom: none;
+}
+
+tbody tr:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.product-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-origin-price {
+  text-decoration: line-through;
+  color: #ccc;
+  margin-right: 5px;
+}
+
+.product-sale-price {
+  font-weight: bold;
+  color: #e63946;
+}

@@ -1,0 +1,339 @@
+/* 讓 padding 與 border 計入寬度 */
+* {
+  box-sizing: border-box;
+}
+
+/* banner */
+.checkout-payment-banner {
+  width: 100%;
+  max-width: 1920px;
+  gap: 40px;
+  margin: 0 auto;
+}
+
+.checkout-payment-banner .checkout-payment-bannerImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1920px;
+  height: 600px;
+  background-color: rgba(102, 102, 102, 0.3);
+  background-image: url("./banner.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.checkout-payment-banner .checkout-payment-bannerText {
+  text-align: center;
+  width: auto;
+  margin: 0 auto;
+  font-family: "noto sans tc";
+  color: var(--gray-05, rgba(250, 250, 250, 1));
+  font-weight: 700;
+  font-size: 80px;
+}
+
+/* container */
+.checkout-payment-banner .checkout-payment-container {
+  padding: 40px 0;
+  margin: 40px 312px;
+  width: 100%;
+  max-width: 1296px;
+  border-radius: 20px;
+  gap: 80px;
+  background-color: rgba(243, 217, 216, 1);
+  position: relative; /* 添加相對定位，讓按鈕容器可以參考此元素定位 */
+}
+
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containerbanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0 20px;
+  margin-top: 30px;
+  border-bottom: 0.89px solid;
+  background-color: rgba(243, 217, 216, 1);
+  border: none;
+  gap: 40px;
+}
+
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containerbanner
+  > .checkout-payment-containerbannertext {
+  width: 112px;
+  height: 42px;
+  font-family: "noto sans tc";
+  color: black;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 42px;
+}
+
+/* 步驟清單容器 */
+.checkout-payment-step-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 110px;
+  position: relative;
+}
+
+/* 每個步驟項目 */
+.checkout-payment-step-item {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+}
+
+.checkout-payment-step-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 80px;
+  height: 2px;
+  background-color: #ccc;
+  z-index: -1;
+}
+
+.checkout-payment-step-item.active:not(:last-child)::after {
+  background-color: rgb(231, 173, 172);
+}
+
+.checkout-payment-step-circle {
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgb(231, 173, 172);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.checkout-payment-step-circle.active {
+  background-color: rgb(231, 173, 172);
+}
+
+.checkout-payment-step-check {
+  color: #fff;
+  font-size: 16px;
+  display: none;
+}
+
+.checkout-payment-step-circle.active .checkout-payment-step-check {
+  display: block;
+}
+
+.checkout-payment-step-text {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* 內容區塊 */
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containercontentbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 80px auto 40px;
+  width: 100%;
+  max-width: 1192px;
+  gap: 32px;
+  border-radius: 24px;
+  background-color: white;
+  padding-bottom: 80px; /* 增加底部內距，為按鈕留出空間 */
+}
+
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containercontentbox
+  > .checkout-payment-containercontentbox2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 980px;
+  margin: 60px 0;
+  gap: 30px;
+}
+
+/* 左側：訂單摘要 */
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containercontentbox
+  > .checkout-payment-containercontentbox2
+  > .checkout-payment-containercontentbox2text2 {
+  padding: 20px 32px;
+  border: 1px solid rgba(242, 160, 158, 1);
+  border-radius: 20px;
+  width: 836px;
+}
+
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containercontentbox
+  > .checkout-payment-containercontentbox2
+  > .checkout-payment-containercontentbox2text2
+  > .checkout-payment-containercontentbox2title2 {
+  display: flex;
+  width: auto;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 28px;
+  font-family: "noto sans tc";
+  color: black;
+}
+
+/* 右側：付款資訊表單 */
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containercontentbox
+  > .checkout-payment-containercontentbox2
+  > .checkout-payment-containercontentbox2text {
+  display: flex;
+  flex-direction: column;
+  width: 836px;
+  background-color: white;
+}
+
+.checkout-payment-banner
+  .checkout-payment-container
+  > .checkout-payment-containercontentbox
+  > .checkout-payment-containercontentbox2
+  > .checkout-payment-containercontentbox2text
+  > .checkout-payment-containercontentbox2title {
+  width: auto;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 28px;
+  font-family: "noto sans tc";
+  color: black;
+}
+
+/* 垂直排列的群組 */
+.checkout-payment-vertical-group {
+  color: black;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: "noto sans tc";
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-bottom: 10px;
+}
+
+/* 輸入框 */
+.checkout-payment-inputbox {
+  border-radius: 4px;
+  border: 2px solid rgba(136, 136, 136, 1);
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  transition: border-color 0.3s;
+}
+
+.checkout-payment-inputbox:focus {
+  border-color: rgba(231, 173, 172, 1);
+  outline: none;
+}
+
+/* 輸入容器 */
+.checkout-payment-input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+/* 按鈕容器樣式 - 重新設計 */
+.checkout-payment-button-container {
+  display: flex;
+  justify-content: flex-end; /* 按鈕靠右對齊 */
+  width: 900px; /* 設定固定寬度 */
+  position: absolute; /* 絕對定位 */
+  bottom: 40px; /* 距離底部40px，不完全貼底部 */
+  right: 0;
+  left: 0;
+  margin: 0 auto; /* 水平居中 */
+  padding: 0 32px;
+  gap: 20px; /* 按鈕之間的間距 */
+}
+
+/* 按鈕樣式 - 返回按鈕 */
+.checkout-payment-back-button {
+  height: 50px;
+  border-radius: 100px;
+  padding: 0 1.5rem;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: "noto sans tc";
+  text-align: center;
+  line-height: 46px;
+  display: inline-block;
+  border: 2px solid rgba(136, 136, 136, 1);
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.checkout-payment-back-button:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+/* 確認付款按鈕  */
+.checkout-payment-submit-button {
+  width: auto;
+  min-width: 120px;
+  height: 50px;
+  border: none;
+  border-radius: 100px;
+  background-color: rgba(231, 173, 172, 1);
+  padding: 0 2rem;
+  font-weight: 600; /* 加粗字體 */
+  font-size: 20px;
+  font-family: "noto sans tc";
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+  transition: all 0.3s ease;
+}
+
+.checkout-payment-submit-button:hover {
+  background-color: rgba(242, 160, 158, 1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 懸停時陰影效果更強 */
+  transform: translateY(-2px); /* 輕微上浮效果 */
+}
+
+/* 行動設備響應式設計 */
+@media screen and (max-width: 992px) {
+  .checkout-payment-banner .checkout-payment-container {
+    margin: 40px 20px;
+  }
+
+  .checkout-payment-button-container {
+    width: 100%;
+    flex-direction: column-reverse; /* 在小屏幕上反轉按鈕順序 */
+    bottom: 30px;
+  }
+
+  .checkout-payment-submit-button,
+  .checkout-payment-back-button {
+    width: 100%;
+    text-align: center;
+  }
+}
