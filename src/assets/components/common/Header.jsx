@@ -26,7 +26,7 @@ export default function Header() {
                 </NavLink>
                 <NavLink
                   className="ion-me me-lg-0 mt-2 mt-lg-0 position-relative"
-                  to=""
+                  to="/cart"
                 >
                   <span className="material-symbols-outlined header-icon">
                     shopping_cart

@@ -6,6 +6,7 @@ import CheckoutPaymentPage from "../pages/CheckoutPaymentPage";
 import CheckoutSuccessPage from "../pages/CheckoutSuccessPage";
 import Members from "../pages/MembersPage";
 import ProductDetailPage from "../views/ProductDetailPage";
+import CartPage from "../pages/CartPage";
 const routes = [
   {
     path: "/",
@@ -24,7 +25,11 @@ const routes = [
         element: <ProductDetailPage />,
       },
       {
-        path: "checkout",
+        path: "cart",
+        element: <CartPage />,
+      },
+      {
+        path: "checkout-form",
         element: <CheckoutFormPage />,
       },
       {

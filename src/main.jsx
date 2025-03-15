@@ -12,6 +12,7 @@ import "./assets/home.scss";
 import "./assets/productlist.scss";
 import "./assets/banners.scss";
 import "./assets/members.scss";
+import "./assets/cartpage.scss";
 import "./assets/checkoutform.scss";
 import "./assets/checkoutpayment.scss";
 import "./assets/checkoutsuccess.scss";
