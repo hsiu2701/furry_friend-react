@@ -685,6 +685,10 @@ export default function CheckoutPayment() {
                         "currentOrder",
                         JSON.stringify(updatedOrderData)
                       );
+
+                      // 清除購物車數據，但保留currentOrder以供結帳成功頁面使用
+                      localStorage.removeItem("cartItems");
+
                       setIsSubmitting(true);
                     }
                   }}

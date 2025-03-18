@@ -6,7 +6,7 @@ export default function CheckoutSuccess() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 從 sessionStorage 獲取訂單資料
+  // 從 sessionStorage 獲取訂單資料並清除購物車
   useEffect(() => {
     try {
       const storedOrderData = sessionStorage.getItem("currentOrder");
@@ -28,10 +28,14 @@ export default function CheckoutSuccess() {
 
       setOrderData(parsedOrderData);
 
-      // 成功展示訂單後清除暫存的結帳資訊
-      // 保留一段時間後再清除，以防用戶重新整理頁面
+      // 成功展示訂單後清除暫存的結帳資訊和購物車
+      // 清除購物車資料
+      localStorage.removeItem("cartItems");
+
+      // 保留一段時間後再清除其他結帳資訊，以防用戶重新整理頁面
       setTimeout(() => {
         localStorage.removeItem("checkoutInfo");
+        sessionStorage.removeItem("currentOrder");
       }, 10000); // 10秒後清除
 
       setLoading(false);
@@ -46,6 +50,7 @@ export default function CheckoutSuccess() {
   const clearCheckoutData = () => {
     sessionStorage.removeItem("currentOrder");
     localStorage.removeItem("checkoutInfo");
+    localStorage.removeItem("cartItems"); // 確保購物車也被清除
   };
 
   // 計算日期格式
