@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 // 移除 Link 的導入，在必要時使用 a 標籤
 // import { Link } from "react-router-dom";
 import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
+import { Link } from "react-router";
 
 export default function CheckoutPayment() {
   const [orderData, setOrderData] = useState(null);
@@ -645,15 +646,18 @@ export default function CheckoutPayment() {
             {orderData && (
               <div className="checkout-payment-button-container">
                 {/* 返回按鈕 */}
-                <a href="#/checkout" className="checkout-payment-back-button">
+                <Link
+                  to="/checkout-form"
+                  className="checkout-payment-back-button"
+                >
                   <i className="bi bi-arrow-left me-2"></i>
                   返回填寫資料
-                </a>
+                </Link>
 
                 {/* 確認付款按鈕 */}
                 {/* 確認付款按鈕 - 簡化版本 */}
-                <a
-                  href="#/checkout-success"
+                <Link
+                  to="/checkout-success"
                   className="checkout-payment-submit-button"
                   onClick={(e) => {
                     // 簡化的表單檢查
@@ -708,7 +712,7 @@ export default function CheckoutPayment() {
                       確認付款
                     </>
                   )}
-                </a>
+                </Link>
                 {/* <a
                   href="#/checkout-success"
                   className="checkout-payment-submit-button"

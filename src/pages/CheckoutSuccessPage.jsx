@@ -272,14 +272,14 @@ export default function CheckoutSuccess() {
               <div className="action-buttons-container">
                 <div className="action-buttons-wrapper">
                   <a
-                    href="#/profile/orders"
+                    href="/Home"
                     className="action-button outline-button"
                   >
                     <i className="fas fa-list-alt button-icon"></i>
                     <span>查看我的訂單</span>
                   </a>
                   <a
-                    href="#/"
+                    href="/Home"
                     className="action-button primary-button"
                     onClick={clearCheckoutData}
                   >
@@ -287,7 +287,7 @@ export default function CheckoutSuccess() {
                     <span>返回首頁</span>
                   </a>
                   <a
-                    href="#/products"
+                    href="/Home"
                     className="action-button success-button"
                     onClick={clearCheckoutData}
                   >
