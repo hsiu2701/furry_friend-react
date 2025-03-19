@@ -28,7 +28,7 @@ export default function Header() {
                   className="ion-me me-lg-0 mt-2 mt-lg-0 position-relative"
                   to="/cart"
                 >
-                  <span className="material-symbols-outlined header-icon">
+                  <span className="material-symbols-outlined header-icon mt-2">
                     shopping_cart
                   </span>
                   {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-style">
