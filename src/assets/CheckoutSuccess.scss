@@ -5,13 +5,6 @@
   padding: 0;
 }
 
-body {
-  font-family: "Noto Sans TC", sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
-}
-
 /* 訂單成功頁面主區塊 */
 .order-success-section {
   width: 100%;
@@ -334,7 +327,7 @@ body {
   gap: 15px;
 }
 
-.btn {
+.btnbottom {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -440,7 +433,7 @@ body {
     flex-direction: column;
   }
 
-  .btn {
+  .btnbottom {
     width: 100%;
   }
 }

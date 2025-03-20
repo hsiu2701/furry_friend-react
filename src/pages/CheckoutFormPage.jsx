@@ -130,9 +130,7 @@ export default function Checkout() {
           <div className="checkout-containerbanner">
             <ul className="checkout-step-list">
               <li className="checkout-step-item active">
-                <div className="checkout-step-circle active">
-                  <i className="fas fa-check checkout-step-check"></i>
-                </div>
+                <div className="checkout-step-circle active">1</div>
                 <span className="checkout-step-text">確認資訊</span>
               </li>
               <li className="checkout-step-item">
