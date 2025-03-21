@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
@@ -18,7 +18,8 @@ function ProductList() {
   //追蹤當前頁數
   const [pageInfo, setPageInfo] = useState({});
   const [loading, setLoading] = useState(false);
-
+  //選購
+  const bannerigate = useNavigate();
   // nav
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -188,22 +189,23 @@ function ProductList() {
             mousewheel={true}
             keyboard={true}
             modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-            className="mySwiper px-9  "
+            className="mySwiper px-9"
           >
-            {productAdvertisement.map((item) => (
-              <SwiperSlide key={item.id}>
+            {products.slice(0, 3).map((product) => (
+              <SwiperSlide key={product.id}>
                 <div
-                  className="product-ad "
+                  className="product-ad"
                   style={{
-                    backgroundImage: `url(${item.image}) `,
+                    backgroundImage: `url(${product.imageUrl})`,
                   }}
                 >
                   <h3 className="text-white advertisement-text">
-                    {item.introduction}
+                    {product.description}
                   </h3>
                   <button
                     type="button"
-                    className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 btn-ms "
+                    className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 btn-ms"
+                    onClick={() => bannerigate(`/product/${product.id}`)}
                   >
                     馬上選購
                   </button>
@@ -266,13 +268,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn  broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,飼料")}
                       >
                         飼料
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,零食")}
                       >
                         零食
@@ -301,13 +303,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,衣服")}
                       >
                         衣服
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,玩具")}
                       >
                         玩具
@@ -341,13 +343,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,飼料")}
                       >
                         飼料
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,零食")}
                       >
                         零食
@@ -376,13 +378,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,衣服")}
                       >
                         衣服
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,玩具")}
                       >
                         玩具
@@ -607,13 +609,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn "
                             onClick={() => setSelectedCategory("狗狗,飼料")}
                           >
                             飼料
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("狗狗,零食")}
                           >
                             零食
@@ -642,13 +644,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("狗狗,衣服")}
                           >
                             衣服
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("狗狗,玩具")}
                           >
                             玩具
@@ -688,13 +690,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,飼料")}
                           >
                             飼料
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn  broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,零食")}
                           >
                             零食
@@ -723,13 +725,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,衣服")}
                           >
                             衣服
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,玩具")}
                           >
                             玩具
@@ -894,7 +896,7 @@ function ProductList() {
                           <button
                             onClick={() => toggleWishListItem(product.id)}
                             type="button"
-                            className="btn border-none wishlist-btn"
+                            className="btn border-0 wishlist-btn"
                             data-wishlisted={
                               wishList[product.id] ? "true" : "false"
                             }
