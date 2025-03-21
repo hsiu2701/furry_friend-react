@@ -63,6 +63,12 @@
 
 @media (min-width: 768px) {
   .themes-item {
+    padding: 50px 30px 50px 350px;
+  }
+}
+
+@media (min-width: 992px) {
+  .themes-item {
     padding: 126.5px 64px 126.5px 0;
   }
 }
@@ -109,10 +115,43 @@
       position: absolute;
       content: "";
       display: block;
-      right: 520px;
+      right: 380px;
+      bottom: 50px;
+      width: 350px;
+      height: 400px;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .themes-dog {
+    &::after {
+      position: absolute;
+      content: "";
+      display: block;
+      right: 300px;
+      bottom: 150px;
+      width: 600px;
+      height: 450px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .themes-dog {
+    &::after {
+      right: 350px;
       bottom: 70px;
       width: 798px;
       height: 539px;
+    }
+  }
+}
+@media (min-width: 1400px) {
+  .themes-dog {
+    &::after {
+      right: 450px;
+      bottom: 60px;
     }
   }
 }
@@ -417,6 +456,11 @@
 .wishlist-btn {
   border: none;
 }
+
+.wishlist-btn:hover {
+  background-color: inherit !important;
+}
+
 .wishlist-btn i {
   font-size: 17px;
 }
