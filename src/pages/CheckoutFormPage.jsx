@@ -22,6 +22,7 @@ export default function Checkout() {
     register,
     formState: { errors },
     watch,
+    handleSubmit,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -47,10 +48,8 @@ export default function Checkout() {
     const getCart = async () => {
       try {
         setApiError("");
-        console.log(`正在獲取購物車資料: ${BASE_URL}/v2/api/${API_PATH}/cart`);
 
         const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
-        console.log("購物車回應資料:", res.data);
 
         if (res.data.success) {
           setCartData(res.data.data);
@@ -69,15 +68,15 @@ export default function Checkout() {
   }, []);
 
   // 保存當前表單內容到 sessionStorage
-  const saveFormToSessionStorage = () => {
+  const onSubmit = (data) => {
     const formData = {
       user: {
-        name: formValues.name || "測試用戶",
-        email: formValues.email || "test@example.com",
-        tel: formValues.phone || "0912345678",
-        address: formValues.address || "測試地址",
+        name: data.name,
+        email: data.email,
+        tel: data.phone,
+        address: data.address,
       },
-      message: formValues.message || "",
+      message: data.message || "",
     };
 
     sessionStorage.setItem(
@@ -89,6 +88,15 @@ export default function Checkout() {
         timestamp: new Date().getTime(),
       })
     );
+
+    // 提交成功後導航到下一頁
+    window.location.href = "/checkout-payment";
+  };
+
+  // 處理表單驗證失敗
+  const onError = (errors) => {
+    console.error("表單驗證失敗:", errors);
+    alert("請填寫所有必填欄位並確保格式正確");
   };
 
   if (isLoading) {
@@ -246,7 +254,10 @@ export default function Checkout() {
                   <h3 className="checkout-containercontentbox2title">
                     送貨資訊
                   </h3>
-                  <div id="checkoutForm">
+                  <form
+                    id="checkoutForm"
+                    onSubmit={handleSubmit(onSubmit, onError)}
+                  >
                     <div className="checkout-vertical-group checkout-input-container">
                       <label htmlFor="email">
                         電子郵件 <span className="text-danger">*</span>
@@ -259,7 +270,7 @@ export default function Checkout() {
                         }`}
                         placeholder="請輸入E-mail"
                         {...register("email", {
-                          required: false, // 開發階段不強制必填
+                          required: "電子郵件為必填欄位",
                           pattern: {
                             value:
                               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -284,7 +295,9 @@ export default function Checkout() {
                           errors.name ? "is-invalid" : ""
                         }`}
                         placeholder="請輸入真實姓名"
-                        {...register("name", { required: false })} // 開發階段不強制必填
+                        {...register("name", {
+                          required: "姓名為必填欄位",
+                        })}
                       />
                       {errors.name && (
                         <span className="text-danger mt-1">
@@ -304,7 +317,7 @@ export default function Checkout() {
                         }`}
                         placeholder="請輸入手機號碼"
                         {...register("phone", {
-                          required: false, // 開發階段不強制必填
+                          required: "電話為必填欄位",
                           pattern: {
                             value: /^09\d{8}$/,
                             message: "請輸入有效的手機號碼（如：0912345678）",
@@ -328,7 +341,9 @@ export default function Checkout() {
                           errors.address ? "is-invalid" : ""
                         }`}
                         placeholder="請輸入完整收件地址"
-                        {...register("address", { required: false })} // 開發階段不強制必填
+                        {...register("address", {
+                          required: "地址為必填欄位",
+                        })}
                       />
                       {errors.address && (
                         <span className="text-danger mt-1">
@@ -346,7 +361,7 @@ export default function Checkout() {
                         {...register("message")}
                       ></textarea>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             )}
@@ -358,20 +373,20 @@ export default function Checkout() {
                   返回購物車
                 </Link>
 
-                <Link
-                  to="/checkout-payment"
+                <button
+                  type="button"
                   className="checkout-submit-button d-flex align-items-center justify-content-center"
                   style={{
-                    textDecoration: "none",
+                    border: "none",
                     width: "auto",
                     padding: "0.5rem 1.5rem",
                     height: "50px",
                     margin: "0",
                   }}
-                  onClick={saveFormToSessionStorage}
+                  onClick={handleSubmit(onSubmit, onError)}
                 >
                   下一步
-                </Link>
+                </button>
               </div>
             )}
           </div>

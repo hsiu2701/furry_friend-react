@@ -14,7 +14,7 @@ export default function Header() {
               <div>
                 <NavLink
                   className="me-0 me-lg-6 d-none d-lg-inline-block"
-                  to="/checkout-form"
+                  to="/members"
                 >
                   <span className="material-symbols-outlined header-icon">
                     person
