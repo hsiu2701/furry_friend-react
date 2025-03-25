@@ -6,6 +6,6 @@ export default defineConfig({
   server: {
     allowedHosts: ["445e-220-133-182-86.ngrok-free.app"],
   },
-  base: process.env.NODE_ENV === "production" ? "/furry_friend-react/" : "/",
+  base: "/furry_friend-react",
   plugins: [react()],
 });
