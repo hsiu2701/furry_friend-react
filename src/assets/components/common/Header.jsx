@@ -1,9 +1,5 @@
-import { Outlet, NavLink, Link } from "react-router";
+import { NavLink, Link } from "react-router";
 export default function Header() {
-  const activeClass = ({ isActive }) => {
-    console.log("isActive:", isActive);
-    return isActive ? "linkColor" : "";
-  };
   return (
     <>
       <div className="bg-white ">

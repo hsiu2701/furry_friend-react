@@ -1,5 +1,5 @@
-import { Link, NavLink, useLocation, useNavigate } from "react-router";
-import { useEffect, useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -88,31 +88,6 @@ function ProductList() {
 
   const bannerTitle =
     categoryMappings[selectedCategory] || selectedCategory || "主打商品";
-
-  // 廣告輪播
-  const [productAdvertisement] = useState([
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1628195787435-4d64a0db4d0a?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      name: "帳篷",
-      introduction: "與狗狗體驗露營的樂趣",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1720745027411-56759bf10d36?q=80&w=1971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      name: "推車",
-      introduction: "輕鬆推著毛孩在露營區欣賞美景!",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1599847944101-57816855bb33?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      name: "防蚊",
-      introduction: "帶這毛孩安心出遊~  不讓蟲蟲靠近",
-    },
-  ]);
 
   // 商品列表按鈕
   useEffect(() => {
