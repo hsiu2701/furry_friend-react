@@ -16,7 +16,7 @@ export default function CartPage() {
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       setCart(res.data.data);
-    } catch (error) {
+    } catch {
       alert("取得購物車列表失敗");
     }
   };
@@ -32,7 +32,7 @@ export default function CartPage() {
       await axios.delete(`${BASE_URL}/v2/api/${API_PATH}/carts`);
       getCart();
       alert("刪除購物車成功");
-    } catch (error) {
+    } catch {
       alert("刪除購物車失敗");
     } finally {
       setIsScreenLoading(false);
@@ -45,7 +45,7 @@ export default function CartPage() {
     try {
       await axios.delete(`${BASE_URL}/v2/api/${API_PATH}/cart/${cartItemId}`);
       getCart();
-    } catch (error) {
+    } catch {
       alert("刪除購物車品項失敗");
     } finally {
       setIsScreenLoading(false);
@@ -64,7 +64,7 @@ export default function CartPage() {
         },
       });
       getCart();
-    } catch (error) {
+    } catch {
       alert("更新購物車品項失敗");
     } finally {
       setIsScreenLoading(false);
