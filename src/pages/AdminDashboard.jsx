@@ -46,7 +46,7 @@ function AdminDashboard() {
       setProducts(res.data.products);
       setPageInfo(res.data.pagination);
     } catch (error) {
-      alert("取得產品失敗");
+      alert(`取得產品失敗: ${error.message}`);
     }
   };
 
@@ -65,6 +65,7 @@ function AdminDashboard() {
 
       setIsAuth(true);
     } catch (error) {
+      console.error("Error logging in:", error);
       alert("登入失敗");
     }
   };
@@ -74,14 +75,14 @@ function AdminDashboard() {
       await axios.post(`${BASE_URL}/v2/api/user/check`);
       getProducts();
       setIsAuth(true);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      setIsAuth(false);
     }
   };
 
   useEffect(() => {
     const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
     axios.defaults.headers.common["Authorization"] = token;
@@ -191,6 +192,7 @@ function AdminDashboard() {
         },
       });
     } catch (error) {
+      console.error("Error creating product:", error);
       alert("新增產品失敗");
     }
   };
@@ -209,6 +211,7 @@ function AdminDashboard() {
         }
       );
     } catch (error) {
+      console.error("Error updating product:", error);
       alert("編輯產品失敗");
     }
   };
@@ -223,6 +226,7 @@ function AdminDashboard() {
       getProducts();
       handleCloseProductModal();
     } catch (error) {
+      console.error("Error updating product:", error);
       alert("更新產品失敗");
     }
   };
@@ -241,6 +245,7 @@ function AdminDashboard() {
         }
       );
     } catch (error) {
+      console.error("Error deleting product:", error);
       alert("刪除產品失敗");
     }
   };
@@ -253,6 +258,7 @@ function AdminDashboard() {
 
       handleCloseDeleteProductModal();
     } catch (error) {
+      console.error("Error updating product:", error);
       alert("更新產品失敗");
     }
   };
@@ -283,7 +289,9 @@ function AdminDashboard() {
         ...tempProduct,
         imageUrl: uploadedImageUrl,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
   };
 
   return (
