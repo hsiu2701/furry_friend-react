@@ -7,6 +7,7 @@ import CheckoutSuccessPage from "../pages/CheckoutSuccessPage";
 import Members from "../pages/MembersPage";
 import ProductDetailPage from "../views/ProductDetailPage";
 import CartPage from "../pages/CartPage";
+import AdminDashboard from "../pages/AdminDashboard";
 const routes = [
   {
     path: "/",
@@ -43,6 +44,10 @@ const routes = [
       {
         path: "members",
         element: <Members />,
+      },
+      {
+        path: "admin",
+        element: <AdminDashboard />,
       },
     ],
   },
