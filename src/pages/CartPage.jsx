@@ -133,7 +133,7 @@ export default function CartPage() {
                           {/* 數量輸入框 */}
                           <input
                             type="text"
-                            className="form-control text-center border-0 shadow-none text-dark"
+                            className="form-control text-center border-0 shadow-none text-dark p-0"
                             value={cartItem.qty}
                             readOnly
                           />
