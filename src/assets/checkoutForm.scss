@@ -1,9 +1,10 @@
+/* 保留原始CSS的基本設定 */
 /* 讓 padding 與 border 計入寬度 */
 * {
   box-sizing: border-box;
 }
 
-/* banner */
+/* banner 區域基本設定 */
 .checkout-banner {
   width: 100%;
   max-width: 1920px;
@@ -34,43 +35,7 @@
   font-size: 80px;
 }
 
-.checkout-banner .checkout-container {
-  padding: 40px 0;
-  margin: 40px 312px;
-  width: 100%;
-  max-width: 1296px;
-  border-radius: 20px;
-  gap: 80px;
-  background-color: rgba(243, 217, 216, 1);
-}
-
-.checkout-banner .checkout-container > .checkout-containerbanner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  padding: 0 20px;
-  margin-top: 30px;
-  border-bottom: 0.89px solid;
-  background-color: rgba(243, 217, 216, 1);
-  border: none;
-  gap: 40px; /* 可根據需求調整間距 */
-}
-
-.checkout-banner
-  .checkout-container
-  > .checkout-containerbanner
-  > .checkout-containerbannertext {
-  width: 112px;
-  height: 42px;
-  font-family: "noto sans tc";
-  color: black;
-  font-weight: 400;
-  font-size: 28px;
-  line-height: 42px;
-}
-
-/* 步驟清單容器 */
+/* 步驟導航基本設定 */
 .checkout-step-list {
   list-style: none;
   padding: 0;
@@ -78,239 +43,75 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 110px; /* 步驟間間距 */
+  gap: 110px;
   position: relative;
 }
 
-/* 每個步驟項目 */
 .checkout-step-item {
   display: flex;
   align-items: center;
-  flex-direction: row; /* 改成橫向排列 */
+  flex-direction: row;
   position: relative;
 }
 
-/* 偽元素作為連接線，針對非最後一個步驟 */
-.checkout-step-item:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 50%; /* 置中圓圈 */
-  left: 100%;
-  width: 80px; /* 連接線寬度，可根據需求調整 */
-  height: 2px;
-  background-color: #ccc; /* 預設連線顏色 */
-  z-index: -1;
-}
-
-/* 當步驟完成時，改變連接線顏色 */
-.checkout-step-item.active:not(:last-child)::after {
-  background-color: rgb(231, 173, 172);
-}
-
-/* 步驟圓圈 */
+/* 圈圈基本樣式 */
 .checkout-step-circle {
-  width: 30px; /* 可根據需求調整尺寸 */
+  width: 30px;
   height: 30px;
-  border: 2px solid rgb(231, 173, 172);
+  border: 2px solid rgba(242, 160, 158, 0.8); /* 柔和的粉紅色邊框 */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff; /* 未完成狀態 */
+  background-color: white; /* 白色背景 */
+  color: #e07a77; /* 數字顏色為較深的粉紅色 */
+  font-weight: 600; /* 數字加粗一點 */
 }
 
-/* 當圓圈處於完成狀態時 */
+/* active 的圈圈樣式 */
 .checkout-step-circle.active {
-  background-color: rgb(231, 173, 172);
+  background-color: rgba(242, 160, 158, 0.3); /* 稍微深一點的粉紅色背景 */
+  border-color: rgba(231, 173, 172, 1); /* 較深的邊框 */
 }
 
-/* 打勾圖示，完成狀態下使用白色顯示 */
+/* 勾勾樣式 */
 .checkout-step-check {
-  color: #fff;
+  color: #e07a77; /* 勾勾使用較深的粉紅色 */
   font-size: 16px;
   display: none;
+  font-weight: 600;
 }
 
-/* 圓圈 active 時，顯示打勾圖示 */
+/* 步驟文字樣式 */
+.checkout-step-text {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #666; /* 深灰色使文字更清晰 */
+  font-weight: 500;
+}
+
+/* 顯示 active 圓圈中的勾勾 */
 .checkout-step-circle.active .checkout-step-check {
   display: block;
 }
 
-/* 步驟說明文字 */
-.checkout-step-text {
-  margin-left: 10px; /* 可調整與圈圈之間的間距 */
-  font-size: 14px;
-  color: #333;
+/* active 步驟的文字 */
+.checkout-step-item.active .checkout-step-text {
+  color: #e07a77; /* 當前步驟文字顏色也使用粉紅色 */
+  font-weight: 600;
 }
 
-/* 主要內容區塊 - 保持原始結構，僅微調間距 */
-.checkout-banner .checkout-container > .checkout-containercontentbox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  margin: 80px auto 40px;
-  width: 100%;
-  max-width: 1192px;
-  gap: 32px;
-  border-radius: 24px;
-  background-color: white;
-  padding: 20px 30px 60px; /* 增加內邊距，特別是底部為按鈕預留空間 */
+/* 步驟之間的連接線 */
+.checkout-step-item:not(:last-child)::after {
+  background-color: rgba(242, 160, 158, 0.4); /* 淺粉紅色的連接線 */
+  height: 2px;
 }
 
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-dog {
-  position: absolute;
-  width: 54px;
-  height: 49px;
-  top: -50px;
-  left: 120px;
-  background-image: url("./dog.png");
+.checkout-step-item.active:not(:last-child)::after {
+  background-color: rgba(231, 173, 172, 0.8); /* 已完成步驟的連接線更深 */
 }
 
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-cat {
-  position: absolute;
-  width: 54px;
-  height: 49px;
-  top: -50px;
-  left: 700px;
-  background-image: url("./cat.png");
-}
-
-/* 保持原有的布局但增加間距 */
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-containercontentbox2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 980px;
-  margin: 60px 0;
-  gap: 30px;
-}
-
-/* 表單部分 - 保持原有布局 */
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-containercontentbox2
-  > .checkout-containercontentbox2text {
-  display: flex;
-  flex-direction: column;
-  width: 836px;
-  background-color: white;
-  padding: 10px 20px; /* 增加一些內邊距 */
-  margin-bottom: 20px; /* 增加與下方內容的間距 */
-}
-
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-containercontentbox2
-  > .checkout-containercontentbox2text
-  > .checkout-containercontentbox2title {
-  width: auto;
-  font-weight: 700;
-  font-size: 28px;
-  font-family: "noto sans tc";
-  color: black;
-  margin-bottom: 15px; /* 增加與下方內容的間距 */
-}
-
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-containercontentbox2
-  > .checkout-containercontentbox2text2
-  > .checkout-containercontentbox2title2 {
-  display: flex;
-  width: auto;
-  margin-bottom: 20px;
-  font-weight: 700;
-  font-size: 28px;
-  font-family: "noto sans tc";
-  color: black;
-}
-
-/* 送貨資訊框 - 保持原有布局 */
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  > .checkout-containercontentbox2
-  > .checkout-containercontentbox2text2 {
-  padding: 20px 32px;
-  display: flex;
-  flex-direction: column;
-  width: 836px;
-  border: 1px solid rgba(242, 160, 158, 1);
-  border-radius: 20px;
-  gap: 10px;
-  margin-bottom: 20px; /* 增加與下方內容的間距 */
-}
-
-/* 垂直排列的群組 - 微調間距 */
-.checkout-vertical-group {
-  color: black;
-  font-weight: 500;
-  font-size: 20px;
-  font-family: "noto sans tc";
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-/* 性別設定 水平排列的群組 */
-.checkout-radio-group {
-  display: flex;
-  gap: 15px;
-}
-
-/* 出生年月日設定 水平排列的群組 */
-.checkout-horizontal-group {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* 輸入框 - 增加內邊距 */
-.checkout-inputbox {
-  border-radius: 4px;
-  border: 2px solid rgba(136, 136, 136, 1);
-  padding: 8px 12px;
-}
-
-/* 輸入容器 */
-.checkout-input-container {
-  position: relative;
-  margin-bottom: 16px;
-}
-
-/* 錯誤訊息 */
-.checkout-error-text {
-  position: absolute;
-  right: 10px;
-  bottom: -32px;
-  font-size: 14px;
-}
-
-/* 按鈕區域樣式 - 修正按鈕位置問題 */
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  .d-flex.justify-content-between {
-  width: 100%;
-  margin-top: 20px;
-  padding: 0 20px;
-}
-
-/* 按鈕 - 修正文字居中問題 */
+/* 按鈕基本樣式 */
 .checkout-submit-button {
   width: auto;
   min-width: 104px;
@@ -319,9 +120,9 @@
   border-radius: 100px;
   background-color: rgba(231, 173, 172, 1);
   padding: 0 20px;
-  display: flex !important; /* 強制使用flex布局 */
-  align-items: center !important; /* 強制垂直居中 */
-  justify-content: center !important; /* 強制水平居中 */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   font-weight: 500;
   font-size: 20px;
   font-family: "noto sans tc";
@@ -329,7 +130,6 @@
   margin: 0;
 }
 
-/* 返回購物車按鈕 */
 .checkout-banner
   .checkout-container
   > .checkout-containercontentbox
@@ -341,12 +141,378 @@
   margin-right: 15px;
 }
 
-/* 設置這些樣式到特定的按鈕容器 */
+/* 輸入框基本樣式 */
+.checkout-inputbox {
+  width: 100%;
+  border-radius: 4px;
+  border: 2px solid rgba(136, 136, 136, 1);
+  padding: 8px 12px;
+}
+
+.checkout-input-container {
+  position: relative;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.checkout-vertical-group {
+  color: black;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: "noto sans tc";
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+/* 回應式設計 - 手機版（基本樣式） */
+/* 容器樣式 */
+.checkout-banner .checkout-container {
+  padding: 20px 10px;
+  margin: 20px auto;
+  width: 95%;
+  border-radius: 20px;
+  background-color: rgba(243, 217, 216, 1);
+}
+
+.checkout-banner .checkout-container > .checkout-containercontentbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 60px auto 20px;
+  width: 95%;
+  border-radius: 16px;
+  background-color: white;
+  padding: 15px;
+}
+
+/* 狗狗和貓咪元素 */
 .checkout-banner
   .checkout-container
   > .checkout-containercontentbox
-  > div:last-child {
+  > .checkout-dog {
   position: absolute;
-  bottom: 20px;
-  right: 30px;
+  width: 40px;
+  height: 36px;
+  top: -40px;
+  left: 10%;
+  background-image: url("./dog.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-cat {
+  position: absolute;
+  width: 40px;
+  height: 36px;
+  top: -40px;
+  right: 10%;
+  left: auto;
+  background-image: url("./cat.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* 內容區塊 */
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-containercontentbox2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+  gap: 20px;
+}
+
+/* 表單和摘要區塊 */
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-containercontentbox2
+  > .checkout-containercontentbox2text,
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-containercontentbox2
+  > .checkout-containercontentbox2text2 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-containercontentbox2
+  > .checkout-containercontentbox2text2 {
+  border: 1px solid rgba(242, 160, 158, 1);
+  border-radius: 20px;
+}
+
+/* 標題樣式 */
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-containercontentbox2
+  > .checkout-containercontentbox2text
+  > .checkout-containercontentbox2title,
+.checkout-banner
+  .checkout-container
+  > .checkout-containercontentbox
+  > .checkout-containercontentbox2
+  > .checkout-containercontentbox2text2
+  > .checkout-containercontentbox2title2 {
+  width: auto;
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "noto sans tc";
+  color: black;
+  margin-bottom: 15px;
+}
+
+/* 步驟列表在手機版 */
+.checkout-step-list {
+  gap: 30px;
+}
+
+.checkout-step-item:not(:last-child)::after {
+  width: 20px;
+}
+
+.checkout-step-text {
+  font-size: 12px;
+}
+
+.checkout-banner .checkout-bannerText {
+  font-size: 36px;
+}
+
+/* 平板樣式 (min-width: 768px) */
+@media (min-width: 768px) {
+  .checkout-banner .checkout-container {
+    padding: 30px 20px;
+    margin: 30px auto;
+    width: 90%;
+  }
+
+  .checkout-banner .checkout-container > .checkout-containercontentbox {
+    padding: 20px;
+    margin: 70px auto 30px;
+    width: 95%;
+  }
+
+  .checkout-banner .checkout-bannerText {
+    font-size: 60px;
+  }
+
+  .checkout-step-list {
+    gap: 60px;
+  }
+
+  .checkout-step-item:not(:last-child)::after {
+    width: 40px;
+  }
+
+  .checkout-step-text {
+    font-size: 14px;
+  }
+
+  /* 狗狗和貓咪元素在平板版 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-dog,
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-cat {
+    width: 48px;
+    height: 43px;
+    top: -45px;
+  }
+
+  /* 內容區塊在平板版 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2 {
+    margin: 40px 0;
+    gap: 25px;
+  }
+
+  /* 表單和摘要區塊 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text,
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text2 {
+    width: 90%;
+    padding: 15px;
+  }
+
+  /* 標題樣式 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text
+    > .checkout-containercontentbox2title,
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text2
+    > .checkout-containercontentbox2title2 {
+    font-size: 26px;
+  }
+}
+
+/* 桌面樣式 (min-width: 992px) */
+@media (min-width: 992px) {
+  .checkout-banner .checkout-container {
+    padding: 40px 0;
+    margin: 40px auto;
+    width: 90%;
+    max-width: 1296px;
+    gap: 80px;
+  }
+
+  .checkout-banner .checkout-container > .checkout-containercontentbox {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 80px auto 40px;
+    width: 95%;
+    max-width: 1192px;
+    gap: 32px;
+    padding: 20px 30px 60px;
+  }
+
+  .checkout-banner .checkout-bannerText {
+    font-size: 80px;
+  }
+
+  .checkout-step-list {
+    gap: 110px;
+  }
+
+  .checkout-step-item:not(:last-child)::after {
+    width: 80px;
+  }
+
+  .checkout-step-text {
+    font-size: 14px;
+  }
+
+  /* 狗狗和貓咪元素在桌面版 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-dog {
+    width: 54px;
+    height: 49px;
+    top: -50px;
+    left: 120px;
+  }
+
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-cat {
+    width: 54px;
+    height: 49px;
+    top: -50px;
+    right: auto;
+    left: 700px;
+  }
+
+  /* 內容區塊在桌面版 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2 {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 980px;
+    margin: 60px 0;
+    gap: 30px;
+  }
+
+  /* 表單和摘要區塊在桌面版 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text,
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text2 {
+    width: 836px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+  }
+
+  /* 標題樣式 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text
+    > .checkout-containercontentbox2title,
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > .checkout-containercontentbox2
+    > .checkout-containercontentbox2text2
+    > .checkout-containercontentbox2title2 {
+    font-size: 28px;
+  }
+
+  /* 按鈕位置 */
+  .checkout-banner
+    .checkout-container
+    > .checkout-containercontentbox
+    > div:last-child {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+  }
+}
+
+/* 修正其他可能的問題 */
+/* 確保textarea正確顯示 */
+textarea.checkout-inputbox {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* 確保表單元素不會溢出容器 */
+#checkoutForm {
+  width: 100%;
+}
+
+/* 修正表單內部對齊 */
+.checkout-input-container label {
+  display: block;
+  margin-bottom: 5px;
 }

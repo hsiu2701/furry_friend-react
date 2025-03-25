@@ -1,4 +1,4 @@
-import { Outlet, NavLink, Link } from "react-router";
+import { Link } from "react-router";
 export default function Footer() {
   return (
     <>
@@ -29,6 +29,12 @@ export default function Footer() {
                         box{" "}
                       </span>
                       商品退貨說明
+                    </Link>
+                    <Link
+                      className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 link-style haver-brand-01 footer-active"
+                      to="/admin"
+                    >
+                      後台管理
                     </Link>
                   </div>
                 </li>

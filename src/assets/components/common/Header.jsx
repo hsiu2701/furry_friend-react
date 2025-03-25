@@ -1,9 +1,5 @@
-import { Outlet, NavLink, Link } from "react-router";
+import { NavLink, Link } from "react-router";
 export default function Header() {
-  const activeClass = ({ isActive }) => {
-    console.log("isActive:", isActive);
-    return isActive ? "linkColor" : "";
-  };
   return (
     <>
       <div className="bg-white ">
@@ -18,7 +14,7 @@ export default function Header() {
               <div>
                 <NavLink
                   className="me-0 me-lg-6 d-none d-lg-inline-block"
-                  to="/members"
+                  to="/checkout-form"
                 >
                   <span className="material-symbols-outlined header-icon">
                     person
@@ -28,7 +24,7 @@ export default function Header() {
                   className="ion-me me-lg-0 mt-2 mt-lg-0 position-relative"
                   to="/cart"
                 >
-                  <span className="material-symbols-outlined header-icon">
+                  <span className="material-symbols-outlined header-icon mt-2">
                     shopping_cart
                   </span>
                   {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-style">

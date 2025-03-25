@@ -44,6 +44,12 @@
   border-bottom: none; /* 移除下方的線條 */
 }
 
+.broduct-btn:hover {
+  background-color: inherit !important;
+  border: none;
+  font-weight: 700;
+}
+
 //卡片
 .product-cards {
   gap: 24px;
@@ -65,7 +71,7 @@
 // 商品廣告
 .product-ad {
   background-size: cover;
-  background-position: 60% 60%;
+  background-position: 50% 70%;
   height: 368px;
   width: 100%;
 }

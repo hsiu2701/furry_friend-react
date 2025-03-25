@@ -1,5 +1,5 @@
-import { Link, NavLink, useLocation } from "react-router";
-import { useEffect, useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,7 +18,8 @@ function ProductList() {
   //追蹤當前頁數
   const [pageInfo, setPageInfo] = useState({});
   const [loading, setLoading] = useState(false);
-
+  //選購
+  const bannerigate = useNavigate();
   // nav
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -87,31 +88,6 @@ function ProductList() {
 
   const bannerTitle =
     categoryMappings[selectedCategory] || selectedCategory || "主打商品";
-
-  // 廣告輪播
-  const [productAdvertisement] = useState([
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1628195787435-4d64a0db4d0a?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      name: "帳篷",
-      introduction: "與狗狗體驗露營的樂趣",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1720745027411-56759bf10d36?q=80&w=1971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      name: "推車",
-      introduction: "輕鬆推著毛孩在露營區欣賞美景!",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1599847944101-57816855bb33?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      name: "防蚊",
-      introduction: "帶這毛孩安心出遊~  不讓蟲蟲靠近",
-    },
-  ]);
 
   // 商品列表按鈕
   useEffect(() => {
@@ -188,22 +164,23 @@ function ProductList() {
             mousewheel={true}
             keyboard={true}
             modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-            className="mySwiper px-9  "
+            className="mySwiper px-9"
           >
-            {productAdvertisement.map((item) => (
-              <SwiperSlide key={item.id}>
+            {products.slice(0, 3).map((product) => (
+              <SwiperSlide key={product.id}>
                 <div
-                  className="product-ad "
+                  className="product-ad"
                   style={{
-                    backgroundImage: `url(${item.image}) `,
+                    backgroundImage: `url(${product.imageUrl})`,
                   }}
                 >
                   <h3 className="text-white advertisement-text">
-                    {item.introduction}
+                    {product.description}
                   </h3>
                   <button
                     type="button"
-                    className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 btn-ms "
+                    className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 btn-ms"
+                    onClick={() => bannerigate(`/product/${product.id}`)}
                   >
                     馬上選購
                   </button>
@@ -266,13 +243,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn  broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,飼料")}
                       >
                         飼料
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,零食")}
                       >
                         零食
@@ -301,13 +278,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,衣服")}
                       >
                         衣服
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn "
                         onClick={() => setSelectedCategory("狗狗,玩具")}
                       >
                         玩具
@@ -341,13 +318,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,飼料")}
                       >
                         飼料
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,零食")}
                       >
                         零食
@@ -376,13 +353,13 @@ function ProductList() {
                   >
                     <div className="accordion-body">
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,衣服")}
                       >
                         衣服
                       </button>
                       <button
-                        className="d-block text-gray-02 border-none btn "
+                        className="d-block text-gray-02 border-0 btn broduct-btn"
                         onClick={() => setSelectedCategory("貓咪,玩具")}
                       >
                         玩具
@@ -607,13 +584,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn "
                             onClick={() => setSelectedCategory("狗狗,飼料")}
                           >
                             飼料
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("狗狗,零食")}
                           >
                             零食
@@ -642,13 +619,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("狗狗,衣服")}
                           >
                             衣服
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("狗狗,玩具")}
                           >
                             玩具
@@ -688,13 +665,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,飼料")}
                           >
                             飼料
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn  broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,零食")}
                           >
                             零食
@@ -723,13 +700,13 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,衣服")}
                           >
                             衣服
                           </button>
                           <button
-                            className="d-block text-gray-02 border-none btn "
+                            className="d-block text-gray-02 border-0 btn broduct-btn"
                             onClick={() => setSelectedCategory("貓咪,玩具")}
                           >
                             玩具
@@ -894,7 +871,7 @@ function ProductList() {
                           <button
                             onClick={() => toggleWishListItem(product.id)}
                             type="button"
-                            className="btn border-none wishlist-btn"
+                            className="btn border-0 wishlist-btn"
                             data-wishlisted={
                               wishList[product.id] ? "true" : "false"
                             }
