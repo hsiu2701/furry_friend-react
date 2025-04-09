@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
 
@@ -37,8 +37,7 @@ function AdminDashboard() {
       [name]: value,
     });
   };
-
-  const getProducts = async (page = 1) => {
+  const getProducts = useCallback(async (page = 1) => {
     try {
       const res = await axios.get(
         `${BASE_URL}/v2/api/${API_PATH}/admin/products?page=${page}`
@@ -48,7 +47,7 @@ function AdminDashboard() {
     } catch (error) {
       alert(`取得產品失敗: ${error.message}`);
     }
-  };
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -69,7 +68,7 @@ function AdminDashboard() {
     }
   };
 
-  const checkUserLogin = async () => {
+  const checkUserLogin = useCallback(async () => {
     try {
       await axios.post(`${BASE_URL}/v2/api/user/check`);
       getProducts();
@@ -77,7 +76,7 @@ function AdminDashboard() {
     } catch {
       setIsAuth(false);
     }
-  };
+  }, [getProducts]);
 
   useEffect(() => {
     const token = document.cookie.replace(
@@ -86,7 +85,7 @@ function AdminDashboard() {
     );
     axios.defaults.headers.common["Authorization"] = token;
     checkUserLogin();
-  }, []);
+  }, [checkUserLogin]);
 
   const productModalRef = useRef(null);
   const deleteProductModalRef = useRef(null);
