@@ -235,7 +235,7 @@ export default function CartPage() {
                     {formatCurrency(cart.final_total)}
                   </p>
                 </div>
-                <div className="d-flex justify-content-center mt-4">
+                <div className="d-flex justify-content-center mt-4 text-center">
                   <Link
                     to={totalQuantity > 0 ? "/checkout-form" : "#"}
                     className={`btn-brand-lg solid w-100 ${
