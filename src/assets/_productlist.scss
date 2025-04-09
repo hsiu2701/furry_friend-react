@@ -6,10 +6,6 @@
     height: 562px;
     background-position: 50% 38%;
   }
-
-  .banner-img {
-    height: 972px;
-  }
 }
 
 .banner-product-mt {
@@ -34,6 +30,15 @@
   background-color: transparent;
   box-shadow: none;
 }
+
+.accordion-button[aria-expanded="false"]::after {
+  filter: grayscale(100%) brightness(40%);
+}
+
+.accordion-button:hover {
+  color: #e7adac !important;
+}
+
 .accordion-button {
   padding: 6px 20px 0px 20px;
 }
@@ -41,7 +46,7 @@
   padding: 0px 6px 6px 0px;
 }
 .accordion-item {
-  border-bottom: none; /* 移除下方的線條 */
+  border-bottom: none;
 }
 
 .broduct-btn:hover {
@@ -50,39 +55,31 @@
   font-weight: 700;
 }
 
+.list-h {
+  height: 600px;
+}
+
+// 防止 accordion-item 被蓋掉
+.accordion-item {
+  position: relative;
+}
+
 //卡片
 .product-cards {
   gap: 24px;
 }
 
 // 商品按鈕
-/* 設定最大高度，超過則滾動 */
+
 .mobilelist {
-  max-height: 400px; /* 可依需求調整 */
-  overflow-y: auto; /* 啟用垂直滾動 */
-  border-top: 1px solid #ddd; /* 可選，加上分隔線 */
+  max-height: 400px;
+  overflow-y: auto;
+  border-top: 1px solid #ddd;
   padding: 10px;
 }
 
 .offcanvas-custom {
-  --bs-offcanvas-height: 50vh;
-}
-
-// 商品廣告
-.product-ad {
-  background-size: cover;
-  background-position: 50% 70%;
-  height: 368px;
-  width: 100%;
-}
-@media (min-width: 768px) {
-  .banner-img {
-    height: 396px;
-  }
-}
-.advertisement-text {
-  text-shadow: 2px 2px rgba(0, 0, 0, 0.2509803922);
-  margin: 120px 0px 0px 80px;
+  --bs-offcanvas-height: 40vh !important;
 }
 
 .btn-ms {

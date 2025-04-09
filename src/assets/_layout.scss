@@ -15,6 +15,10 @@
   white-space: nowrap;
 }
 
+.nav-link:hover {
+  color: #f2a09e !important;
+}
+
 @media (min-width: 992px) {
   .logo-style {
     width: 299px;
@@ -24,15 +28,10 @@
 .header-icon {
   display: inline-block;
   color: #e7adac;
-  font-size: 30px;
+  font-size: 24px;
 }
 .header-icon:hover {
   color: #888888;
-}
-@media (min-width: 992px) {
-  .header-icon {
-    font-size: 44px;
-  }
 }
 
 .badge-style {
@@ -42,6 +41,9 @@
   .badge-style {
     font-size: 0.65rem;
   }
+  .nav-gap {
+    gap: 25%;
+  }
 }
 
 .ion-me {
@@ -50,15 +52,6 @@
 @media (min-width: 992px) {
   .ion-me {
     margin-right: 0px;
-  }
-}
-
-@media (min-width: 992px) {
-  .nav-ps {
-    margin: 0 auto;
-  }
-  .me-120 {
-    margin-right: 120px;
   }
 }
 
@@ -75,6 +68,67 @@
 
 .dropdown-item:hover {
   background-color: #f3d9d8 !important;
+}
+
+/* 手機版 navbar menu  */
+.menu-absolute {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  z-index: 999;
+  padding: 1rem 0;
+}
+
+.badge-i {
+  bottom: 8px;
+  left: 12px;
+}
+
+@media (min-width: 992px) {
+  .badge-i {
+    font-size: 12px;
+    bottom: 8px;
+    left: 12px;
+  }
+}
+
+.icon-wrapper {
+  margin-left: auto;
+}
+.header-icon {
+  margin-right: 80px;
+}
+@media (min-width: 654px) {
+  .header-icon {
+    margin-right: 45px;
+  }
+}
+
+@media (min-width: 771px) {
+  .header-icon {
+    margin-right: 55px;
+  }
+}
+
+@media (min-width: 856px) {
+  .header-icon {
+    margin-right: 5px;
+  }
+  .icon-wrapper {
+    margin-left: 0;
+    margin-right: 12px;
+  }
+}
+
+/* 平板以上回復預設位置 */
+@media (min-width: 992px) {
+  .menu-absolute {
+    position: static;
+    padding: 0;
+    background-color: transparent;
+  }
 }
 
 // footer

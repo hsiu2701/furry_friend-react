@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
-
+import { useDispatch } from "react-redux";
+import { updateCartData } from "../redux/cartSlices";
 // API 設定
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -10,12 +11,14 @@ export default function CartPage() {
   // 狀態管理
   const [cart, setCart] = useState({});
   const [, setIsScreenLoading] = useState(false);
+  const dispatch = useDispatch();
 
   // 取得購物車資料
   const getCart = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       setCart(res.data.data);
+      dispatch(updateCartData(res.data.data));
     } catch {
       alert("取得購物車列表失敗");
     }

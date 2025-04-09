@@ -40,21 +40,54 @@ function Home() {
       image:
         "https://images.unsplash.com/photo-1702905986517-884f005f8bae?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       name: "蘇小姐",
-      feedback: "「貓跳台品質很好，組裝簡單，貓咪非常喜歡！」",
+      feedback:
+        "「貓跳台品質很好，組裝簡單，貓咪非常喜歡！而且有毛貓咪喜歡這種觸感。」",
     },
     {
       id: 3,
       image:
         "https://images.unsplash.com/photo-1577175826207-5052ccbf89e8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       name: "林小姐",
-      feedback: "「自動飲水機設計人性化，清洗很方便，推薦！」",
+      feedback:
+        "「自動飲水機設計人性化，清洗很方便，而且有過濾系統及安全斷電，推薦！」",
     },
     {
       id: 4,
       image:
         "https://images.unsplash.com/photo-1599549721045-ce51afe92c9a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       name: "陳先生",
-      feedback: "「這個購物網站設計的好用，很好找到想要的商品，推！」",
+      feedback:
+        "「這個購物網站設計的好用，很好找到想要的商品，推！有不少好物可選擇!」",
+    },
+    {
+      id: 5,
+      image:
+        "https://images.unsplash.com/photo-1546820389-44d77e1f3b31?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "曾先生",
+      feedback: "「我很喜歡這邊賣的零食，有很多有趣的口味，推薦大家來買。」",
+    },
+    {
+      id: 6,
+      image:
+        "https://images.unsplash.com/photo-1537511446984-935f663eb1f4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "立先生",
+      feedback:
+        "「有很多飼料選擇，我家貓非常喜歡吃鹿肉飼料 ，這邊有賣!真是太好了!」",
+    },
+    {
+      id: 7,
+      image:
+        "https://images.unsplash.com/photo-1575891712640-297155362cc0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "花先生",
+      feedback:
+        "「雨衣款式我非常喜歡，穿起來有種練家子的感覺，很有趣，希望可以再多些。」",
+    },
+    {
+      id: 8,
+      image:
+        "https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?q=80&w=2053&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "言小姐",
+      feedback: "「狗窩品質很棒，防水設計，可拆式外層。激推!」",
     },
   ]);
 
@@ -65,34 +98,13 @@ function Home() {
       try {
         const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`);
         setProducts(res.data.products);
-      } catch (error) {
+      } catch {
         alert("取得產品失敗");
-        console.log("取得產品列表失敗", error);
       }
     };
 
     getProducts();
   }, []);
-
-  // 收藏
-  const [wishList, setWishList] = useState(() => {
-    const initWishList = localStorage.getItem("wishList")
-      ? JSON.parse(localStorage.getItem("wishList"))
-      : {};
-
-    return initWishList;
-  });
-
-  const toggleWishListItem = (product_id) => {
-    const newWishList = {
-      ...wishList,
-      [product_id]: !wishList[product_id],
-    };
-
-    localStorage.setItem("wishList", JSON.stringify(newWishList));
-
-    setWishList(newWishList);
-  };
 
   return (
     <>
@@ -113,7 +125,7 @@ function Home() {
               </div>
               <button
                 type="button"
-                className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 "
+                className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 py-1 px-3 "
                 onClick={() => bannerigate("/productlist")}
               >
                 馬上選購
@@ -176,10 +188,10 @@ function Home() {
           </div>
         </div>
         {/* 狗狗用品欄 */}
-        <div className="container position-relative">
+        <div className=" position-relative">
           <div id="pet-content">
             <div className="box"></div>
-            <div className="container d-md-block box-index">
+            <div className=" d-md-block ">
               {(isDesktop || showDog) && (
                 <div
                   id="dog-content"
@@ -188,12 +200,9 @@ function Home() {
                   } `}
                 >
                   <div className="pet-content-container custom-margin-start">
-                    <p className="text-gray-01 fw-bold fs-1">狗狗用品</p>
-                    <p className="text-white fs-5 pet-item-subtitle d-inline-block mt-2">
-                      Dog Accessories
-                    </p>
-                    <hr className="my-4 border-white" />
-                    <div className="button-container d-flex flex-wrap">
+                    <p className="text-gray-01 fw-bold fs-1 mb-2">狗狗用品</p>
+
+                    <div className="button-container d-flex flex-wrap gap-1">
                       <Link
                         to="/productlist?category=狗狗,飼料"
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
@@ -271,7 +280,7 @@ function Home() {
             </div>
 
             {/* 貓咪用品欄  */}
-            <div className="container">
+            <div>
               {(isDesktop || !showDog) && (
                 <div
                   id="cat-content"
@@ -280,16 +289,11 @@ function Home() {
                   }`}
                 >
                   <div className="pet-content-container custom-margin-end">
-                    <p className="text-gray-01 fw-bold fs-1">貓貓用品</p>
-                    <p className="text-white fs-5 pet-item-subtitle d-inline-block mt-2">
-                      Cat Accessories
-                    </p>
-                    <hr className="my-4 border-white" />
-
-                    <div className="button-container d-flex flex-wrap">
+                    <p className="text-gray-01 fw-bold fs-1 mb-2">貓貓用品</p>
+                    <div className="button-container d-flex flex-wrap gap-1">
                       <Link
                         to="/productlist?category=貓咪,飼料"
-                        className="btn btn-accessories d-flex align-items-center justify-content-center"
+                        className="btn btn-accessories d-flex align-items-center justify-content-center "
                       >
                         <svg
                           width="30"
@@ -366,36 +370,48 @@ function Home() {
         </div>
       </div>
       {/* 產品資訊 */}
-      <div className="container position-relative">
+      <div className="container position-relative ">
         <div className="row">
-          <div className="box2">
-            <div className="box-index">
-              <h2 className="text-center mt-3">精選商品</h2>
+          <div className="box2 ">
+            <div className="box-index  ">
+              <h2 className="text-center mt-3 ">精選商品</h2>
               <Swiper
-                slidesPerView={5}
                 centeredSlides={false}
-                spaceBetween={2}
+                slidesPerView={5}
+                spaceBetween={1}
                 navigation={true}
-                loop={true}
+                loop={false}
                 modules={[Navigation]}
                 breakpoints={{
                   320: {
-                    slidesPerView: 1, // 手機顯示 1 個
-                    spaceBetween: 10,
+                    slidesPerView: 1,
+                    spaceBetween: 5,
                   },
                   768: {
-                    slidesPerView: 2, // 平板顯示 2 個
-                    spaceBetween: 10,
+                    slidesPerView: 2,
+                    spaceBetween: 5,
                   },
+
                   1024: {
-                    slidesPerView: 4, // 桌機顯示 4 個
-                    spaceBetween: 2,
+                    slidesPerView: 3,
+                    spaceBetween: 1,
+                  },
+                  1200: {
+                    slidesPerView: 4,
+                    spaceBetween: 1,
+                  },
+                  1400: {
+                    slidesPerView: 5,
+                    spaceBetween: 1,
                   },
                 }}
               >
                 {products.map((product) => (
-                  <SwiperSlide className="swiper-slide " key={product.id}>
-                    <div className="product-card px-2 mt-1 ">
+                  <SwiperSlide className="swiper-slide" key={product.id}>
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="product-card px-2 mt-1"
+                    >
                       <div className="product-tumb d-flex justify-content-center align-items-end">
                         <img src={product.imageUrl} alt={product.title} />
                       </div>
@@ -405,32 +421,76 @@ function Home() {
                             {product.description}
                           </span>
                           <h4>
-                            <Link to={`/product/${product.id}`}>
+                            <div className="h6 text-gray-01 fw-bold ">
                               {product.title}
-                            </Link>
+                            </div>
                           </h4>
                         </div>
 
                         <div className="product-bottom-details">
                           <div className="product-price text-brand-01">
-                            <p>${product.price}</p>
-                          </div>
-                          <div className="product-links">
-                            <button
-                              onClick={() => toggleWishListItem(product.id)}
-                              type="button"
-                              className="btn border-none wishlist-btn"
-                              data-wishlisted={
-                                wishList[product.id] ? "true" : "false"
-                              }
-                            >
-                              <i
-                                className="
-                               bi bi-bookmark-heart-fill "
-                              ></i>
-                            </button>
+                            <p>NT${product.price}</p>
                           </div>
                         </div>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* 消費者回饋 */}
+      <div className="container position-relative ">
+        <div className="row">
+          <div className="box2 ">
+            <div className="box-index  ">
+              <h2 className="text-center mt-3 ">消費者回饋分享</h2>
+              <Swiper
+                centeredSlides={false}
+                slidesPerView={5}
+                spaceBetween={1}
+                navigation={true}
+                loop={false}
+                modules={[Navigation]}
+                breakpoints={{
+                  320: {
+                    slidesPerView: 1,
+                    spaceBetween: 5,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 5,
+                  },
+
+                  1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 1,
+                  },
+                  1200: {
+                    slidesPerView: 4,
+                    spaceBetween: 1,
+                  },
+                  1400: {
+                    slidesPerView: 5,
+                    spaceBetween: 1,
+                  },
+                }}
+              >
+                {customerFeedback.map((item) => (
+                  <SwiperSlide key={item.id} className="swiper-slide">
+                    <div className=" px-3 mt-1 ">
+                      <div className="consumer-tumb d-flex justify-content-center align-items-end">
+                        <img src={item.image} alt={`Slide ${item.id}`} />
+                      </div>
+                      <div className="consumer-details">
+                        <h4 className="text-center text-gray-01">
+                          {item.name}
+                        </h4>
+                        <p className="text-gray-02 text-start ">
+                          {item.feedback}
+                        </p>
                       </div>
                     </div>
                   </SwiperSlide>
@@ -439,46 +499,6 @@ function Home() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* 消費者回饋 */}
-      <h2 className="text-center ">消費者回饋分享</h2>
-      <div className="container mt-4">
-        <Swiper
-          slidesPerView={3}
-          spaceBetween={10}
-          navigation={true}
-          loop={false}
-          modules={[Navigation]}
-          breakpoints={{
-            320: {
-              slidesPerView: 1, // 手機顯示 1 個
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 2, // 平板顯示 2 個
-              spaceBetween: 20,
-            },
-            1024: {
-              slidesPerView: 3, // 桌機顯示 3 個
-              spaceBetween: 30,
-            },
-          }}
-        >
-          {customerFeedback.map((item) => (
-            <SwiperSlide key={item.id}>
-              <div className="consumer-card px-2 mt-1 mb-9 ">
-                <div className="consumer-tumb d-flex justify-content-center align-items-end">
-                  <img src={item.image} alt={`Slide ${item.id}`} />
-                </div>
-                <div className="consumer-details">
-                  <h4 className="text-center text-gray-01">{item.name}</h4>
-                  <p className="text-gray-02 text-start">{item.feedback}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </div>
     </>
   );

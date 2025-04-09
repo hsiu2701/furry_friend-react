@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router"; // 使用 react-router
-
+import { useDispatch } from "react-redux";
+import { updateCartData } from "../redux/cartSlices";
 const BASE_URL =
   import.meta.env.VITE_API_URL || "https://ec-course-api.hexschool.io";
 const API_PATH = import.meta.env.VITE_API_PATH || "furry_friend";
@@ -13,6 +14,7 @@ export default function ProductDetailPage() {
   const [isScreenLoading, setIsScreenLoading] = useState(false);
 
   const { id: product_id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -21,14 +23,9 @@ export default function ProductDetailPage() {
         const res = await axios.get(
           `${BASE_URL}/v2/api/${API_PATH}/product/${product_id}`
         );
-        console.log("API 回應資料:", res.data);
-        console.log(
-          "API URL:",
-          `${BASE_URL}/v2/api/${API_PATH}/product/${product_id}`
-        );
+
         setProduct(res.data.product);
       } catch (error) {
-        console.error("取得產品失敗", error);
         alert("取得產品失敗: " + error.message);
       } finally {
         setIsScreenLoading(false);
@@ -46,9 +43,11 @@ export default function ProductDetailPage() {
           qty: Number(qty),
         },
       });
+      const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
+      dispatch(updateCartData(res.data.data));
+
       alert("已成功加入購物車");
     } catch (error) {
-      console.error("加入購物車失敗", error);
       alert("加入購物車失敗: " + error.message);
     } finally {
       setIsLoading(false);

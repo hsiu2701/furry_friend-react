@@ -3,11 +3,11 @@
   background-image: url("https://images.unsplash.com/photo-1472491235688-bdc81a63246e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-size: cover;
   background-position: top;
-  height: 562px;
+  height: calc(100vh - 150px);
 }
 @media (min-width: 768px) {
   .banner-img {
-    height: 972px;
+    height: calc(100vh - 170px);
   }
 }
 
@@ -103,7 +103,7 @@
     width: 256px;
     height: 223px;
     background: url("https://images.unsplash.com/photo-1524641234638-4c303747c310?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-    border-radius: 32px;
+    border-radius: 24px;
     background-size: cover;
     background-position: center center;
   }
@@ -193,7 +193,7 @@
   background: url("/images/index-dog-supplies-pc.png");
   background-size: cover;
   background-position: left;
-  border-radius: 32px;
+  border-radius: 24px;
   height: 416px;
 }
 
@@ -208,7 +208,7 @@
   background: url("/images/index-cat-supplies-pc.png");
   background-size: cover;
   background-position: center;
-  border-radius: 32px;
+  border-radius: 24px;
   height: 416px;
 }
 
@@ -222,12 +222,6 @@
 .pet-content-container {
   height: 304px;
   width: 284px;
-  .pet-item-subtitle {
-    background-color: #f2a09e;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 4px;
-  }
 }
 
 .button-collection {
@@ -246,26 +240,26 @@
 }
 
 .btn-accessories svg {
-  fill: #f2a09e; /* 預設粉色 */
+  fill: #f2a09e;
   transition: fill 0.3s ease-in-out;
 }
 
 .btn-accessories:hover,
 .btn-accessories:active {
-  background-color: rgba(242, 152, 152, 0.87); /* 淡粉色背景 */
-  color: #ffffff; /* 文字變白 */
+  background-color: rgba(242, 152, 152, 0.87);
+  color: #ffffff;
   border-color: #e7adac;
 }
 
 .btn-accessories:hover svg,
 .btn-accessories:active svg {
-  fill: rgba(255, 255, 255, 0.8); /* SVG 圖示變白 */
+  fill: rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 768px) {
   .dog-bg,
   .cat-bg {
-    display: none; /* 預設隱藏 */
+    display: none;
   }
 }
 
@@ -293,16 +287,10 @@
 }
 
 .consumer-tumb img {
-  width: 85%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
-  border-radius: 50%;
-}
-
-@media (min-width: 768px) {
-  .consumer-tumb img {
-    width: 100%;
-  }
+  border-radius: 100px;
 }
 
 .consumer-details {
@@ -318,7 +306,7 @@
 }
 
 .consumer-details p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .card-size {
@@ -338,13 +326,7 @@
 .swiper {
   width: 100%;
   height: 450px;
-  margin: 30px auto;
-}
-
-@media (min-width: 768px) {
-  .swiper {
-    height: 350px;
-  }
+  padding: 0 40px;
 }
 
 .swiper-button-prev,
@@ -357,19 +339,28 @@
   display: flex !important;
 }
 
+.box-index {
+  max-width: 1250px;
+  margin-left: 22px;
+}
+
 // 卡片
 
 .product-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; // 讓內容區塊均勻分布
-  max-height: 330px; // 讓卡片統一高度
+  justify-content: space-between;
+  max-height: 330px;
   width: 100%;
   position: relative;
-  box-shadow: 0 2px 7px #bec2bd;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.12);
   background: #fafafa;
   border-radius: 3%;
   max-width: 210px;
+}
+
+.product-card:hover {
+  box-shadow: 0 6px 18px rgba(223, 193, 193, 0.795);
 }
 
 .badge-supplies {
@@ -399,7 +390,7 @@
 }
 
 .product-details {
-  flex-grow: 1; // 讓內容區塊填滿剩餘空間
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -449,10 +440,6 @@
   font-weight: 600;
 }
 
-.product-links {
-  text-align: right;
-}
-
 .wishlist-btn {
   border: none;
 }
@@ -466,9 +453,9 @@
 }
 
 .wishlist-btn[data-wishlisted="true"] i {
-  color: #e7adac; /* 收藏時變粉色 */
+  color: #e7adac;
 }
 
 .wishlist-btn[data-wishlisted="false"] i {
-  color: gray; /* 未收藏時保持灰色 */
+  color: gray;
 }
