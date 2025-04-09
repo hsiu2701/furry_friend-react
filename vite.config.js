@@ -6,6 +6,6 @@ export default defineConfig({
   server: {
     allowedHosts: ["445e-220-133-182-86.ngrok-free.app"],
   },
-  base: process.env.NODE_ENV === "production" ? "/furry_friend-react/" : "/",
+  base: import.meta.env.MODE === "production" ? "/furry_friend-react/" : "/", // ✅ 使用 Vite 的方式
   plugins: [react()],
 });

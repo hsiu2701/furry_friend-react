@@ -45,8 +45,6 @@ export default function ProductDetailPage() {
       });
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       dispatch(updateCartData(res.data.data));
-
-      alert("已成功加入購物車");
     } catch (error) {
       alert("加入購物車失敗: " + error.message);
     } finally {
