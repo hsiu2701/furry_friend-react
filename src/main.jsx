@@ -17,6 +17,8 @@ import "./assets/_checkoutPayment.scss";
 import "./assets/_CheckoutSuccess.scss";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
+import "./assets/_admindashboard.scss";
+import "./assets/_buttons.scss";
 const router = createHashRouter(routes);
 
 createRoot(document.getElementById("root")).render(

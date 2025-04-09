@@ -64,8 +64,7 @@ function AdminDashboard() {
       getProducts();
 
       setIsAuth(true);
-    } catch (error) {
-      console.error("Error logging in:", error);
+    } catch {
       alert("登入失敗");
     }
   };
@@ -191,8 +190,7 @@ function AdminDashboard() {
           is_enabled: tempProduct.is_enabled ? 1 : 0,
         },
       });
-    } catch (error) {
-      console.error("Error creating product:", error);
+    } catch {
       alert("新增產品失敗");
     }
   };
@@ -210,8 +208,7 @@ function AdminDashboard() {
           },
         }
       );
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } catch {
       alert("編輯產品失敗");
     }
   };
@@ -225,8 +222,7 @@ function AdminDashboard() {
       await (modalMode === "create" ? createProduct() : updateProduct());
       getProducts();
       handleCloseProductModal();
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } catch {
       alert("更新產品失敗");
     }
   };
@@ -244,8 +240,7 @@ function AdminDashboard() {
           },
         }
       );
-    } catch (error) {
-      console.error("Error deleting product:", error);
+    } catch {
       alert("刪除產品失敗");
     }
   };
@@ -257,8 +252,7 @@ function AdminDashboard() {
       getProducts();
 
       handleCloseDeleteProductModal();
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } catch {
       alert("更新產品失敗");
     }
   };
@@ -289,8 +283,8 @@ function AdminDashboard() {
         ...tempProduct,
         imageUrl: uploadedImageUrl,
       });
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    } catch {
+      alert("圖片上傳失敗");
     }
   };
 
@@ -368,15 +362,16 @@ function AdminDashboard() {
                       !pageInfo.has_pre ? "disabled" : ""
                     }`}
                   >
-                    <button
-                      onClick={() =>
-                        handlePageChange(pageInfo.current_page - 1)
-                      }
+                    <a
+                      href="#"
                       className="page-link"
-                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageInfo.current_page - 1);
+                      }}
                     >
                       上一頁
-                    </button>
+                    </a>
                   </li>
 
                   {Array.from({ length: pageInfo.total_pages }).map(
@@ -386,19 +381,17 @@ function AdminDashboard() {
                         className={`page-item ${
                           pageInfo.current_page === index + 1 ? "active" : ""
                         }`}
-                        aria-current={
-                          pageInfo.current_page === index + 1
-                            ? "page"
-                            : undefined
-                        }
                       >
-                        <button
-                          onClick={() => handlePageChange(index + 1)}
+                        <a
+                          href="#"
                           className="page-link"
-                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(index + 1);
+                          }}
                         >
                           {index + 1}
-                        </button>
+                        </a>
                       </li>
                     )
                   )}
@@ -408,15 +401,16 @@ function AdminDashboard() {
                       !pageInfo.has_next ? "disabled" : ""
                     }`}
                   >
-                    <button
-                      onClick={() =>
-                        handlePageChange(pageInfo.current_page + 1)
-                      }
+                    <a
+                      href="#"
                       className="page-link"
-                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageInfo.current_page + 1);
+                      }}
                     >
                       下一頁
-                    </button>
+                    </a>
                   </li>
                 </ul>
               </nav>
@@ -627,6 +621,7 @@ function AdminDashboard() {
                         name="origin_price"
                         id="origin_price"
                         type="number"
+                        min="0"
                         className="form-control"
                         placeholder="請輸入原價"
                       />
@@ -641,6 +636,7 @@ function AdminDashboard() {
                         name="price"
                         id="price"
                         type="number"
+                        min="0"
                         className="form-control"
                         placeholder="請輸入售價"
                       />
@@ -728,7 +724,7 @@ function AdminDashboard() {
                 {modalMode === "create" ? "新增產品" : "編輯產品"}
               </h5>
               <button
-                onClick={handleCloseProductModal}
+                onClick={handleCloseDeleteProductModal}
                 type="button"
                 className="btn-close"
                 aria-label="Close"

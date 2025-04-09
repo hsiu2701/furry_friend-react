@@ -7,7 +7,7 @@ import CheckoutSuccessPage from "../pages/CheckoutSuccessPage";
 import Members from "../pages/MembersPage";
 import ProductDetailPage from "../views/ProductDetailPage";
 import CartPage from "../pages/CartPage";
-import AdminDashboard from "../pages/AdminDashboard";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 const routes = [
   {
     path: "/",
