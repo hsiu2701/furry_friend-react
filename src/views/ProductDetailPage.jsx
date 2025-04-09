@@ -146,7 +146,7 @@ export default function ProductDetailPage() {
                 <div className="product-actions mt-4">
                   <button
                     type="button"
-                    className="btn btn-brand-01 w-100 py-2"
+                    className="btn-brand-lg solid w-100"
                     onClick={() => addCartItem(product_id, qtySelect)}
                     disabled={isLoading}
                   >

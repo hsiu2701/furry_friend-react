@@ -1,0 +1,32 @@
+.pagination {
+  --bs-pagination-color: #F2A09E;
+  --bs-pagination-bg: #FFFFFF;
+  --bs-pagination-border-color: #E7ADAC;
+
+  --bs-pagination-hover-color: #F2A09E;
+  --bs-pagination-hover-bg: #F3D9D8;
+  --bs-pagination-hover-border-color: #F3D9D8;
+
+  --bs-pagination-active-color: #FFFFFF;
+  --bs-pagination-active-bg: #F2A09E;
+  --bs-pagination-active-border-color: #F2A09E;
+
+  --bs-pagination-disabled-color: #888888;
+  --bs-pagination-disabled-bg: #F2F2F2;
+  --bs-pagination-disabled-border-color: #F2F2F2;
+}
+
+.page-link {
+  color: #F2A09E;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #F2A09E;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba(242, 160, 158, 0.35);
+    outline: none;
+  }
+}

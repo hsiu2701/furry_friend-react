@@ -113,33 +113,10 @@
 
 /* 按鈕基本樣式 */
 .checkout-submit-button {
-  width: auto;
-  min-width: 104px;
-  height: 50px;
-  border: none;
-  border-radius: 100px;
-  background-color: rgba(231, 173, 172, 1);
-  padding: 0 20px;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-weight: 500;
-  font-size: 20px;
-  font-family: "noto sans tc";
-  color: white;
-  margin: 0;
+  background-color: #E7ADAC;
+  color: #ffffff;
 }
 
-.checkout-banner
-  .checkout-container
-  > .checkout-containercontentbox
-  .btn.btn-outline-secondary {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-  margin-right: 15px;
-}
 
 /* 輸入框基本樣式 */
 .checkout-inputbox {

@@ -191,7 +191,7 @@ export default function CartPage() {
                       removeCart();
                     }
                   }}
-                  className="btn text-dark border w-100 mt-4"
+                  className="btn-brand-lg outline w-100 mt-4"
                 >
                   清空購物車
                 </button>
@@ -232,15 +232,17 @@ export default function CartPage() {
                     {formatCurrency(cart.final_total)}
                   </p>
                 </div>
-                <Link
-                  to={totalQuantity > 0 ? "/checkout-form" : "#"}
-                  className={`btn btn-brand-01 w-100 mt-3 ${
-                    totalQuantity === 0 ? "disabled" : ""
-                  }`}
-                  onClick={(e) => totalQuantity === 0 && e.preventDefault()}
-                >
-                  結帳
-                </Link>
+                <div className="d-flex justify-content-center mt-4">
+                  <Link
+                    to={totalQuantity > 0 ? "/checkout-form" : "#"}
+                    className={`btn-brand-lg solid w-100 ${
+                      totalQuantity === 0 ? "disabled" : ""
+                    }`}
+                    onClick={(e) => totalQuantity === 0 && e.preventDefault()}
+                  >
+                    結帳
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

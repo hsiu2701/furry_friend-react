@@ -15,6 +15,8 @@ import "./assets/cartpage.scss";
 import "./assets/checkoutform.scss";
 import "./assets/checkoutpayment.scss";
 import "./assets/checkoutsuccess.scss";
+import "./assets/admindashboard.scss";
+import "./assets/buttons.scss";
 const router = createHashRouter(routes);
 
 createRoot(document.getElementById("root")).render(

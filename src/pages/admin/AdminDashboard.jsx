@@ -362,15 +362,16 @@ function AdminDashboard() {
                       !pageInfo.has_pre ? "disabled" : ""
                     }`}
                   >
-                    <button
-                      onClick={() =>
-                        handlePageChange(pageInfo.current_page - 1)
-                      }
+                    <a
+                      href="#"
                       className="page-link"
-                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageInfo.current_page - 1);
+                      }}
                     >
                       上一頁
-                    </button>
+                    </a>
                   </li>
 
                   {Array.from({ length: pageInfo.total_pages }).map(
@@ -380,19 +381,17 @@ function AdminDashboard() {
                         className={`page-item ${
                           pageInfo.current_page === index + 1 ? "active" : ""
                         }`}
-                        aria-current={
-                          pageInfo.current_page === index + 1
-                            ? "page"
-                            : undefined
-                        }
                       >
-                        <button
-                          onClick={() => handlePageChange(index + 1)}
+                        <a
+                          href="#"
                           className="page-link"
-                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(index + 1);
+                          }}
                         >
                           {index + 1}
-                        </button>
+                        </a>
                       </li>
                     )
                   )}
@@ -402,15 +401,16 @@ function AdminDashboard() {
                       !pageInfo.has_next ? "disabled" : ""
                     }`}
                   >
-                    <button
-                      onClick={() =>
-                        handlePageChange(pageInfo.current_page + 1)
-                      }
+                    <a
+                      href="#"
                       className="page-link"
-                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageInfo.current_page + 1);
+                      }}
                     >
                       下一頁
-                    </button>
+                    </a>
                   </li>
                 </ul>
               </nav>
