@@ -216,7 +216,6 @@ export default function CheckoutPayment() {
                   訂單摘要
                 </h3>
                 <div className="mb-4 p-3 bg-light rounded">
-                  <h5 className="mb-3">訂單編號: {orderData.orderId}</h5>
                   <div className="row mb-2">
                     <div className="col-4 text-muted">收件人:</div>
                     <div className="col-8">
