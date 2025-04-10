@@ -45,12 +45,12 @@ export default function Footer() {
                   <div>
                     <a
                       className="haver-brand-01 py-4 ps-4 mb-lg-2 ps-lg-0 py-lg-0 link-style footer-active"
-                      href="tel:+886-1-1111111"
+                      href="tel:+886-1-111111"
                     >
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         call{" "}
                       </span>
-                      服務電話 111-111-111
+                      服務電話 111-111-112
                     </a>
                     <p className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 text-gray-01">
                       <span className="material-symbols-outlined text-brand-01 align-middle">
