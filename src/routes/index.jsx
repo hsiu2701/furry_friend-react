@@ -8,6 +8,8 @@ import Members from "../pages/MembersPage";
 import ProductDetailPage from "../views/ProductDetailPage";
 import CartPage from "../pages/CartPage";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import { Navigate } from "react-router-dom";
+
 const routes = [
   {
     path: "/",
@@ -49,6 +51,7 @@ const routes = [
         path: "admin",
         element: <AdminDashboard />,
       },
+      { path: "*", element: <Navigate to="/" replace /> },
     ],
   },
 ];

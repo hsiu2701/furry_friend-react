@@ -263,7 +263,7 @@ export default function CheckoutSuccess() {
             <div className="action-buttons">
               <a
                 href="/my-orders"
-                className="btnbottom btn-outline"
+                className="btn-brand outline"
                 onClick={clearCheckoutData}
               >
                 <i className="fas fa-list-alt"></i>
@@ -271,7 +271,7 @@ export default function CheckoutSuccess() {
               </a>
               <a
                 href="/"
-                className="btnbottom btn-primary"
+                className="btn-brand solid"
                 onClick={clearCheckoutData}
               >
                 <i className="fas fa-home"></i>
@@ -279,7 +279,7 @@ export default function CheckoutSuccess() {
               </a>
               <a
                 href="/products"
-                className="btnbottom btn-success"
+                className="btn-brand solid"
                 onClick={clearCheckoutData}
               >
                 <i className="fas fa-shopping-cart"></i>

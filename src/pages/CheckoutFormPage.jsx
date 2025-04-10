@@ -20,7 +20,7 @@ export default function Checkout() {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
     handleSubmit,
   } = useForm({
@@ -361,21 +361,49 @@ export default function Checkout() {
             )}
 
             {/* 提交按鈕區域 - 固定在表單下方 */}
-            {!isCartEmpty && (
-              <div className="d-flex w-100 px-4 mb-4 justify-content-end">
-                <Link to="/cart" className="btn-brand outline me-2">
-                  返回購物車
-                </Link>
+            <div className="d-flex w-100 px-4 mb-4 justify-content-end">
+              <Link to="/cart" className="btn-brand outline me-2">
+                返回購物車
+              </Link>
 
-                <button
-                  type="button"
+              {isValid ? (
+                <Link
+                  to="/checkout-payment"
                   className="btn-brand solid ms-2"
-                  onClick={handleSubmit(onSubmit, onError)}
+                  onClick={() => {
+                    const formData = {
+                      user: {
+                        name: formValues.name,
+                        email: formValues.email,
+                        tel: formValues.phone,
+                        address: formValues.address,
+                      },
+                      message: formValues.message || "",
+                    };
+
+                    sessionStorage.setItem(
+                      "currentOrder",
+                      JSON.stringify({
+                        orderId: tempOrderId,
+                        orderData: formData,
+                        total: cartData.final_total,
+                        timestamp: new Date().getTime(),
+                      })
+                    );
+                  }}
                 >
                   下一步
-                </button>
-              </div>
-            )}
+                </Link>
+              ) : (
+                <span
+                  className="btn-brand solid ms-2 disabled-link"
+                  aria-disabled="true"
+                  title="請先填寫正確的表單資料"
+                >
+                  下一步
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </section>
