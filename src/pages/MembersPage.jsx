@@ -44,7 +44,6 @@ function Members() {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          // 未登入的處理邏輯
           setIsLoading(false);
           return;
         }
@@ -125,12 +124,10 @@ function Members() {
       );
 
       if (res.data.success) {
-        console.log("會員資料更新成功：", res.data);
         setUpdateSuccess(true);
         setTimeout(() => setUpdateSuccess(false), 3000);
       }
     } catch (error) {
-      console.error("更新會員資料失敗：", error);
       setError(error.response?.data?.message || "更新會員資料失敗，請稍後再試");
       setTimeout(() => setError(null), 3000);
     } finally {
@@ -240,7 +237,7 @@ function Members() {
                     )}
                   </div>
                   {/* 性別 */}
-                  <div className="vertical-group input-container">
+                  <div className="vertical-group input-container input-gender">
                     <label>性別</label>
                     <div className="radio-group">
                       <label>男</label>
@@ -271,9 +268,9 @@ function Members() {
                   {/* 出生年月日 */}
                   <div className="vertical-group input-container">
                     <label>出生年月日</label>
-                    <div className="horizontal-group">
+                    <div className="horizontal-group inputbox-birthday day-fs">
                       <select
-                        className="inputbox"
+                        className="inputbox "
                         {...register("birthYear", { required: "必填" })}
                         onChange={handleYearChange}
                       >
@@ -331,7 +328,7 @@ function Members() {
                     )}
                   </div>
                   {/* 密碼 */}
-                  <div className="vertical-group input-container">
+                  <div className="vertical-group input-container ">
                     <label>密碼</label>
                     <input
                       id="password"

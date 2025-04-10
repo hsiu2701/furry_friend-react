@@ -1,5 +1,3 @@
-/* 保留原始CSS的基本設定 */
-/* 讓 padding 與 border 計入寬度 */
 * {
   box-sizing: border-box;
 }
@@ -58,25 +56,23 @@
 .checkout-step-circle {
   width: 30px;
   height: 30px;
-  border: 2px solid rgba(242, 160, 158, 0.8); /* 柔和的粉紅色邊框 */
+  border: 2px solid rgba(242, 160, 158, 0.8);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white; /* 白色背景 */
-  color: #e07a77; /* 數字顏色為較深的粉紅色 */
-  font-weight: 600; /* 數字加粗一點 */
+  background-color: white;
+  color: #e07a77;
+  font-weight: 600;
 }
 
-/* active 的圈圈樣式 */
 .checkout-step-circle.active {
-  background-color: rgba(242, 160, 158, 0.3); /* 稍微深一點的粉紅色背景 */
-  border-color: rgba(231, 173, 172, 1); /* 較深的邊框 */
+  background-color: rgba(242, 160, 158, 0.3);
+  border-color: rgba(231, 173, 172, 1);
 }
 
-/* 勾勾樣式 */
 .checkout-step-check {
-  color: #e07a77; /* 勾勾使用較深的粉紅色 */
+  color: #e07a77;
   font-size: 16px;
   display: none;
   font-weight: 600;
@@ -86,37 +82,34 @@
 .checkout-step-text {
   margin-left: 10px;
   font-size: 14px;
-  color: #666; /* 深灰色使文字更清晰 */
+  color: #666;
   font-weight: 500;
 }
 
-/* 顯示 active 圓圈中的勾勾 */
 .checkout-step-circle.active .checkout-step-check {
   display: block;
 }
 
-/* active 步驟的文字 */
 .checkout-step-item.active .checkout-step-text {
-  color: #e07a77; /* 當前步驟文字顏色也使用粉紅色 */
+  color: #e07a77;
   font-weight: 600;
 }
 
 /* 步驟之間的連接線 */
 .checkout-step-item:not(:last-child)::after {
-  background-color: rgba(242, 160, 158, 0.4); /* 淺粉紅色的連接線 */
+  background-color: rgba(242, 160, 158, 0.4);
   height: 2px;
 }
 
 .checkout-step-item.active:not(:last-child)::after {
-  background-color: rgba(231, 173, 172, 0.8); /* 已完成步驟的連接線更深 */
+  background-color: rgba(231, 173, 172, 0.8);
 }
 
 /* 按鈕基本樣式 */
 .checkout-submit-button {
-  background-color: #E7ADAC;
+  background-color: #e7adac;
   color: #ffffff;
 }
-
 
 /* 輸入框基本樣式 */
 .checkout-inputbox {
@@ -145,12 +138,11 @@
 }
 
 /* 回應式設計 - 手機版（基本樣式） */
-/* 容器樣式 */
 .checkout-banner .checkout-container {
   padding: 20px 10px;
   margin: 20px auto;
   width: 95%;
-  border-radius: 20px;
+  border-radius: 24px;
   background-color: rgba(243, 217, 216, 1);
 }
 
@@ -162,7 +154,7 @@
   position: relative;
   margin: 60px auto 20px;
   width: 95%;
-  border-radius: 16px;
+  border-radius: 24px;
   background-color: white;
   padding: 15px;
 }
@@ -235,7 +227,7 @@
   > .checkout-containercontentbox2
   > .checkout-containercontentbox2text2 {
   border: 1px solid rgba(242, 160, 158, 1);
-  border-radius: 20px;
+  border-radius: 24px;
 }
 
 /* 標題樣式 */
@@ -476,19 +468,15 @@
   }
 }
 
-/* 修正其他可能的問題 */
-/* 確保textarea正確顯示 */
 textarea.checkout-inputbox {
   min-height: 100px;
   resize: vertical;
 }
 
-/* 確保表單元素不會溢出容器 */
 #checkoutForm {
   width: 100%;
 }
 
-/* 修正表單內部對齊 */
 .checkout-input-container label {
   display: block;
   margin-bottom: 5px;

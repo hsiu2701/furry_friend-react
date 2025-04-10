@@ -59,6 +59,7 @@ export default function CheckoutSuccess() {
     sessionStorage.removeItem("currentOrder");
     localStorage.removeItem("checkoutInfo");
     localStorage.removeItem("cartItems");
+    localStorage.removeItem("cartItems");
   };
 
   const formatDate = (dateString) => {
