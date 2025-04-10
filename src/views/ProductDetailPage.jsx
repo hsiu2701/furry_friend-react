@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router"; // 使用 react-router
-
+import { useDispatch } from "react-redux";
+import { updateCartData } from "../redux/cartSlices";
 const BASE_URL =
   import.meta.env.VITE_API_URL || "https://ec-course-api.hexschool.io";
 const API_PATH = import.meta.env.VITE_API_PATH || "furry_friend";
@@ -13,6 +14,7 @@ export default function ProductDetailPage() {
   const [isScreenLoading, setIsScreenLoading] = useState(false);
 
   const { id: product_id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -21,14 +23,9 @@ export default function ProductDetailPage() {
         const res = await axios.get(
           `${BASE_URL}/v2/api/${API_PATH}/product/${product_id}`
         );
-        console.log("API 回應資料:", res.data);
-        console.log(
-          "API URL:",
-          `${BASE_URL}/v2/api/${API_PATH}/product/${product_id}`
-        );
+
         setProduct(res.data.product);
       } catch (error) {
-        console.error("取得產品失敗", error);
         alert("取得產品失敗: " + error.message);
       } finally {
         setIsScreenLoading(false);
@@ -46,9 +43,9 @@ export default function ProductDetailPage() {
           qty: Number(qty),
         },
       });
-      alert("已成功加入購物車");
+      const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
+      dispatch(updateCartData(res.data.data));
     } catch (error) {
-      console.error("加入購物車失敗", error);
       alert("加入購物車失敗: " + error.message);
     } finally {
       setIsLoading(false);
@@ -78,7 +75,7 @@ export default function ProductDetailPage() {
                   產品列表
                 </Link>
               </li>
-              <li className="breadcrumb-item active" aria-current="page">
+              <li className="breadcrumb-item" aria-current="page">
                 產品資訊
               </li>
             </ol>
@@ -88,7 +85,7 @@ export default function ProductDetailPage() {
           <div className="container mt-9">
             <div className="row gx-0 align-items-stretch justify-content-center">
               {/* 左側：商品圖片 */}
-              <div className="col-md-6 col-12 p-0 img-container d-flex justify-content-center align-items-center">
+              <div className="col-md-6 p-0 img-container d-flex justify-content-center align-items-center">
                 {product.imageUrl && (
                   <img
                     src={product.imageUrl}
@@ -99,59 +96,62 @@ export default function ProductDetailPage() {
               </div>
 
               {/* 右側：商品資訊 */}
-              <div className="col-md-6 col-12 product-info d-flex flex-column justify-content-center">
+              <div className="col-md-6 product-info d-flex flex-column justify-content-center">
                 <h4 className="product-title">{product.title}</h4>
                 <h4 className="product-price mt-4">
                   {product.price !== product.origin_price ? (
                     <>
-                      <span className="product-origin-price text-decoration-line-through">
-                        NT$ {product.origin_price}
-                      </span>
-                      <span className="product-sale-price text-danger ms-2">
+                      <span className="product-sale-price text-danger">
                         NT$ {product.price}
+                      </span>
+                      <span className="product-origin-price text-decoration-line-through ms-2">
+                        NT$ {product.origin_price}
                       </span>
                     </>
                   ) : (
-                    <span className="product-sale-price">
+                    <span className="product-origin-price fw-normal">
                       NT$ {product.origin_price}
                     </span>
                   )}
                 </h4>
 
                 {/* 商品數量 */}
-                <div className="quantity-container mt-4">
-                  <div className="d-flex align-items-center">
-                    <button
-                      onClick={() =>
-                        setQtySelect((prev) => Math.max(1, prev - 1))
-                      }
-                      disabled={qtySelect === 1}
-                      type="button"
-                      className="btn btn-outline-secondary btn-quantity"
-                    >
-                      -
-                    </button>
-                    <input
-                      type="text"
-                      className="quantity-input text-center mx-2"
-                      value={qtySelect}
-                      readOnly
-                    />
-                    <button
-                      onClick={() => setQtySelect(qtySelect + 1)}
-                      type="button"
-                      className="btn btn-outline-secondary btn-quantity"
-                    >
-                      +
-                    </button>
-                  </div>
+                <div className="input-group flex-nowrap quantity-group mt-4">
+                  {/* 減少數量 */}
+                  <button
+                    onClick={() =>
+                      setQtySelect((prev) => Math.max(1, prev - 1))
+                    }
+                    className="btn p-0 border-0 shadow-none d-flex align-items-center justify-content-center"
+                    type="button"
+                    disabled={qtySelect === 1}
+                  >
+                    <i className="bi bi-dash"></i>
+                  </button>
+
+                  {/* 數量輸入框 */}
+                  <input
+                    type="text"
+                    className="form-control text-center border-0 shadow-none text-dark p-0"
+                    value={qtySelect}
+                    readOnly
+                  />
+
+                  {/* 增加數量 */}
+                  <button
+                    onClick={() => setQtySelect((prev) => prev + 1)}
+                    className="btn p-0 border-0 shadow-none d-flex align-items-center justify-content-center"
+                    type="button"
+                  >
+                    <i className="bi bi-plus"></i>
+                  </button>
                 </div>
 
                 {/* 按鈕 */}
                 <div className="product-actions mt-4">
                   <button
                     type="button"
-                    className="btn btn-primary w-100 py-2"
+                    className="btn-brand-lg solid w-100"
                     onClick={() => addCartItem(product_id, qtySelect)}
                     disabled={isLoading}
                   >

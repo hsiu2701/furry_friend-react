@@ -6,17 +6,23 @@ import routes from "./routes/index.jsx";
 import "./assets/all.scss";
 // 要自訂JS ,先關掉"bootstrap"
 import "bootstrap";
-import "./assets/layout.scss";
-import "./assets/home.scss";
-import "./assets/productlist.scss";
-import "./assets/banners.scss";
-import "./assets/members.scss";
-import "./assets/cartpage.scss";
-import "./assets/checkoutform.scss";
-import "./assets/checkoutpayment.scss";
-import "./assets/checkoutsuccess.scss";
+import "./assets/_layout.scss";
+import "./assets/_home.scss";
+import "./assets/_productlist.scss";
+import "./assets/_banners.scss";
+import "./assets/_members.scss";
+import "./assets/_cartpage.scss";
+import "./assets/_checkoutForm.scss";
+import "./assets/_checkoutPayment.scss";
+import "./assets/_CheckoutSuccess.scss";
+import { Provider } from "react-redux";
+import store from "./redux/store.js";
+import "./assets/_admindashboard.scss";
+import "./assets/_buttons.scss";
 const router = createHashRouter(routes);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router}>{/* <App /> */}</RouterProvider>
+  <Provider store={store}>
+    <RouterProvider router={router}>{/* <App /> */}</RouterProvider>
+  </Provider>
 );

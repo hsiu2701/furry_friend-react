@@ -1,6 +1,6 @@
 html, body {
   width: 100%;
-  overflow-x: hidden; // 防止 X 軸滾動
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
@@ -13,8 +13,8 @@ html, body {
 // 路徑
 .breadcrumb {
   width: 100%;
-  max-width: 1296px; // 設定內容區域最大寬度
-  margin: 0 auto; // 讓內容區域置中
+  max-width: 1296px; 
+  margin: 0 auto;
   display: flex;
   align-items: center;
   height: 69px;
@@ -32,28 +32,24 @@ html, body {
   }
 }
 
-/* 確保 .row 讓內容填滿 */
 .row {
   display: flex;
-  align-items: stretch; /* 讓兩側區塊同步高度 */
+  align-items: stretch; 
 }
 
-/* 左側圖片區塊 (佔 5 格) */
 .col-md-5 {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 確保圖片不變形 */
 .main-img {
   width: 100%;
-  height: auto; /* 保持原始比例 */
-  max-height: 100%; /* 避免超過父容器 */
-  object-fit: contain; /* 讓圖片完整顯示不裁切 */
+  height: auto;
+  max-height: 100%; 
+  object-fit: contain; 
 }
 
-/* 右側商品資訊 (佔 5 格) */
 .product-info {
   padding: 4rem;
   color: $gray-01;
@@ -61,12 +57,11 @@ html, body {
   flex-direction: column;
   justify-content: center;
 }
-/* 商品數量 */
+
 .quantity-container {
   max-width: 180px;
 }
 
-/* 商品按鈕 */
 .btn-quantity {
   width: 40px !important;
   height: 40px !important;
@@ -89,7 +84,7 @@ html, body {
 /* RWD 設定 */
 @media (max-width: 768px) {
   .row {
-    flex-direction: column; /* 小螢幕改為直向排列 */
+    flex-direction: column;
   }
 
   .col-md-5 {
@@ -98,20 +93,19 @@ html, body {
   }
 
   .main-img {
-    height: auto; /* 確保圖片不會變形 */
+    height: auto; 
   }
 
   .product-info {
     padding: 2rem;
   }
 }
-// 按鈕設定
+
 .btn-add-to-cart {
   border-radius: 8px;
   background-color: $brand-01;
   color: $gray-05;
 }
-
 
 .btn:hover {
   background-color: $brand-02;

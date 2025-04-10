@@ -217,7 +217,6 @@ export default function CheckoutPayment() {
                   訂單摘要
                 </h3>
                 <div className="mb-4 p-3 bg-light rounded">
-                  <h5 className="mb-3">訂單編號: {orderData.orderId}</h5>
                   <div className="row mb-2">
                     <div className="col-4 text-muted">收件人:</div>
                     <div className="col-8">
@@ -535,10 +534,7 @@ export default function CheckoutPayment() {
           {orderData && (
             <div className="checkout-payment-button-container">
               {/* 返回按鈕 */}
-              <Link
-                to="/checkout-form"
-                className="checkout-payment-back-button"
-              >
+              <Link to="/checkout-form" className="btn-brand outline">
                 <i className="bi bi-arrow-left me-2"></i>
                 返回填寫資料
               </Link>
@@ -546,7 +542,7 @@ export default function CheckoutPayment() {
               {/* 確認付款按鈕 */}
               <Link
                 to="/checkout-success"
-                className="checkout-payment-submit-button"
+                className="btn-brand solid"
                 onClick={(e) => {
                   const validationErrors = validateForm();
                   if (Object.keys(validationErrors).length > 0) {

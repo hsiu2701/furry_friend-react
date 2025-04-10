@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
 
@@ -37,8 +37,7 @@ function AdminDashboard() {
       [name]: value,
     });
   };
-
-  const getProducts = async (page = 1) => {
+  const getProducts = useCallback(async (page = 1) => {
     try {
       const res = await axios.get(
         `${BASE_URL}/v2/api/${API_PATH}/admin/products?page=${page}`
@@ -48,7 +47,7 @@ function AdminDashboard() {
     } catch (error) {
       alert(`取得產品失敗: ${error.message}`);
     }
-  };
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -64,13 +63,12 @@ function AdminDashboard() {
       getProducts();
 
       setIsAuth(true);
-    } catch (error) {
-      console.error("Error logging in:", error);
+    } catch {
       alert("登入失敗");
     }
   };
 
-  const checkUserLogin = async () => {
+  const checkUserLogin = useCallback(async () => {
     try {
       await axios.post(`${BASE_URL}/v2/api/user/check`);
       getProducts();
@@ -78,7 +76,7 @@ function AdminDashboard() {
     } catch {
       setIsAuth(false);
     }
-  };
+  }, [getProducts]);
 
   useEffect(() => {
     const token = document.cookie.replace(
@@ -87,7 +85,7 @@ function AdminDashboard() {
     );
     axios.defaults.headers.common["Authorization"] = token;
     checkUserLogin();
-  }, []);
+  }, [checkUserLogin]);
 
   const productModalRef = useRef(null);
   const deleteProductModalRef = useRef(null);
@@ -191,8 +189,7 @@ function AdminDashboard() {
           is_enabled: tempProduct.is_enabled ? 1 : 0,
         },
       });
-    } catch (error) {
-      console.error("Error creating product:", error);
+    } catch {
       alert("新增產品失敗");
     }
   };
@@ -210,8 +207,7 @@ function AdminDashboard() {
           },
         }
       );
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } catch {
       alert("編輯產品失敗");
     }
   };
@@ -225,8 +221,7 @@ function AdminDashboard() {
       await (modalMode === "create" ? createProduct() : updateProduct());
       getProducts();
       handleCloseProductModal();
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } catch {
       alert("更新產品失敗");
     }
   };
@@ -244,8 +239,7 @@ function AdminDashboard() {
           },
         }
       );
-    } catch (error) {
-      console.error("Error deleting product:", error);
+    } catch {
       alert("刪除產品失敗");
     }
   };
@@ -257,8 +251,7 @@ function AdminDashboard() {
       getProducts();
 
       handleCloseDeleteProductModal();
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } catch {
       alert("更新產品失敗");
     }
   };
@@ -289,8 +282,8 @@ function AdminDashboard() {
         ...tempProduct,
         imageUrl: uploadedImageUrl,
       });
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    } catch {
+      alert("圖片上傳失敗");
     }
   };
 
@@ -368,15 +361,16 @@ function AdminDashboard() {
                       !pageInfo.has_pre ? "disabled" : ""
                     }`}
                   >
-                    <button
-                      onClick={() =>
-                        handlePageChange(pageInfo.current_page - 1)
-                      }
+                    <a
+                      href="#"
                       className="page-link"
-                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageInfo.current_page - 1);
+                      }}
                     >
                       上一頁
-                    </button>
+                    </a>
                   </li>
 
                   {Array.from({ length: pageInfo.total_pages }).map(
@@ -386,19 +380,17 @@ function AdminDashboard() {
                         className={`page-item ${
                           pageInfo.current_page === index + 1 ? "active" : ""
                         }`}
-                        aria-current={
-                          pageInfo.current_page === index + 1
-                            ? "page"
-                            : undefined
-                        }
                       >
-                        <button
-                          onClick={() => handlePageChange(index + 1)}
+                        <a
+                          href="#"
                           className="page-link"
-                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(index + 1);
+                          }}
                         >
                           {index + 1}
-                        </button>
+                        </a>
                       </li>
                     )
                   )}
@@ -408,15 +400,16 @@ function AdminDashboard() {
                       !pageInfo.has_next ? "disabled" : ""
                     }`}
                   >
-                    <button
-                      onClick={() =>
-                        handlePageChange(pageInfo.current_page + 1)
-                      }
+                    <a
+                      href="#"
                       className="page-link"
-                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageInfo.current_page + 1);
+                      }}
                     >
                       下一頁
-                    </button>
+                    </a>
                   </li>
                 </ul>
               </nav>
@@ -627,6 +620,7 @@ function AdminDashboard() {
                         name="origin_price"
                         id="origin_price"
                         type="number"
+                        min="0"
                         className="form-control"
                         placeholder="請輸入原價"
                       />
@@ -641,6 +635,7 @@ function AdminDashboard() {
                         name="price"
                         id="price"
                         type="number"
+                        min="0"
                         className="form-control"
                         placeholder="請輸入售價"
                       />
@@ -728,7 +723,7 @@ function AdminDashboard() {
                 {modalMode === "create" ? "新增產品" : "編輯產品"}
               </h5>
               <button
-                onClick={handleCloseProductModal}
+                onClick={handleCloseDeleteProductModal}
                 type="button"
                 className="btn-close"
                 aria-label="Close"

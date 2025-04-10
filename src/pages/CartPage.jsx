@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router";
-
+import { useDispatch } from "react-redux";
+import { updateCartData } from "../redux/cartSlices";
 // API 設定
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -10,12 +11,14 @@ export default function CartPage() {
   // 狀態管理
   const [cart, setCart] = useState({});
   const [, setIsScreenLoading] = useState(false);
+  const dispatch = useDispatch();
 
   // 取得購物車資料
   const getCart = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       setCart(res.data.data);
+      dispatch(updateCartData(res.data.data));
     } catch {
       alert("取得購物車列表失敗");
     }
@@ -74,6 +77,9 @@ export default function CartPage() {
   // 計算總數量
   const totalQuantity =
     cart?.carts?.reduce((sum, item) => sum + item.qty, 0) || 0;
+
+  const formatCurrency = (value) =>
+    typeof value === "number" ? `NT$ ${value.toLocaleString()}` : "NT$ 0";
 
   return (
     <div className="container-fluid cart-page">
@@ -156,13 +162,20 @@ export default function CartPage() {
                       </td>
                       <td className="border-0 align-middle">
                         <p className="mb-0 ms-auto">
-                          NT$ {cartItem.final_total}
+                          {formatCurrency(cartItem.final_total)}
                         </p>
                       </td>
                       <td className="border-0 align-middle">
                         <button
                           className="btn border-0"
-                          onClick={() => removeCartItem(cartItem.id)}
+                          onClick={() => {
+                            const isConfirmed = window.confirm(
+                              `確定要刪除「${cartItem.product.title}」嗎？`
+                            );
+                            if (isConfirmed) {
+                              removeCartItem(cartItem.id);
+                            }
+                          }}
                         >
                           <i className="bi bi-trash"></i>
                         </button>
@@ -171,16 +184,21 @@ export default function CartPage() {
                   ))}
                 </tbody>
               </table>
-              {/* <div className="input-group w-50 mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="輸入優惠碼"
-                />
-                <button className="btn btn-outline-dark" type="button">
-                  <i className="bi bi-send"></i>
+              {totalQuantity > 0 && (
+                <button
+                  onClick={() => {
+                    const isConfirmed = window.confirm(
+                      "你確定要清空整個購物車嗎？此操作無法還原！"
+                    );
+                    if (isConfirmed) {
+                      removeCart();
+                    }
+                  }}
+                  className="btn-brand-lg outline w-100 mt-4"
+                >
+                  清空購物車
                 </button>
-              </div> */}
+              )}
             </div>
             <div className="col-md-4">
               <div className="border p-4 mb-4">
@@ -195,7 +213,7 @@ export default function CartPage() {
                         小計
                       </th>
                       <td className="text-end border-0 px-0 pt-4">
-                        NT$ {cart.final_total}
+                        {formatCurrency(cart.final_total)}
                       </td>
                     </tr>
                     <tr>
@@ -213,23 +231,21 @@ export default function CartPage() {
                 </table>
                 <div className="d-flex justify-content-between mt-4">
                   <p className="mb-0 h4 fw-bold">總計</p>
-                  <p className="mb-0 h4 fw-bold">NT$ {cart.final_total}</p>
+                  <p className="mb-0 h4 fw-bold">
+                    {formatCurrency(cart.final_total)}
+                  </p>
                 </div>
-                <button
-                  onClick={removeCart}
-                  className="btn text-dark border w-100 mt-4"
-                >
-                  清空購物車
-                </button>
-                <Link
-                  to={totalQuantity > 0 ? "/checkout-form" : "#"}
-                  className={`btn btn-brand-01 w-100 mt-3 ${
-                    totalQuantity === 0 ? "disabled" : ""
-                  }`}
-                  onClick={(e) => totalQuantity === 0 && e.preventDefault()}
-                >
-                  結帳
-                </Link>
+                <div className="d-flex justify-content-center mt-4 text-center">
+                  <Link
+                    to={totalQuantity > 0 ? "/checkout-form" : "#"}
+                    className={`btn-brand-lg solid w-100 ${
+                      totalQuantity === 0 ? "disabled" : ""
+                    }`}
+                    onClick={(e) => totalQuantity === 0 && e.preventDefault()}
+                  >
+                    結帳
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

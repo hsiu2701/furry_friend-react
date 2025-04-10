@@ -1,0 +1,66 @@
+/* 小型按鈕 */
+.btn-brand {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e7adac;
+  background-color: transparent;
+  color: #e7adac;
+
+  &.solid {
+    background-color: #e7adac;
+    color: white;
+  }
+
+  &.outline {
+    background-color: transparent;
+    color: #e7adac;
+    border-color: #e7adac;
+  }
+
+  &:hover {
+    background-color: #f2a09e;
+    border-color: #f2a09e;
+    color: white;
+  }
+
+  &.disabled {
+    background-color: #f1f1f1;
+    color: #ccc;
+    border-color: #ddd;
+    pointer-events: none;
+  }
+}
+
+/* 大型按鈕 */
+.btn-brand-lg {
+  padding: 12px 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 1px solid #e7adac;
+
+  &.solid {
+    background-color: #e7adac;
+    color: white;
+  }
+
+  &.outline {
+    background-color: transparent;
+    color: #e7adac;
+    border-color: #e7adac;
+  }
+
+  &:hover {
+    background-color: #f2a09e;
+    border-color: #f2a09e;
+    color: white;
+  }
+
+  &.disabled {
+    background-color: #f1f1f1;
+    color: #ccc;
+    border-color: #ddd;
+    pointer-events: none;
+  }
+}

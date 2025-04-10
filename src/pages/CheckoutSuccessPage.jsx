@@ -1,58 +1,67 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { clearCartData } from "../redux/cartSlices";
 import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+const API_PATH = import.meta.env.VITE_API_PATH;
 
 export default function CheckoutSuccess() {
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // 從 sessionStorage 獲取訂單資料並清除購物車
+  const dispatch = useDispatch();
   useEffect(() => {
-    try {
-      const storedOrderData = sessionStorage.getItem("currentOrder");
+    const fetchAndClear = async () => {
+      try {
+        const storedOrderData = sessionStorage.getItem("currentOrder");
 
-      if (!storedOrderData) {
-        setError("找不到訂單資料，請返回首頁重新購物");
+        if (!storedOrderData) {
+          setError("找不到訂單資料，請返回首頁重新購物");
+          setLoading(false);
+          return;
+        }
+
+        const parsedOrderData = JSON.parse(storedOrderData);
+
+        if (!parsedOrderData.payment) {
+          setError("訂單尚未完成付款，請返回付款頁面");
+          setLoading(false);
+          return;
+        }
+
+        setOrderData(parsedOrderData);
+
+        await axios.delete(`${BASE_URL}/v2/api/${API_PATH}/carts`);
+        dispatch(clearCartData());
+
+        localStorage.removeItem("cartItems");
+
+        setTimeout(() => {
+          localStorage.removeItem("checkoutInfo");
+          sessionStorage.removeItem("currentOrder");
+        }, 10000);
+
         setLoading(false);
-        return;
-      }
-
-      const parsedOrderData = JSON.parse(storedOrderData);
-
-      // 檢查是否有付款資訊
-      if (!parsedOrderData.payment) {
-        setError("訂單尚未完成付款，請返回付款頁面");
+      } catch (err) {
+        console.error("讀取訂單資料失敗:", err);
+        setError("讀取訂單資料時發生錯誤");
         setLoading(false);
-        return;
       }
+    };
 
-      setOrderData(parsedOrderData);
+    fetchAndClear();
+  }, [dispatch]);
 
-      // 成功展示訂單後清除暫存的結帳資訊和購物車
-      localStorage.removeItem("cartItems");
-
-      // 保留一段時間後再清除其他結帳資訊，以防用戶重新整理頁面
-      setTimeout(() => {
-        localStorage.removeItem("checkoutInfo");
-        sessionStorage.removeItem("currentOrder");
-      }, 10000); // 10秒後清除
-
-      setLoading(false);
-    } catch (err) {
-      console.error("讀取訂單資料失敗:", err);
-      setError("讀取訂單資料時發生錯誤");
-      setLoading(false);
-    }
-  }, []);
-
-  // 清除結帳資料的函數 - 用於a標籤中的onClick
   const clearCheckoutData = () => {
+    dispatch(clearCartData());
     sessionStorage.removeItem("currentOrder");
     localStorage.removeItem("checkoutInfo");
-    localStorage.removeItem("cartItems"); // 確保購物車也被清除
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("cartItems");
   };
 
-  // 計算日期格式
   const formatDate = (dateString) => {
     const date = new Date(dateString || Date.now());
     return date.toLocaleDateString("zh-TW", {
@@ -142,10 +151,6 @@ export default function CheckoutSuccess() {
                 感謝您的購買，我們將盡快為您處理訂單。
               </p>
               <div className="order-info">
-                <div className="order-number">
-                  <span className="label">訂單編號：</span>
-                  <span className="order-id">{orderData.orderId}</span>
-                </div>
                 <div className="order-date">
                   <span className="label">訂單日期：</span>
                   <span className="date">
@@ -263,28 +268,12 @@ export default function CheckoutSuccess() {
             {/* 操作按鈕 */}
             <div className="action-buttons">
               <a
-                href="/my-orders"
-                className="btnbottom btn-outline"
-                onClick={clearCheckoutData}
-              >
-                <i className="fas fa-list-alt"></i>
-                <span>查看我的訂單</span>
-              </a>
-              <a
                 href="/"
-                className="btnbottom btn-primary"
+                className="btn-brand solid"
                 onClick={clearCheckoutData}
               >
                 <i className="fas fa-home"></i>
                 <span>返回首頁</span>
-              </a>
-              <a
-                href="/products"
-                className="btnbottom btn-success"
-                onClick={clearCheckoutData}
-              >
-                <i className="fas fa-shopping-cart"></i>
-                <span>繼續購物</span>
               </a>
             </div>
           </div>

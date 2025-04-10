@@ -1,9 +1,28 @@
+import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router";
 export default function Header() {
+  const iconRoutes = [
+    {
+      path: "/Members",
+      icon: "person",
+      name: "會員",
+      showInMobile: false,
+    },
+    {
+      path: "/cart",
+      icon: "shopping_cart",
+      name: "購物車",
+      showInMobile: true,
+    },
+  ];
+
+  const carts = useSelector((state) => state.cart.carts);
+  const cartCount = carts.reduce((total, item) => total + item.qty, 0);
+
   return (
     <>
-      <div className="bg-white ">
-        <div className="container">
+      <div className="bg-white position-relative">
+        <div className="container ">
           <div className="row">
             <div className="d-flex justify-content-between align-items-center logo position-relative mt-2">
               <h1>
@@ -11,33 +30,32 @@ export default function Header() {
                   毛茸茸的朋友
                 </Link>
               </h1>
-              <div>
-                <NavLink
-                  className="me-0 me-lg-6 d-none d-lg-inline-block"
-                  to="/members"
-                >
-                  <span className="material-symbols-outlined header-icon">
-                    person
-                  </span>
-                </NavLink>
-                <NavLink
-                  className="ion-me me-lg-0 mt-2 mt-lg-0 position-relative"
-                  to="/cart"
-                >
-                  <span className="material-symbols-outlined header-icon mt-2">
-                    shopping_cart
-                  </span>
-                  {/* <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-style">
-                    10
-                    <span className="visually-hidden">shopping quantity</span>
-                  </span> */}
-                </NavLink>
+              <div className="d-flex align-items-center flex-shrink-0 icon-wrapper">
+                {iconRoutes.map(({ path, icon, showInMobile }) => (
+                  <NavLink
+                    key={path}
+                    to={path}
+                    className={`me-0 me-lg-4 ${
+                      !showInMobile ? "d-none d-lg-inline-block" : ""
+                    } position-relative`}
+                  >
+                    <i className="material-symbols-outlined header-icon mt-2">
+                      {icon}
+                    </i>
+                    {path === "/cart" && cartCount > 0 && (
+                      <span className="position-absolute badge text-bg-danger text-white rounded-circle badge-i">
+                        {cartCount}
+                      </span>
+                    )}
+                  </NavLink>
+                ))}
               </div>
             </div>
           </div>
         </div>
-        <div className="container">
-          <nav className="navbar navbar-expand-lg navbar-light pb-2 pb-lg-0">
+
+        <div>
+          <nav className="navbar navbar-expand-lg navbar-light pb-2 pb-lg-0 ">
             <div className="container-fluid">
               <button
                 className="navbar-toggler fs-6 position-nav"
@@ -50,12 +68,13 @@ export default function Header() {
               >
                 <span className="navbar-toggler-icon"></span>
               </button>
+
               <div
-                className="collapse navbar-collapse"
+                className="collapse navbar-collapse menu-absolute"
                 id="navbarSupportedContent"
               >
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-ps pt-8 pt-lg-0">
-                  <li className="nav-item dropdown me-120 text-center">
+                <ul className="navbar-nav w-100 justify-content-lg-center d-lg-flex nav-gap pt-8 pt-lg-0">
+                  <li className="nav-item dropdown  text-center">
                     <Link
                       className="nav-link dropdown-toggle link-gray-01 fw-bold"
                       to=""
@@ -66,7 +85,6 @@ export default function Header() {
                     >
                       狗狗
                     </Link>
-
                     <ul
                       className="dropdown-menu"
                       aria-labelledby="navbarDropdown"
@@ -103,20 +121,21 @@ export default function Header() {
                       </li>
                     </ul>
                   </li>
+
                   <li className="nav-item dropdown text-center">
-                    <a
-                      className="nav-link dropdown-toggle link-gray-01 fw-bold me-120"
-                      href="#"
-                      id="navbarDropdown"
+                    <Link
+                      className="nav-link dropdown-toggle link-gray-01 fw-bold"
+                      to=""
+                      id="navbarDropdown2"
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
                       貓貓
-                    </a>
+                    </Link>
                     <ul
                       className="dropdown-menu"
-                      aria-labelledby="navbarDropdown"
+                      aria-labelledby="navbarDropdown2"
                     >
                       <li>
                         <p className="ps-3 link-gray-01">食品—</p>
@@ -150,19 +169,16 @@ export default function Header() {
                       </li>
                     </ul>
                   </li>
+
                   <li className="nav-item text-center">
                     <NavLink
-                      className="nav-link link-gray-01 fw-bold me-120"
+                      className="nav-link link-gray-01 fw-bold"
                       to="/productlist?category=全部"
                     >
                       主打商品
                     </NavLink>
                   </li>
-                  <li className="nav-item text-center">
-                    <NavLink className="nav-link link-gray-01 fw-bold" to="">
-                      毛孩小教室
-                    </NavLink>
-                  </li>
+
                   <li className="nav-item d-inline-block d-lg-none text-center">
                     <NavLink
                       className="nav-link link-gray-01 fw-bold register"

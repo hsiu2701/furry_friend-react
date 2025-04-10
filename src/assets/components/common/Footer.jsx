@@ -2,7 +2,7 @@ import { Link } from "react-router";
 export default function Footer() {
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-white mt-8">
         <div className="container">
           <div className="row">
             <div className="footer-h">

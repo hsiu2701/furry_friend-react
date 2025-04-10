@@ -1,13 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
-import { Swiper, SwiperSlide } from "swiper/react";
-// import Paginationss from "../assets/components/Paginationss";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -18,8 +16,7 @@ function ProductList() {
   //追蹤當前頁數
   const [pageInfo, setPageInfo] = useState({});
   const [loading, setLoading] = useState(false);
-  //選購
-  const bannerigate = useNavigate();
+
   // nav
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -111,33 +108,12 @@ function ProductList() {
     };
   }, []);
 
-  // 收藏
-  const [wishList, setWishList] = useState(() => {
-    const initWishList = localStorage.getItem("wishList")
-      ? JSON.parse(localStorage.getItem("wishList"))
-      : {};
-
-    return initWishList;
-  });
-
-  const toggleWishListItem = (product_id) => {
-    const newWishList = {
-      ...wishList,
-      [product_id]: !wishList[product_id],
-    };
-
-    localStorage.setItem("wishList", JSON.stringify(newWishList));
-
-    setWishList(newWishList);
-  };
   // nav
   useEffect(() => {
     if (categoryFromUrl) {
       setSelectedCategory(categoryFromUrl);
     }
   }, [categoryFromUrl]);
-
-  //BANNER
 
   return (
     <>
@@ -154,47 +130,10 @@ function ProductList() {
         </div>
       </div>
 
-      {/* 商品輪播 */}
-      <div className="container">
-        <div className="row">
-          <Swiper
-            cssMode={true}
-            navigation={true}
-            pagination={true}
-            mousewheel={true}
-            keyboard={true}
-            modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-            className="mySwiper px-9"
-          >
-            {products.slice(0, 3).map((product) => (
-              <SwiperSlide key={product.id}>
-                <div
-                  className="product-ad"
-                  style={{
-                    backgroundImage: `url(${product.imageUrl})`,
-                  }}
-                >
-                  <h3 className="text-white advertisement-text">
-                    {product.description}
-                  </h3>
-                  <button
-                    type="button"
-                    className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 btn-ms"
-                    onClick={() => bannerigate(`/product/${product.id}`)}
-                  >
-                    馬上選購
-                  </button>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </div>
-
       {/* 手機板 */}
       <div className="d-flex justify-content-center pt-6">
         <button
-          className="btn btn-brand-02 offcanvas-custom d-md-none px-8 "
+          className="btn btn-brand-02  d-md-none px-8 "
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasTop"
@@ -204,7 +143,7 @@ function ProductList() {
         </button>
       </div>
       <div
-        className="offcanvas offcanvas-top d-md-none"
+        className="offcanvas offcanvas-top offcanvas-custom d-md-none"
         tabIndex="-1"
         id="offcanvasTop"
         aria-labelledby="offcanvasTopLabel"
@@ -221,12 +160,12 @@ function ProductList() {
         <div className=" rounded-3 mobilelist">
           <div>
             <div>
-              <h5 className="ps-4 pt-1 text-gray-01">狗狗</h5>
+              <h5 className="ps-4 pt-1 text-gray-01 fw-bold">狗狗</h5>
               <div className="accordion accordion-flush" id="dogAccordion">
                 <div className="accordion-item">
                   <h2 className="accordion-header" id="flush-headingDogOne">
                     <button
-                      className="accordion-button collapsed text-brand-01 text-brand-01"
+                      className="accordion-button collapsed  text-gray-01"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseDogOne"
@@ -261,7 +200,7 @@ function ProductList() {
                 <div className="accordion-item">
                   <h2 className="accordion-header" id="flush-headingDogTwo">
                     <button
-                      className="accordion-button collapsed text-brand-01"
+                      className="accordion-button collapsed text-gray-01"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseDogTwo"
@@ -296,12 +235,12 @@ function ProductList() {
             </div>
 
             <div>
-              <h5 className="ps-4 pt-1 text-black">貓貓</h5>
+              <h5 className="ps-4 pt-1 text-black fw-bold">貓貓</h5>
               <div className="accordion accordion-flush" id="catAccordion">
                 <div className="accordion-item">
                   <h2 className="accordion-header" id="flush-headingCatOne">
                     <button
-                      className="accordion-button collapsed text-brand-01 "
+                      className="accordion-button collapsed text-gray-01 "
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseCatOne"
@@ -336,7 +275,7 @@ function ProductList() {
                 <div className="accordion-item">
                   <h2 className="accordion-header" id="flush-headingCatTwo">
                     <button
-                      className="accordion-button collapsed text-brand-01"
+                      className="accordion-button collapsed text-gray-01"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseCatTwo"
@@ -369,183 +308,6 @@ function ProductList() {
                 </div>
               </div>
             </div>
-
-            <div>
-              <h5 className="ps-4 pt-1 text-gray-01">篩選器</h5>
-              <div className="accordion accordion-flush" id="dogAccordion">
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogOne">
-                    <button
-                      className="accordion-button collapsed text-brand-01 text-brand-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogOne"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogOne"
-                    >
-                      肉類
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogOne"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogOne"
-                  >
-                    <div className="accordion-body">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="chicken"
-                        />
-                        <label className="form-check-label" htmlFor="chicken">
-                          雞肉
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="lamb"
-                        />
-                        <label className="form-check-label" htmlFor="lamb">
-                          羊肉
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="beef"
-                        />
-                        <label className="form-check-label" htmlFor="beef">
-                          牛肉
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="horseMeat"
-                        />
-                        <label className="form-check-label" htmlFor="horseMeat">
-                          馬肉
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogTwo">
-                    <button
-                      className="accordion-button collapsed text-brand-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogTwo"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogTwo"
-                    >
-                      風格
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogTwo"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogTwo"
-                  >
-                    <div className="accordion-body">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="cuteStyle"
-                        />
-                        <label className="form-check-label" htmlFor="cuteStyle">
-                          可愛風
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id=" forestStyle"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="flexCheckConsumables"
-                        >
-                          森林風
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="battleStyle"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="battleStyle"
-                        >
-                          戰鬥風
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogTwo">
-                    <button
-                      className="accordion-button collapsed text-brand-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogTwo"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogTwo"
-                    >
-                      用品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogTwo"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogTwo"
-                  >
-                    <div className="accordion-body">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="cleaning"
-                        />
-                        <label className="form-check-label" htmlFor="cleaning">
-                          清潔
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="ball"
-                        />
-                        <label className="form-check-label" htmlFor="ball">
-                          球
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -555,11 +317,11 @@ function ProductList() {
         <div className="row mt-9">
           <div className="col col-md-3 d-none d-md-block">
             {/*  電腦版列表 */}
-            <div className="border rounded-3">
-              <div>
+            <div className="border rounded-3 mb-2">
+              <div className="mb-6 list-h ">
                 <h4 className="bg-gray-04 rounded-top text-center">商品列表</h4>
                 <div>
-                  <h5 className="ps-4 pt-1 text-gray-01">狗狗</h5>
+                  <h5 className="ps-4 pt-1 text-gray-01 fw-bold">狗狗</h5>
                   <div
                     className="accordion accordion-flush"
                     id="dogAccordion-pc"
@@ -567,7 +329,7 @@ function ProductList() {
                     <div className="accordion-item">
                       <h2 className="accordion-header" id="flush-headingDogOne">
                         <button
-                          className="accordion-button collapsed text-brand-01 text-brand-01"
+                          className="accordion-button collapsed  text-gray-01 mb-1 "
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#flush-collapseDogOne-pc"
@@ -602,7 +364,7 @@ function ProductList() {
                     <div className="accordion-item">
                       <h2 className="accordion-header" id="flush-headingDogTwo">
                         <button
-                          className="accordion-button collapsed text-brand-01"
+                          className="accordion-button collapsed text-gray-01"
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#flush-collapseDogTwo"
@@ -637,7 +399,7 @@ function ProductList() {
                 </div>
 
                 <div>
-                  <h5 className="ps-4 pt-1 text-black">貓貓</h5>
+                  <h5 className="ps-4 pt-1 text-black fw-bold">貓貓</h5>
                   <div
                     className="accordion accordion-flush"
                     id="catAccordion-pc"
@@ -648,7 +410,7 @@ function ProductList() {
                         id="flush-headingCatOne-pc"
                       >
                         <button
-                          className="accordion-button collapsed text-brand-01 "
+                          className="accordion-button collapsed text-gray-01 mb-1"
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#flush-collapseCatOne"
@@ -665,7 +427,7 @@ function ProductList() {
                       >
                         <div className="accordion-body">
                           <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
+                            className="d-block text-gray-02 border-0 btn broduct-btn "
                             onClick={() => setSelectedCategory("貓咪,飼料")}
                           >
                             飼料
@@ -683,7 +445,7 @@ function ProductList() {
                     <div className="accordion-item">
                       <h2 className="accordion-header" id="flush-headingCatTwo">
                         <button
-                          className="accordion-button collapsed text-brand-01"
+                          className="accordion-button collapsed text-gray-01 "
                           type="button"
                           data-bs-toggle="collapse"
                           data-bs-target="#flush-collapseCatTwo"
@@ -695,7 +457,7 @@ function ProductList() {
                       </h2>
                       <div
                         id="flush-collapseCatTwo"
-                        className="accordion-collapse collapse"
+                        className="accordion-collapse collapse "
                         aria-labelledby="flush-headingCatTwo"
                       >
                         <div className="accordion-body">
@@ -717,128 +479,6 @@ function ProductList() {
                   </div>
                 </div>
               </div>
-              {/* 篩選器 */}
-              <div className="mt-9 ms-2">
-                <p className="text-gray-01 ps-2 mb-2">
-                  <i className="bi bi-funnel-fill pe-1"></i>篩選器
-                </p>
-                <ul>
-                  <li className="text-gray-01 ps-1 list-group mb-2 border-bottom rounded-0">
-                    <p>肉類</p>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="chicken2"
-                      />
-                      <label className="form-check-label" htmlFor="chicken2">
-                        雞肉
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="lamb2"
-                      />
-                      <label className="form-check-label" htmlFor="lamb2">
-                        羊肉
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="beef2"
-                      />
-                      <label className="form-check-label" htmlFor="beef2">
-                        牛肉
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="horseMeat2"
-                      />
-                      <label className="form-check-label" htmlFor="horseMeat2">
-                        馬肉
-                      </label>
-                    </div>
-                  </li>
-                  <li className="text-gray-01 list-group ps-1 mb-1 border-bottom rounded-0">
-                    <p>風格</p>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="cuteStyle2"
-                      />
-                      <label className="form-check-label" htmlFor="cuteStyle2">
-                        可愛風
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="forestStyle2"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="forestStyle2"
-                      >
-                        森林風
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="battleStyle2"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="battleStyle2"
-                      >
-                        戰鬥風
-                      </label>
-                    </div>
-                  </li>
-                  <li className="text-gray-01 list-group ps-1">
-                    <p>用品</p>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="cleaning2"
-                      />
-                      <label className="form-check-label" htmlFor="cleaning2">
-                        清潔
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="ball2"
-                      />
-                      <label className="form-check-label" htmlFor="ball2">
-                        球
-                      </label>
-                    </div>
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
 
@@ -846,9 +486,13 @@ function ProductList() {
 
           <div className="col-md-9">
             <div className="row">
-              <div className="d-flex justify-content-start  flex-wrap product-cards ">
+              <div className="d-flex justify-content-center justify-content-md-start  flex-wrap product-cards ">
                 {products.map((product) => (
-                  <div className="product-card px-2 mt-1" key={product.id}>
+                  <Link
+                    to={`/product/${product.id}`}
+                    className="product-card px-2 mt-1"
+                    key={product.id}
+                  >
                     <div className="product-tumb d-flex justify-content-center align-items-end">
                       <img src={product.imageUrl} alt={product.title} />
                     </div>
@@ -858,41 +502,20 @@ function ProductList() {
                           {product.description}
                         </span>
                         <h4>
-                          <Link to={`/product/${product.id}`}>
+                          <div className="h6 text-gray-01 fw-bold ">
                             {product.title}
-                          </Link>
+                          </div>
                         </h4>
                       </div>
                       <div className="product-bottom-details">
                         <div className="product-price text-brand-01">
-                          <p>${product.price}</p>
-                        </div>
-                        <div className="product-links">
-                          <button
-                            onClick={() => toggleWishListItem(product.id)}
-                            type="button"
-                            className="btn border-0 wishlist-btn"
-                            data-wishlisted={
-                              wishList[product.id] ? "true" : "false"
-                            }
-                          >
-                            <i
-                              className="
-                               bi bi-bookmark-heart-fill"
-                            ></i>
-                          </button>
+                          <p>NT${product.price}</p>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
-              {/* <div className="pt-9">
-                <Paginationss
-                  pageInfo={pageInfo}
-                  handlePageChange={handlePageChange}
-                />
-              </div> */}
             </div>
           </div>
         </div>

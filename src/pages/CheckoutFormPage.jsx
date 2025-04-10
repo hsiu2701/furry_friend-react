@@ -20,7 +20,7 @@ export default function Checkout() {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
     handleSubmit,
   } = useForm({
@@ -173,12 +173,6 @@ export default function Checkout() {
                     <h3 className="checkout-containercontentbox2title2">
                       購物車摘要
                     </h3>
-                    <Link
-                      to="/cart"
-                      className="btn btn-outline-secondary btn-sm"
-                    >
-                      編輯購物車
-                    </Link>
                   </div>
                   <div
                     className="checkout-vertical-group"
@@ -368,28 +362,49 @@ export default function Checkout() {
             )}
 
             {/* 提交按鈕區域 - 固定在表單下方 */}
-            {!isCartEmpty && (
-              <div className="d-flex w-100 px-4  mb-4 justify-content-end">
-                <Link to="/cart" className="btn btn-outline-secondary">
-                  返回購物車
-                </Link>
+            <div className="d-flex w-100 px-4 mb-4 justify-content-end">
+              <Link to="/cart" className="btn-brand outline me-2">
+                返回購物車
+              </Link>
 
-                <button
-                  type="button"
-                  className="checkout-submit-button d-flex align-items-center justify-content-center"
-                  style={{
-                    border: "none",
-                    width: "auto",
-                    padding: "0.5rem 1.5rem",
-                    height: "50px",
-                    margin: "0",
+              {isValid ? (
+                <Link
+                  to="/checkout-payment"
+                  className="btn-brand solid ms-2"
+                  onClick={() => {
+                    const formData = {
+                      user: {
+                        name: formValues.name,
+                        email: formValues.email,
+                        tel: formValues.phone,
+                        address: formValues.address,
+                      },
+                      message: formValues.message || "",
+                    };
+
+                    sessionStorage.setItem(
+                      "currentOrder",
+                      JSON.stringify({
+                        orderId: tempOrderId,
+                        orderData: formData,
+                        total: cartData.final_total,
+                        timestamp: new Date().getTime(),
+                      })
+                    );
                   }}
-                  onClick={handleSubmit(onSubmit, onError)}
                 >
                   下一步
-                </button>
-              </div>
-            )}
+                </Link>
+              ) : (
+                <span
+                  className="btn-brand solid ms-2 disabled-link"
+                  aria-disabled="true"
+                  title="請先填寫正確的表單資料"
+                >
+                  下一步
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </section>
