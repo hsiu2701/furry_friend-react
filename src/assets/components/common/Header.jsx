@@ -15,10 +15,6 @@ export default function Header() {
       showInMobile: true,
     },
   ];
-  // const routes = [
-  //   { path: "/Members", name: "會員" },
-  //   { path: "/cart", name: "購物車" },
-  // ];
 
   const carts = useSelector((state) => state.cart.carts);
   const cartCount = carts.reduce((total, item) => total + item.qty, 0);

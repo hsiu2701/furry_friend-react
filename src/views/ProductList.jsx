@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
@@ -25,39 +25,34 @@ function ProductList() {
     categoryFromUrl || "全部"
   );
 
-  const getProducts = useCallback(
-    async (page = 1) => {
-      if (loading) return;
-      setLoading(true);
-      try {
-        const params = { page };
-        if (selectedCategory !== "全部") {
-          params.category = selectedCategory;
-        }
-
-        const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
-          params,
-        });
-
-        setProducts((prevProducts) =>
-          page === 1
-            ? res.data.products
-            : [...prevProducts, ...res.data.products]
-        );
-        setPageInfo(res.data.pagination);
-      } catch (error) {
-        console.error("取得產品失敗", error);
-      } finally {
-        setLoading(false);
+  const getProducts = async (page = 1) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const params = { page };
+      if (selectedCategory !== "全部") {
+        params.category = selectedCategory;
       }
-    },
-    [selectedCategory, loading]
-  );
+
+      const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
+        params,
+      });
+
+      setProducts((prevProducts) =>
+        page === 1 ? res.data.products : [...prevProducts, ...res.data.products]
+      );
+      setPageInfo(res.data.pagination);
+    } catch (error) {
+      console.error("取得產品失敗", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   //取得資料
   useEffect(() => {
     getProducts(1);
-  }, [getProducts]);
+  }, [selectedCategory]);
 
   //滾動產品
   useEffect(() => {
@@ -74,7 +69,7 @@ function ProductList() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pageInfo, loading, getProducts]);
+  }, [pageInfo, loading]);
 
   //  BANNER
   const categoryMappings = {
@@ -521,12 +516,6 @@ function ProductList() {
                   </Link>
                 ))}
               </div>
-              {/* <div className="pt-9">
-                <Paginationss
-                  pageInfo={pageInfo}
-                  handlePageChange={handlePageChange}
-                />
-              </div> */}
             </div>
           </div>
         </div>

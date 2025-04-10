@@ -6,7 +6,7 @@ export default function CheckoutSuccess() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 從 sessionStorage 獲取訂單資料並清除購物車
+  // 從獲取訂單資料並清除購物車
   useEffect(() => {
     try {
       const storedOrderData = sessionStorage.getItem("currentOrder");
@@ -35,7 +35,7 @@ export default function CheckoutSuccess() {
       setTimeout(() => {
         localStorage.removeItem("checkoutInfo");
         sessionStorage.removeItem("currentOrder");
-      }, 10000); // 10秒後清除
+      }, 10000);
 
       setLoading(false);
     } catch (err) {
@@ -45,11 +45,11 @@ export default function CheckoutSuccess() {
     }
   }, []);
 
-  // 清除結帳資料的函數 - 用於a標籤中的onClick
+  // 清除結帳資料的函數
   const clearCheckoutData = () => {
     sessionStorage.removeItem("currentOrder");
     localStorage.removeItem("checkoutInfo");
-    localStorage.removeItem("cartItems"); // 確保購物車也被清除
+    localStorage.removeItem("cartItems");
   };
 
   // 計算日期格式

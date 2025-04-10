@@ -1,4 +1,3 @@
-/* 讓 padding 與 border 計入寬度 */
 * {
   box-sizing: border-box;
 }
@@ -36,10 +35,10 @@
 
 .banner .container {
   padding: 40px 0;
-  margin: 40px 312px;
-  width: 100%;
+  margin: 40px auto;
+  width: 90%;
   max-width: 1296px;
-  border-radius: 20px;
+  border-radius: 24px;
   gap: 80px;
   background-color: rgba(243, 217, 216, 1);
 }
@@ -54,7 +53,6 @@
   border-bottom: 0.89px solid;
   background-color: rgba(243, 217, 216, 1);
   border: none;
-  gap: 80px;
 }
 
 .banner .container > .containerbanner > .containerbannertext {
@@ -73,7 +71,7 @@
   align-items: center;
   position: relative;
   margin: 80px auto 40px;
-  width: 100%;
+  width: 90%;
   max-width: 1192px;
   gap: 32px;
   border-radius: 24px;
@@ -114,7 +112,7 @@
   > .containercontentbox2text {
   display: flex;
   flex-direction: column;
-  width: 836px;
+  width: 80%;
   background-color: white;
 }
 //會員管理title
@@ -129,6 +127,7 @@
   font-size: 28px;
   font-family: "noto sans tc";
   color: black;
+  margin-bottom: 15px;
 }
 
 .banner
@@ -155,11 +154,10 @@
   flex-direction: column;
   width: 836px;
   border: 1px solid rgba(242, 160, 158, 1);
-  border-radius: 20px;
+  border-radius: 24px;
   gap: 0px;
 }
 
-/* 垂直排列的群組，內部每行間隔 8px */
 .vertical-group {
   color: black;
   font-weight: 500;
@@ -167,53 +165,144 @@
   font-family: "noto sans tc";
   display: flex;
   flex-direction: column;
-  gap: 0px;
-  margin-bottom: 10px; // 如需要更明顯的組與組間距，可調整此值
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
-/* 性別設定 水平排列的群組，內部元素之間間距 8px */
 .radio-group {
   display: flex;
   gap: 15px;
 }
 
-/* 出生年月日設定 水平排列的群組，內部元素之間間距 8px */
 .horizontal-group {
   display: flex;
+
   align-items: center;
   gap: 15px;
 }
 
 /* 輸入框 */
 .inputbox {
+  width: 100%;
   border-radius: 4px;
   border: 2px solid rgba(136, 136, 136, 1);
+  padding: 8px 12px;
+}
+
+.inputbox-birthday {
+  width: 60vh;
+}
+
+.input-gender {
+  width: 20vh;
 }
 
 .input-container {
   position: relative;
-  margin-bottom: 0.5rem; /* 可調整間距 */
+  margin-bottom: 16px;
 }
 
 .error-text {
   position: absolute;
   right: 10px;
-  bottom: -32px; /* 與 input 底線保持約32ㄋpx的距離，可依需求調整 */
+  bottom: -32px;
   font-size: 14px;
 }
 
 /* 按鈕 */
 .submit-button {
-  width: 104px;
-  height: 50px;
-  border: none;
-  border-radius: 100px;
   background-color: rgba(231, 173, 172, 1);
   margin-left: -80px;
-  margin-top: 977px;
-  margin-bottom: 40px;
-  font-weight: 500;
-  font-size: 20px;
-  font-family: "noto sans tc";
+  margin-top: 1150px;
   color: white;
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e7adac;
+}
+
+@media (max-width: 1317px) {
+  .submit-button {
+    margin: 40px auto 0;
+    display: block;
+  }
+
+  .banner .container > .containercontentbox {
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+  }
+}
+@media (max-width: 792px) {
+  .inputbox-birthday {
+    max-width: 100%;
+  }
+  .day-fs {
+    font-size: 14px;
+  }
+}
+
+/* 響應式：小於 1024px（平板） */
+@media (max-width: 1024px) {
+  .banner .container {
+    margin: 40px auto;
+    padding: 30px 20px;
+    max-width: 90%;
+    gap: 40px;
+  }
+
+  .banner .container > .containerbanner {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .banner .container > .containercontentbox > .dog,
+  .banner .container > .containercontentbox > .cat {
+    display: none;
+  }
+
+  .banner .container > .containercontentbox > .containercontentbox2 {
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .banner
+    .container
+    > .containercontentbox
+    > .containercontentbox2
+    > .containercontentbox2text,
+  .banner
+    .container
+    > .containercontentbox
+    > .containercontentbox2
+    > .containercontentbox2text2 {
+    width: 100%;
+  }
+
+  .input-gender {
+    max-width: 80%;
+  }
+
+  .banner .bannerText {
+    font-size: 48px;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .inputbox-birthday {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .inputbox-birthday select {
+    min-width: 0;
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  .inputbox-birthday label {
+    font-size: 14px;
+  }
 }
