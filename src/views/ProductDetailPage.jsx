@@ -73,62 +73,49 @@ export default function ProductDetailPage() {
       ) : (
         <>
           {/* 商品路徑 */}
-          <nav className="nav text-center">
-            <ol
-              className="breadcrumb mb-0 w-100 justify-content-center"
-              aria-label="breadcrumb"
-            >
+          <nav className="nav">
+            <ol className="breadcrumb mb-0 w-100" aria-label="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="#/">首頁</a>
+                <Link to="/">首頁</Link>
               </li>
 
-              {/* 第一層：貓咪 or 狗狗 */}
-              {product.category?.includes("貓咪") && (
-                <li className="breadcrumb-item">
-                  <a href="#/productlist?category=貓咪">貓貓產品列表</a>
-                </li>
-              )}
-              {product.category?.includes("狗狗") && (
-                <li className="breadcrumb-item">
-                  <a href="#/productlist?category=狗狗">狗狗產品列表</a>
-                </li>
-              )}
-
-              {/* 第二層：分類，如衣服、食品 */}
               {(() => {
-                const categories = product.category?.split(",") || [];
-                const animal = categories.find(
-                  (c) => c === "貓咪" || c === "狗狗"
+                const [animal, type] = (product.category || "").split(",");
+
+                return (
+                  <>
+                    {animal && (
+                      <li className="breadcrumb-item">
+                        <Link
+                          to={`/productlist?category=${encodeURIComponent(
+                            animal
+                          )}`}
+                        >
+                          {animal === "貓咪" ? "貓貓產品列表" : "狗狗產品列表"}
+                        </Link>
+                      </li>
+                    )}
+
+                    {animal && type && (
+                      <li className="breadcrumb-item">
+                        <Link
+                          to={`/productlist?category=${encodeURIComponent(
+                            `${animal},${type}`
+                          )}`}
+                        >
+                          {animal === "貓咪" ? "貓貓" : animal}
+                          {type}
+                        </Link>
+                      </li>
+                    )}
+                  </>
                 );
-                const type = categories.find((c) => c !== animal);
-                return type ? (
-                  <li className="breadcrumb-item">
-                    <a href={`#/productlist?category=${categories.join(",")}`}>
-                      {type}
-                    </a>
-                  </li>
-                ) : null;
               })()}
 
-              {/* 商品名稱 */}
               <li className="breadcrumb-item active" aria-current="page">
                 {product.title}
               </li>
             </ol>
-
-            {/* 返回上一頁按鈕 */}
-            <div className="text-center mt-2">
-              <button
-                onClick={() =>
-                  window.history.length > 1
-                    ? window.history.back()
-                    : (window.location.href = "#/")
-                }
-                className="btn btn-sm btn-outline-secondary"
-              >
-                返回上一頁
-              </button>
-            </div>
           </nav>
 
           {/* 商品主要資訊 */}

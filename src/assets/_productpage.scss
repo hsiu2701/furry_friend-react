@@ -11,14 +11,20 @@ html, body {
 }
 // 路徑
 .breadcrumb {
-  width: 100%;
-  max-width: 1296px; 
+  max-width: 100%;
+  max-width: 1296px;
+  width: 100vw;
   margin: 0 auto;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  height: 69px;
+  font-size: 1rem;
+  overflow-x: auto;                
+  white-space: nowrap;             
+  -webkit-overflow-scrolling: touch;
+  position: relative;
   font-size: 24px;
-  flex-wrap: wrap;
+  z-index: 2;
   a {
     color: $brand-01;
   }
@@ -46,6 +52,7 @@ html, body {
   justify-content: center;
   align-items: center;
   display: flex;
+  margin-top: 1rem
 }
 
 .main-img {

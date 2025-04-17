@@ -152,16 +152,61 @@ function ProductList() {
     };
   }, []);
 
+  const fetchProductsNow = async (categories, page = 1) => {
+    if (loading) return;
+    setLoading(true);
+
+    try {
+      const requests = categories.map((cat) =>
+        axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
+          params: { page, category: cat },
+        })
+      );
+
+      const responses = await Promise.all(requests);
+      let allProducts = [];
+      responses.forEach((res) => {
+        allProducts = allProducts.concat(res.data.products);
+      });
+
+      const hasNext = responses.some((res) => res.data.pagination.has_next);
+      const currentPage = responses[0].data.pagination.current_page;
+
+      setProducts(page === 1 ? allProducts : [...products, ...allProducts]);
+      setPageInfo({ has_next: hasNext, current_page: currentPage });
+    } catch (error) {
+      console.error("取得產品失敗", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // nav
   useEffect(() => {
-    const category =
+    const rawCategory =
       new URLSearchParams(location.search).get("category") || "全部";
-    setSelectedCategory(category);
-    setSubCategory(null); // reset when switching main category
+    const [main, sub] = rawCategory.split(",");
+
+    setSelectedCategory(main || "全部");
+    setSubCategory(sub || null);
+
+    const categoriesToFetch = sub
+      ? main === "全部"
+        ? [`狗狗,${sub}`, `貓咪,${sub}`]
+        : [`${main},${sub}`]
+      : categoryGroups[main] || [];
+
+    fetchProductsNow(categoriesToFetch);
   }, [location.search]);
 
   const handleDesktopClick = (item) => {
+    const category = `${selectedCategory},${item}`;
+    const newUrl = `#/productlist?category=${encodeURIComponent(category)}`;
+
+    window.history.pushState(null, "", newUrl);
+
     setSubCategory(item);
+
     window.scrollTo({ top: 0 });
   };
 
@@ -225,9 +270,21 @@ function ProductList() {
                           <button
                             className="d-block text-gray-02 border-0 btn btn-u"
                             onClick={() => {
+                              const category = `${selectedCategory},${item}`;
+                              const newUrl = `#/productlist?category=${encodeURIComponent(
+                                category
+                              )}`;
+
+                              window.history.pushState(null, "", newUrl);
                               setSubCategory(item);
                               closeOffcanvas();
                               window.scrollTo({ top: 0, behavior: "smooth" });
+
+                              const categoriesToFetch =
+                                selectedCategory === "全部"
+                                  ? [`狗狗,${item}`, `貓咪,${item}`]
+                                  : [`${selectedCategory},${item}`];
+                              fetchProductsNow(categoriesToFetch);
                             }}
                           >
                             {item}
