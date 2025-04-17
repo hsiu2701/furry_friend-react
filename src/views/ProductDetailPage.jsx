@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router"; // 使用 react-router
+import { useParams, Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { updateCartData } from "../redux/cartSlices";
+import { toast } from "react-toastify";
+
 const BASE_URL =
   import.meta.env.VITE_API_URL || "https://ec-course-api.hexschool.io";
 const API_PATH = import.meta.env.VITE_API_PATH || "furry_friend";
@@ -43,10 +45,18 @@ export default function ProductDetailPage() {
           qty: Number(qty),
         },
       });
+
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       dispatch(updateCartData(res.data.data));
+
+      toast.success("已加入購物車！", {
+        position: "top-right",
+        autoClose: 2000,
+      });
     } catch (error) {
-      alert("加入購物車失敗: " + error.message);
+      toast.error("加入購物車失敗: " + error.message, {
+        position: "top-right",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -63,26 +73,66 @@ export default function ProductDetailPage() {
       ) : (
         <>
           {/* 商品路徑 */}
-          <nav className="nav text-white text-center">
-            <ol className="breadcrumb mb-0 w-100" aria-label="breadcrumb">
+          <nav className="nav text-center">
+            <ol
+              className="breadcrumb mb-0 w-100 justify-content-center"
+              aria-label="breadcrumb"
+            >
               <li className="breadcrumb-item">
-                <Link to="/" className="text-white">
-                  首頁
-                </Link>
+                <a href="#/">首頁</a>
               </li>
-              <li className="breadcrumb-item">
-                <Link to="/productlist" className="text-white">
-                  產品列表
-                </Link>
-              </li>
-              <li className="breadcrumb-item" aria-current="page">
-                產品資訊
+
+              {/* 第一層：貓咪 or 狗狗 */}
+              {product.category?.includes("貓咪") && (
+                <li className="breadcrumb-item">
+                  <a href="#/productlist?category=貓咪">貓貓產品列表</a>
+                </li>
+              )}
+              {product.category?.includes("狗狗") && (
+                <li className="breadcrumb-item">
+                  <a href="#/productlist?category=狗狗">狗狗產品列表</a>
+                </li>
+              )}
+
+              {/* 第二層：分類，如衣服、食品 */}
+              {(() => {
+                const categories = product.category?.split(",") || [];
+                const animal = categories.find(
+                  (c) => c === "貓咪" || c === "狗狗"
+                );
+                const type = categories.find((c) => c !== animal);
+                return type ? (
+                  <li className="breadcrumb-item">
+                    <a href={`#/productlist?category=${categories.join(",")}`}>
+                      {type}
+                    </a>
+                  </li>
+                ) : null;
+              })()}
+
+              {/* 商品名稱 */}
+              <li className="breadcrumb-item active" aria-current="page">
+                {product.title}
               </li>
             </ol>
+
+            {/* 返回上一頁按鈕 */}
+            <div className="text-center mt-2">
+              <button
+                onClick={() =>
+                  window.history.length > 1
+                    ? window.history.back()
+                    : (window.location.href = "#/")
+                }
+                className="btn btn-sm btn-outline-secondary"
+              >
+                返回上一頁
+              </button>
+            </div>
           </nav>
 
           {/* 商品主要資訊 */}
-          <div className="container mt-9">
+          <div className="container ">
             <div className="row gx-0 align-items-stretch justify-content-center">
               {/* 左側：商品圖片 */}
               <div className="col-md-6 p-0 img-container d-flex justify-content-center align-items-center">
@@ -96,7 +146,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* 右側：商品資訊 */}
-              <div className="col-md-6 product-info d-flex flex-column justify-content-center">
+              <div className="col-md-6 product-info d-flex flex-column justify-content-start">
                 <h4 className="product-title">{product.title}</h4>
                 <h4 className="product-price mt-4">
                   {product.price !== product.origin_price ? (

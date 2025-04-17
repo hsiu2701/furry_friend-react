@@ -19,10 +19,17 @@ import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import "./assets/_admindashboard.scss";
 import "./assets/_buttons.scss";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const router = createHashRouter(routes);
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <RouterProvider router={router}>{/* <App /> */}</RouterProvider>
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
   </Provider>
 );

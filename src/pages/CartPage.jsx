@@ -14,7 +14,7 @@ export default function CartPage() {
   const dispatch = useDispatch();
 
   // 取得購物車資料
-  const getCart = async () => {
+  const getCart = useCallback(async () => {
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       setCart(res.data.data);
@@ -22,7 +22,7 @@ export default function CartPage() {
     } catch {
       alert("取得購物車列表失敗");
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     getCart();
