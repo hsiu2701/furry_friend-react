@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { clearCartData } from "../redux/cartSlices";
 import LoadingSpinner from "../assets/components/LoadingSpinner.jsx";
+import { Link } from "react-router";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -267,14 +268,14 @@ export default function CheckoutSuccess() {
 
             {/* 操作按鈕 */}
             <div className="action-buttons">
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="btn-brand solid"
                 onClick={clearCheckoutData}
               >
                 <i className="fas fa-home"></i>
                 <span>返回首頁</span>
-              </a>
+              </Link>
             </div>
           </div>
         )}

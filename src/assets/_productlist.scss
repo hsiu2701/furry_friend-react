@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @media (min-width: 768px) {
   .banner-product {
     background-image: url("https://images.unsplash.com/photo-1676135959746-375e6e37c069?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
@@ -5,6 +6,20 @@
     background-size: cover;
     height: 562px;
     background-position: 50% 38%;
+=======
+.banner-product-mt {
+  margin-top: 290px;
+}
+@media (min-width: 768px) {
+  .banner-product-mt {
+    margin-top: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-effect:hover {
+    background-color: #e7adac;
+>>>>>>> dev
   }
 }
 
@@ -48,9 +63,26 @@
   position: relative;
 }
 
+.btn-u {
+  background-color: transparen;
+}
+
+.btn-u:hover {
+  background-color: transparent !important;
+  color: #e7adac !important;
+}
+
 //卡片
+
 .product-cards {
+  justify-content: center;
   gap: 24px;
+}
+
+@media (min-width: 482px) {
+  .product-cards {
+    justify-content: flex-start;
+  }
 }
 
 // 商品按鈕
