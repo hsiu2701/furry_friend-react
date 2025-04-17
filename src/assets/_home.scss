@@ -45,6 +45,19 @@
   }
 }
 
+.banner-text2 {
+  font-size: 2.5rem;
+  text-shadow: 4px 4px #00000040;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .banner-text2 {
+    font-size: 5rem;
+    line-height: 10px;
+  }
+}
+
 // 初衷
 .themes-my {
   margin-top: 146px;

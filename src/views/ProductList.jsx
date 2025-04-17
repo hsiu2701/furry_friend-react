@@ -16,6 +16,15 @@ function ProductList() {
   //追蹤當前頁數
   const [pageInfo, setPageInfo] = useState({});
   const [loading, setLoading] = useState(false);
+  const [subCategory, setSubCategory] = useState(null);
+
+  const closeOffcanvas = () => {
+    const offcanvasEl = document.getElementById("offcanvasTop");
+    const bsOffcanvas = Offcanvas.getInstance(offcanvasEl);
+    if (bsOffcanvas) {
+      bsOffcanvas.hide();
+    }
+  };
 
   // nav
   const location = useLocation();
@@ -25,23 +34,58 @@ function ProductList() {
     categoryFromUrl || "全部"
   );
 
+  //抓分類資料
+  const categoryGroups = {
+    狗狗: ["狗狗,飼料", "狗狗,零食", "狗狗,衣服", "狗狗,玩具"],
+    貓咪: ["貓咪,飼料", "貓咪,零食", "貓咪,衣服", "貓咪,玩具"],
+    全部: [
+      "狗狗,飼料",
+      "貓咪,飼料",
+      "狗狗,零食",
+      "貓咪,零食",
+      "狗狗,衣服",
+      "貓咪,衣服",
+      "狗狗,玩具",
+      "貓咪,玩具",
+    ],
+  };
+
   const getProducts = async (page = 1) => {
     if (loading) return;
     setLoading(true);
+
     try {
-      const params = { page };
-      if (selectedCategory !== "全部") {
-        params.category = selectedCategory;
+      let categories = [];
+
+      if (subCategory) {
+        if (selectedCategory === "全部") {
+          categories = [`狗狗,${subCategory}`, `貓咪,${subCategory}`];
+        } else {
+          categories = [`${selectedCategory},${subCategory}`];
+        }
+      } else {
+        categories = categoryGroups[selectedCategory] || [];
       }
 
-      const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
-        params,
+      const requests = categories.map((cat) =>
+        axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
+          params: { page, category: cat },
+        })
+      );
+
+      const responses = await Promise.all(requests);
+      let allProducts = [];
+      responses.forEach((res) => {
+        allProducts = allProducts.concat(res.data.products);
       });
 
-      setProducts((prevProducts) =>
-        page === 1 ? res.data.products : [...prevProducts, ...res.data.products]
+      const hasNext = responses.some((res) => res.data.pagination.has_next);
+      const currentPage = responses[0].data.pagination.current_page;
+
+      setProducts((prev) =>
+        page === 1 ? allProducts : [...prev, ...allProducts]
       );
-      setPageInfo(res.data.pagination);
+      setPageInfo({ has_next: hasNext, current_page: currentPage });
     } catch (error) {
       console.error("取得產品失敗", error);
     } finally {
@@ -49,11 +93,9 @@ function ProductList() {
     }
   };
 
-  //取得資料
   useEffect(() => {
     getProducts(1);
-  }, [selectedCategory]);
-
+  }, [selectedCategory, subCategory]);
   //滾動產品
   useEffect(() => {
     const handleScroll = () => {
@@ -84,13 +126,17 @@ function ProductList() {
   };
 
   const bannerTitle =
-    categoryMappings[selectedCategory] || selectedCategory || "主打商品";
+    categoryMappings[selectedCategory] ||
+    (selectedCategory === "狗狗"
+      ? "狗狗 "
+      : selectedCategory === "貓咪"
+      ? "貓貓 "
+      : selectedCategory || "全部商品");
 
-  // 商品列表按鈕
+  // 商品列表按鈕自動關閉 offcanvas
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
-        // 當視窗 >=768px (md 以上) 自動關閉 offcanvas
         const offcanvasElement = document.getElementById("offcanvasTop");
         const offcanvasInstance = Offcanvas.getInstance(offcanvasElement);
         if (offcanvasInstance) {
@@ -99,10 +145,8 @@ function ProductList() {
       }
     };
 
-    // 監聽視窗大小變化
     window.addEventListener("resize", handleResize);
 
-    // 清除監聽器
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -110,10 +154,16 @@ function ProductList() {
 
   // nav
   useEffect(() => {
-    if (categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
-    }
-  }, [categoryFromUrl]);
+    const category =
+      new URLSearchParams(location.search).get("category") || "全部";
+    setSelectedCategory(category);
+    setSubCategory(null); // reset when switching main category
+  }, [location.search]);
+
+  const handleDesktopClick = (item) => {
+    setSubCategory(item);
+    window.scrollTo({ top: 0 });
+  };
 
   return (
     <>
@@ -122,7 +172,7 @@ function ProductList() {
         <div className="container">
           <div className="row">
             <div className="banner-dog-mt">
-              <h2 className="text-white text-center benner-style">
+              <h2 className="text-white text-center banner-text2">
                 {bannerTitle}
               </h2>
             </div>
@@ -157,155 +207,36 @@ function ProductList() {
             aria-label="Close"
           ></button>
         </div>
-        <div className=" rounded-3 mobilelist">
+        <div className="  mobilelist">
           <div>
-            <div>
-              <h5 className="ps-4 pt-1 text-gray-01 fw-bold">狗狗</h5>
-              <div className="accordion accordion-flush" id="dogAccordion">
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogOne">
-                    <button
-                      className="accordion-button collapsed  text-gray-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogOne"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogOne"
-                    >
-                      食品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogOne"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogOne"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn  broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,飼料")}
-                      >
-                        飼料
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,零食")}
-                      >
-                        零食
-                      </button>
-                    </div>
+            <div className="accordion accordion-flush" id="dogAccordion">
+              <div>
+                {Object.entries({
+                  食品: ["飼料", "零食"],
+                  用品: ["衣服", "玩具"],
+                }).map(([group, items]) => (
+                  <div key={group} className="accordion-item border-0">
+                    <h6 className="mb-2 text-gray-01 ps-1 fw-medium">
+                      {group}-
+                    </h6>
+                    <ul className="list-unstyled ps-8">
+                      {items.map((item) => (
+                        <li key={item}>
+                          <button
+                            className="d-block text-gray-02 border-0 btn btn-u"
+                            onClick={() => {
+                              setSubCategory(item);
+                              closeOffcanvas();
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                          >
+                            {item}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogTwo">
-                    <button
-                      className="accordion-button collapsed text-gray-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogTwo"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogTwo"
-                    >
-                      用品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogTwo"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogTwo"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,衣服")}
-                      >
-                        衣服
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,玩具")}
-                      >
-                        玩具
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h5 className="ps-4 pt-1 text-black fw-bold">貓貓</h5>
-              <div className="accordion accordion-flush" id="catAccordion">
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingCatOne">
-                    <button
-                      className="accordion-button collapsed text-gray-01 "
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseCatOne"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseCatOne"
-                    >
-                      食品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseCatOne"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingCatOne"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,飼料")}
-                      >
-                        飼料
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,零食")}
-                      >
-                        零食
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingCatTwo">
-                    <button
-                      className="accordion-button collapsed text-gray-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseCatTwo"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseCatTwo"
-                    >
-                      用品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseCatTwo"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingCatTwo"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,衣服")}
-                      >
-                        衣服
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,玩具")}
-                      >
-                        玩具
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -318,165 +249,33 @@ function ProductList() {
           <div className="col col-md-3 d-none d-md-block">
             {/*  電腦版列表 */}
             <div className="border rounded-3 mb-2">
-              <div className="mb-6 list-h ">
-                <h4 className="bg-gray-04 rounded-top text-center">商品列表</h4>
-                <div>
-                  <h5 className="ps-4 pt-1 text-gray-01 fw-bold">狗狗</h5>
-                  <div
-                    className="accordion accordion-flush"
-                    id="dogAccordion-pc"
-                  >
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="flush-headingDogOne">
-                        <button
-                          className="accordion-button collapsed  text-gray-01 mb-1 "
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseDogOne-pc"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseDogOne-pc"
-                        >
-                          食品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseDogOne-pc"
-                        className="accordion-collapse collapse"
-                        aria-labelledby="flush-headingDogOne"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn "
-                            onClick={() => setSelectedCategory("狗狗,飼料")}
-                          >
-                            飼料
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("狗狗,零食")}
-                          >
-                            零食
-                          </button>
-                        </div>
-                      </div>
+              <div className="mb-6 list-h  ">
+                <h4 className="bg-gray-04 rounded-top text-center mb-3">
+                  商品列表
+                </h4>
+                <div className="px-1">
+                  {Object.entries({
+                    食品: ["飼料", "零食"],
+                    用品: ["衣服", "玩具"],
+                  }).map(([group, items]) => (
+                    <div className="accordion-item" key={group}>
+                      <h6 className="mb-2 text-gray-01 fw-medium ps-1">
+                        {group}-
+                      </h6>
+                      <ul className="list-unstyled ps-8">
+                        {items.map((item) => (
+                          <li key={item}>
+                            <button
+                              className="d-block text-gray-02 border-0 btn btn-u"
+                              onClick={() => handleDesktopClick(item)}
+                            >
+                              {item}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="flush-headingDogTwo">
-                        <button
-                          className="accordion-button collapsed text-gray-01"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseDogTwo"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseDogTwo"
-                        >
-                          用品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseDogTwo"
-                        className="accordion-collapse collapse"
-                        aria-labelledby="flush-headingDogTwo"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("狗狗,衣服")}
-                          >
-                            衣服
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("狗狗,玩具")}
-                          >
-                            玩具
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h5 className="ps-4 pt-1 text-black fw-bold">貓貓</h5>
-                  <div
-                    className="accordion accordion-flush"
-                    id="catAccordion-pc"
-                  >
-                    <div className="accordion-item">
-                      <h2
-                        className="accordion-header"
-                        id="flush-headingCatOne-pc"
-                      >
-                        <button
-                          className="accordion-button collapsed text-gray-01 mb-1"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseCatOne"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseCatOne"
-                        >
-                          食品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseCatOne"
-                        className="accordion-collapse collapse"
-                        aria-labelledby="flush-headingCatOne-pc"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn "
-                            onClick={() => setSelectedCategory("貓咪,飼料")}
-                          >
-                            飼料
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn  broduct-btn"
-                            onClick={() => setSelectedCategory("貓咪,零食")}
-                          >
-                            零食
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="flush-headingCatTwo">
-                        <button
-                          className="accordion-button collapsed text-gray-01 "
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseCatTwo"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseCatTwo"
-                        >
-                          用品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseCatTwo"
-                        className="accordion-collapse collapse "
-                        aria-labelledby="flush-headingCatTwo"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("貓咪,衣服")}
-                          >
-                            衣服
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("貓咪,玩具")}
-                          >
-                            玩具
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -486,7 +285,7 @@ function ProductList() {
 
           <div className="col-md-9">
             <div className="row">
-              <div className="d-flex justify-content-center justify-content-md-start  flex-wrap product-cards ">
+              <div className="d-flex   flex-wrap product-cards ">
                 {products.map((product) => (
                   <Link
                     to={`/product/${product.id}`}
