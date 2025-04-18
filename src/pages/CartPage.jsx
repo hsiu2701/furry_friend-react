@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import { useDispatch } from "react-redux";
@@ -26,7 +26,7 @@ export default function CartPage() {
 
   useEffect(() => {
     getCart();
-  }, []);
+  }, [getCart]);
 
   // 移除整個購物車
   const removeCart = async () => {
