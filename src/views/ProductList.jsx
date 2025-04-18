@@ -289,6 +289,9 @@ function ProductList() {
                 {products.map((product) => (
                   <Link
                     to={`/product/${product.id}`}
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                     className="product-card px-2 mt-1"
                     key={product.id}
                   >
@@ -308,7 +311,7 @@ function ProductList() {
                       </div>
                       <div className="product-bottom-details">
                         <div className="product-price text-brand-01">
-                          <p>NT${product.price}</p>
+                          <p>NT$ {product.price.toLocaleString("zh-TW")}</p>
                         </div>
                       </div>
                     </div>

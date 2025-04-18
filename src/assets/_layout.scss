@@ -1,4 +1,25 @@
 // nav
+
+@media (min-width: 992px) {
+  .pt-header {
+    padding-top: 50px;
+  }
+}
+
+.Header-fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: #fff;
+  height: 99px;
+}
+@media (min-width: 992px) {
+  .Header-fixed {
+    height: 150px;
+  }
+}
+
 .logo {
   float: left;
 }
@@ -83,16 +104,9 @@
 }
 
 .badge-i {
-  bottom: 8px;
-  left: 12px;
-}
-
-@media (min-width: 992px) {
-  .badge-i {
-    font-size: 12px;
-    bottom: 8px;
-    left: 12px;
-  }
+  bottom: 15px;
+  left: 14px;
+  font-size: 12px;
 }
 
 .icon-wrapper {

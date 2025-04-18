@@ -91,6 +91,16 @@ function Home() {
     },
   ]);
 
+  useEffect(() => {
+    const headerEl =
+      document.querySelector("header") ||
+      document.querySelector(".logo-style")?.parentElement;
+    const placeholder = document.getElementById("headerPlaceholder");
+    if (headerEl && placeholder) {
+      placeholder.style.height = `${headerEl.offsetHeight}px`;
+    }
+  }, []);
+
   // 精選商品
 
   useEffect(() => {
@@ -108,6 +118,7 @@ function Home() {
 
   return (
     <>
+      <div id="headerPlaceholder"></div>
       {/* banner */}
       <div className="banner-img">
         <div className="container">
@@ -411,6 +422,9 @@ function Home() {
                     <Link
                       to={`/product/${product.id}`}
                       className="product-card px-2 mt-1"
+                      onClick={() =>
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
                     >
                       <div className="product-tumb d-flex justify-content-center align-items-end">
                         <img src={product.imageUrl} alt={product.title} />
@@ -429,7 +443,7 @@ function Home() {
 
                         <div className="product-bottom-details">
                           <div className="product-price text-brand-01">
-                            <p>NT${product.price}</p>
+                            <p>NT$ {product.price.toLocaleString("zh-TW")}</p>
                           </div>
                         </div>
                       </div>
