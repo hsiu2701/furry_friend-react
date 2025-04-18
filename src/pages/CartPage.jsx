@@ -82,7 +82,7 @@ export default function CartPage() {
     typeof value === "number" ? `NT$ ${value.toLocaleString()}` : "NT$ 0";
 
   return (
-    <div className="container-fluid cart-page">
+    <div className="container-fluid cart-page mt-115">
       <div className="container">
         <div className="mt-3">
           <h3 className="mt-3 mb-4">購物車</h3>

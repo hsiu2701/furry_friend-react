@@ -33,6 +33,9 @@ export default function Footer() {
                     <Link
                       className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 link-style haver-brand-01 footer-active"
                       to="/admin"
+                      onClick={() =>
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
                     >
                       後台管理
                     </Link>
@@ -43,15 +46,15 @@ export default function Footer() {
                     聯絡我們 Contact us
                   </h4>
                   <div>
-                    <a
+                    <Link
                       className="haver-brand-01 py-4 ps-4 mb-lg-2 ps-lg-0 py-lg-0 link-style footer-active"
-                      href="tel:+886-1-1111111"
+                      to="tel:+886-1-1111111"
                     >
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         call{" "}
                       </span>
                       服務電話 111-111-111
-                    </a>
+                    </Link>
                     <p className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 text-gray-01">
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         store{" "}
@@ -65,15 +68,15 @@ export default function Footer() {
                     社群媒體 Social Media
                   </h4>
                   <div className="ms-4 ms-lg-0">
-                    <a
+                    <Link
                       className="text-gray-01 media d-inline me-3 mb-lg-2"
-                      href="#"
+                      to=""
                     >
                       <i className="bi-facebook haver-brand-01 footer-active"></i>
-                    </a>
-                    <a className="text-gray-01 media" href="#">
+                    </Link>
+                    <Link className="text-gray-01 media" to="">
                       <i className="bi-instagram haver-brand-01 footer-active"></i>
-                    </a>
+                    </Link>
                   </div>
                 </li>
               </ul>

@@ -30,18 +30,29 @@ export default function Header() {
 
   return (
     <>
-      <div className="bg-white position-relative">
+      <div className="Header-fixed">
         <div className="container ">
           <div className="row">
             <div className="d-flex justify-content-between align-items-center logo position-relative mt-2">
               <h1>
-                <Link className="logo-style" to=""></Link>
+                <Link
+                  className="logo-style"
+                  to=""
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
+                >
+                  毛茸茸的朋友
+                </Link>
               </h1>
               <div className="d-flex align-items-center flex-shrink-0 icon-wrapper">
                 {iconRoutes.map(({ path, icon, showInMobile }) => (
                   <NavLink
                     key={path}
                     to={path}
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                     className={`me-0 me-lg-4 ${
                       !showInMobile ? "d-none d-lg-inline-block" : ""
                     } position-relative`}
@@ -85,7 +96,10 @@ export default function Header() {
                     <Link
                       className="nav-link link-gray-01 fw-bold"
                       to="/productlist?category=狗狗"
-                      onClick={handleNavClick}
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       狗狗
                     </Link>
@@ -95,7 +109,10 @@ export default function Header() {
                     <Link
                       className="nav-link link-gray-01 fw-bold"
                       to="/productlist?category=貓咪"
-                      onClick={handleNavClick}
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       貓貓
                     </Link>
@@ -105,7 +122,10 @@ export default function Header() {
                     <NavLink
                       className="nav-link link-gray-01 fw-bold"
                       to="/productlist?category=全部"
-                      onClick={handleNavClick}
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       全部商品
                     </NavLink>
@@ -115,7 +135,10 @@ export default function Header() {
                     <NavLink
                       className="nav-link link-gray-01 fw-bold register"
                       to=""
-                      onClick={handleNavClick}
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       註冊/登入
                     </NavLink>
