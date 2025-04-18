@@ -81,9 +81,7 @@ export default function Footer() {
             <div className="py-0 py-lg-10 footer-br">
               <div className="d-flex justify-content-between align-items-center flex-wrap">
                 <h2>
-                  <Link className="logo-style" to="">
-                    毛茸茸的朋友
-                  </Link>
+                  <Link className="logo-style" to=""></Link>
                 </h2>
                 <p className="footer-fs footer-w ms-4 ms-lg-0 fw-bold">
                   愛你的毛小孩，如愛你的家人一樣。給牠最好的選擇

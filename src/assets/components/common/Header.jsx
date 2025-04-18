@@ -35,9 +35,7 @@ export default function Header() {
           <div className="row">
             <div className="d-flex justify-content-between align-items-center logo position-relative mt-2">
               <h1>
-                <Link className="logo-style" to="">
-                  毛茸茸的朋友
-                </Link>
+                <Link className="logo-style" to=""></Link>
               </h1>
               <div className="d-flex align-items-center flex-shrink-0 icon-wrapper">
                 {iconRoutes.map(({ path, icon, showInMobile }) => (
