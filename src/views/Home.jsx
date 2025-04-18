@@ -205,6 +205,9 @@ function Home() {
                     <div className="button-container d-flex flex-wrap gap-1">
                       <Link
                         to="/productlist?category=狗狗,飼料"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -223,6 +226,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=狗狗,玩具"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -239,6 +245,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=狗狗,零食"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -255,6 +264,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=狗狗,衣服"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -293,6 +305,9 @@ function Home() {
                     <div className="button-container d-flex flex-wrap gap-1">
                       <Link
                         to="/productlist?category=貓咪,飼料"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center "
                       >
                         <svg
@@ -311,6 +326,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=貓咪,玩具"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -327,6 +345,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=貓咪,零食"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -343,6 +364,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=貓咪,衣服"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
