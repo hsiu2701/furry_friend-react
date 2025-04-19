@@ -241,7 +241,13 @@ export default function CartPage() {
                     className={`btn-brand-lg solid w-100 ${
                       totalQuantity === 0 ? "disabled" : ""
                     }`}
-                    onClick={(e) => totalQuantity === 0 && e.preventDefault()}
+                    onClick={(e) => {
+                      if (totalQuantity === 0) {
+                        e.preventDefault();
+                      } else {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
                   >
                     結帳
                   </Link>

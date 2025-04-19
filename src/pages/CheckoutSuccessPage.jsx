@@ -232,7 +232,10 @@ export default function CheckoutSuccess() {
               <Link
                 to="/"
                 className="btn-brand solid"
-                onClick={clearCheckoutData}
+                onClick={() => {
+                  clearCheckoutData();
+                  window.scrollTo({ top: 0, behavior: "auto" });
+                }}
               >
                 <i className="fas fa-home"></i>
                 <span>返回首頁</span>

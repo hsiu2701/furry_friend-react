@@ -548,6 +548,7 @@ export default function CheckoutPayment() {
                     setFormErrors(validationErrors);
                     alert("請填寫所有必填欄位");
                   } else {
+                    window.scrollTo({ top: 0, behavior: "auto" });
                     handlePaymentSubmit(e);
                   }
                 }}
