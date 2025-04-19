@@ -97,7 +97,10 @@ export default function CartPage() {
                     <th scope="col" className="border-0">
                       數量
                     </th>
-                    <th scope="col" className="border-0">
+                    <th
+                      scope="col"
+                      className="price-header border-0 text-center"
+                    >
                       價格
                     </th>
                     <th scope="col" className="border-0"></th>
@@ -120,8 +123,7 @@ export default function CartPage() {
                         </p>
                       </th>
                       <td className="border-0 align-middle">
-                        <div className="input-group flex-nowrap quantity-group">
-                          {/* 減少數量 */}
+                        <div className="quantity-group">
                           <button
                             onClick={() =>
                               updateCartItem(
@@ -130,21 +132,20 @@ export default function CartPage() {
                                 cartItem.qty - 1
                               )
                             }
-                            className="btn p-0 border-0 shadow-none d-flex align-items-center justify-content-center"
+                            className="btn-quantity btn-decrease"
                             type="button"
+                            disabled={cartItem.qty <= 1}
                           >
                             <i className="bi bi-dash"></i>
                           </button>
 
-                          {/* 數量輸入框 */}
                           <input
                             type="text"
-                            className="form-control text-center border-0 shadow-none text-dark p-0"
+                            className="quantity-input"
                             value={cartItem.qty}
                             readOnly
                           />
 
-                          {/* 增加數量 */}
                           <button
                             onClick={() =>
                               updateCartItem(
@@ -153,7 +154,7 @@ export default function CartPage() {
                                 cartItem.qty + 1
                               )
                             }
-                            className="btn p-0 border-0 shadow-none d-flex align-items-center justify-content-center"
+                            className="btn-quantity btn-increase"
                             type="button"
                           >
                             <i className="bi bi-plus"></i>

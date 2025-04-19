@@ -5,9 +5,55 @@
     object-fit: cover;
   }
 
-  .quantity-group {
-    max-width: 120px;
+  th.price-header {
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
   }
+
+  .quantity-group {
+    display: flex;
+    border: 1px solid #BEC2BD; 
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+    height: 40px;
+  }
+  
+  .btn-quantity {
+    width: 40px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #1E1E1E; 
+  
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+  
+  .btn-decrease {
+    border-right: 1px solid #BEC2BD; 
+  }
+  
+  .btn-increase {
+    background-color: #F2A09E; 
+    color: #FFFFFF; 
+  }
+  
+  .quantity-input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    font-size: 1rem;
+    padding: 0;
+    outline: none;
+  }
+  
 }
 
 .mt-115 {
