@@ -33,6 +33,9 @@ export default function Footer() {
                     <Link
                       className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 link-style haver-brand-01 footer-active"
                       to="/admin"
+                      onClick={() =>
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
                     >
                       後台管理
                     </Link>
@@ -43,15 +46,24 @@ export default function Footer() {
                     聯絡我們 Contact us
                   </h4>
                   <div>
-                    <a
+                    <Link
                       className="haver-brand-01 py-4 ps-4 mb-lg-2 ps-lg-0 py-lg-0 link-style footer-active"
+<<<<<<< HEAD
                       href="tel:+886-1-111111"
+=======
+                      to="tel:+886-1-1111111"
+>>>>>>> dev
                     >
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         call{" "}
                       </span>
+<<<<<<< HEAD
                       服務電話 111-111-112
                     </a>
+=======
+                      服務電話 111-111-111
+                    </Link>
+>>>>>>> dev
                     <p className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 text-gray-01">
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         store{" "}
@@ -65,15 +77,15 @@ export default function Footer() {
                     社群媒體 Social Media
                   </h4>
                   <div className="ms-4 ms-lg-0">
-                    <a
+                    <Link
                       className="text-gray-01 media d-inline me-3 mb-lg-2"
-                      href="#"
+                      to=""
                     >
                       <i className="bi-facebook haver-brand-01 footer-active"></i>
-                    </a>
-                    <a className="text-gray-01 media" href="#">
+                    </Link>
+                    <Link className="text-gray-01 media" to="">
                       <i className="bi-instagram haver-brand-01 footer-active"></i>
-                    </a>
+                    </Link>
                   </div>
                 </li>
               </ul>
@@ -81,9 +93,7 @@ export default function Footer() {
             <div className="py-0 py-lg-10 footer-br">
               <div className="d-flex justify-content-between align-items-center flex-wrap">
                 <h2>
-                  <Link className="logo-style" to="">
-                    毛茸茸的朋友
-                  </Link>
+                  <Link className="logo-style" to=""></Link>
                 </h2>
                 <p className="footer-fs footer-w ms-4 ms-lg-0 fw-bold">
                   愛你的毛小孩，如愛你的家人一樣。給牠最好的選擇

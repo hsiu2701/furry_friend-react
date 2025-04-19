@@ -199,7 +199,7 @@ export default function Checkout() {
                         />
                         <div className="order-details">
                           <p className="fw-bold">{item.product.title}</p>
-                          <p>NT${item.final_total.toLocaleString()}</p>
+                          <p>NT$ {item.final_total.toLocaleString()}</p>
                           <p className="fw-bold">x{item.qty}</p>
                         </div>
                       </div>
@@ -210,14 +210,14 @@ export default function Checkout() {
                       <tr>
                         <th className="border-0 px-0 pt-4">小計</th>
                         <td className="text-end border-0 px-0 pt-4">
-                          NT${cartData.total.toLocaleString()}
+                          NT$ {cartData.total.toLocaleString()}
                         </td>
                       </tr>
                       {cartData.final_total !== cartData.total && (
                         <tr>
                           <th className="border-0 px-0 pt-0">折扣</th>
                           <td className="text-end border-0 px-0 pt-0 text-danger">
-                            -NT$
+                            -NT${" "}
                             {(
                               cartData.total - cartData.final_total
                             ).toLocaleString()}
@@ -227,7 +227,7 @@ export default function Checkout() {
                       <tr>
                         <th className="border-0 px-0 pt-0">運費</th>
                         <td className="text-end border-0 px-0 pt-0">
-                          {cartData.final_total >= 1000 ? "免運" : "NT$100"}
+                          {cartData.final_total >= 1000 ? "免運" : "NT$ 100"}
                         </td>
                       </tr>
                     </tbody>
@@ -235,7 +235,7 @@ export default function Checkout() {
                   <div className="d-flex justify-content-between mt-4">
                     <p className="h4 fw-bold">總計</p>
                     <p className="h4 fw-bold">
-                      NT$
+                      NT${" "}
                       {(cartData.final_total >= 1000
                         ? cartData.final_total
                         : cartData.final_total + 100

@@ -8,51 +8,27 @@ import Members from "../pages/MembersPage";
 import ProductDetailPage from "../views/ProductDetailPage";
 import CartPage from "../pages/CartPage";
 import AdminDashboard from "../pages/admin/AdminDashboard";
-import { Navigate } from "react-router-dom";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const routes = [
   {
     path: "/",
     element: <Layout />,
     children: [
-      {
-        path: "",
-        element: <Home />,
-      },
-      {
-        path: "productlist",
-        element: <ProductList />,
-      },
-      {
-        path: "product/:id",
-        element: <ProductDetailPage />,
-      },
-      {
-        path: "cart",
-        element: <CartPage />,
-      },
-      {
-        path: "checkout-form",
-        element: <CheckoutFormPage />,
-      },
-      {
-        path: "checkout-payment",
-        element: <CheckoutPaymentPage />,
-      },
-      {
-        path: "checkout-success",
-        element: <CheckoutSuccessPage />,
-      },
-      {
-        path: "members",
-        element: <Members />,
-      },
-      {
-        path: "admin",
-        element: <AdminDashboard />,
-      },
-      { path: "*", element: <Navigate to="/" replace /> },
+      { path: "", element: <Home /> },
+      { path: "productlist", element: <ProductList /> },
+      { path: "product/:id", element: <ProductDetailPage /> },
+      { path: "cart", element: <CartPage /> },
+      { path: "checkout-form", element: <CheckoutFormPage /> },
+      { path: "checkout-payment", element: <CheckoutPaymentPage /> },
+      { path: "checkout-success", element: <CheckoutSuccessPage /> },
+      { path: "members", element: <Members /> },
+      { path: "admin", element: <AdminDashboard /> },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ];
 

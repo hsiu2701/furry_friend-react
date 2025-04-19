@@ -5,6 +5,7 @@ function Layout() {
   return (
     <>
       <Header />
+      <div className="pt-header" />
       <Outlet />
       <Footer />
     </>
