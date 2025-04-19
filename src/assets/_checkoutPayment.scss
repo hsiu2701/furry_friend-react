@@ -94,13 +94,9 @@
 }
 
 .checkout-payment-step-circle.active {
-  background-color: #e7adac;
-}
-
-.checkout-payment-step-check {
-  color: #fff;
-  font-size: 16px;
-  display: none;
+  background-color: #f2a09e;
+  border-color: rgba(231, 173, 172, 1);
+  color: #ffffff;
 }
 
 .checkout-payment-step-circle.active .checkout-payment-step-check {

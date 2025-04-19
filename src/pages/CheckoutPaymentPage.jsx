@@ -187,9 +187,7 @@ export default function CheckoutPayment() {
         <div className="checkout-payment-containerbanner">
           <ul className="checkout-payment-step-list">
             <li className="checkout-payment-step-item active">
-              <div className="checkout-payment-step-circle active">
-                <i className="fas fa-check checkout-payment-step-check"></i>
-              </div>
+              <div className="checkout-payment-step-circle active">1</div>
               <span className="checkout-payment-step-text">確認資訊</span>
             </li>
             <li className="checkout-payment-step-item active">
@@ -253,13 +251,13 @@ export default function CheckoutPayment() {
                     <tr>
                       <th className="border-0 px-0 pt-4">小計</th>
                       <td className="text-end border-0 px-0 pt-4">
-                        NT${orderData.total?.toLocaleString()}
+                        NT$ {orderData.total?.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
                       <th className="border-0 px-0 pt-0">運費</th>
                       <td className="text-end border-0 px-0 pt-0">
-                        {orderData.total >= 1000 ? "免運" : "NT$100"}
+                        {orderData.total >= 1000 ? "免運" : "NT$ 100"}
                       </td>
                     </tr>
                     <tr>
@@ -273,7 +271,7 @@ export default function CheckoutPayment() {
                 <div className="d-flex justify-content-between mt-4">
                   <p className="h4 fw-bold">總計</p>
                   <p className="h4 fw-bold">
-                    NT$
+                    NT${" "}
                     {(orderData.total >= 1000
                       ? orderData.total
                       : orderData.total + 100

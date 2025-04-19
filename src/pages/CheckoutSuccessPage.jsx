@@ -87,20 +87,6 @@ export default function CheckoutSuccess() {
 
   return (
     <section className="order-success-section">
-      {/* Banner */}
-      <div
-        className="order-success-banner"
-        style={{
-          backgroundImage: 'url("./banner.png")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="order-success-title">
-          {error ? "訂單失敗" : "訂單完成"}
-        </div>
-      </div>
-
       {/* 錯誤訊息 */}
       {error && (
         <div className="error-message">
@@ -114,30 +100,6 @@ export default function CheckoutSuccess() {
       )}
 
       <div className="order-success-container">
-        {/* 步驟列表 */}
-        <div className="progress-steps">
-          <ul className="step-list">
-            <li className="step-item active">
-              <div className="step-circle">
-                <i className="fas fa-check"></i>
-              </div>
-              <span className="step-text">確認資訊</span>
-            </li>
-            <li className="step-item active">
-              <div className="step-circle">
-                <i className="fas fa-check"></i>
-              </div>
-              <span className="step-text">付款方式</span>
-            </li>
-            <li className="step-item active">
-              <div className="step-circle">
-                <i className="fas fa-check"></i>
-              </div>
-              <span className="step-text">完成訂購</span>
-            </li>
-          </ul>
-        </div>
-
         {/* 主要內容區塊 */}
         {orderData && (
           <div className="order-success-content">
