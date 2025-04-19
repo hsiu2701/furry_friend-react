@@ -14,7 +14,7 @@ export default function CartPage() {
   const dispatch = useDispatch();
 
   // 取得購物車資料
-  const getCart = async () => {
+  const getCart = useCallback(async () => {
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       setCart(res.data.data);
@@ -22,11 +22,11 @@ export default function CartPage() {
     } catch {
       alert("取得購物車列表失敗");
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     getCart();
-  }, []);
+  }, [getCart]);
 
   // 移除整個購物車
   const removeCart = async () => {
@@ -82,7 +82,7 @@ export default function CartPage() {
     typeof value === "number" ? `NT$ ${value.toLocaleString()}` : "NT$ 0";
 
   return (
-    <div className="container-fluid cart-page">
+    <div className="container-fluid cart-page mt-115">
       <div className="container">
         <div className="mt-3">
           <h3 className="mt-3 mb-4">購物車</h3>

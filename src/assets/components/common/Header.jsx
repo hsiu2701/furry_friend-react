@@ -19,14 +19,29 @@ export default function Header() {
   const carts = useSelector((state) => state.cart.carts);
   const cartCount = carts.reduce((total, item) => total + item.qty, 0);
 
+  //漢堡收起選單
+  const handleNavClick = () => {
+    const toggler = document.querySelector(".navbar-toggler");
+    const menu = document.getElementById("navbarSupportedContent");
+    if (toggler && menu && menu.classList.contains("show")) {
+      toggler.click();
+    }
+  };
+
   return (
     <>
-      <div className="bg-white position-relative">
+      <div className="Header-fixed">
         <div className="container ">
           <div className="row">
             <div className="d-flex justify-content-between align-items-center logo position-relative mt-2">
               <h1>
-                <Link className="logo-style" to="">
+                <Link
+                  className="logo-style"
+                  to=""
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
+                >
                   毛茸茸的朋友
                 </Link>
               </h1>
@@ -35,6 +50,9 @@ export default function Header() {
                   <NavLink
                     key={path}
                     to={path}
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                     className={`me-0 me-lg-4 ${
                       !showInMobile ? "d-none d-lg-inline-block" : ""
                     } position-relative`}
@@ -74,108 +92,42 @@ export default function Header() {
                 id="navbarSupportedContent"
               >
                 <ul className="navbar-nav w-100 justify-content-lg-center d-lg-flex nav-gap pt-8 pt-lg-0">
-                  <li className="nav-item dropdown  text-center">
+                  <li className="nav-item text-center ">
                     <Link
-                      className="nav-link dropdown-toggle link-gray-01 fw-bold"
-                      to=""
-                      id="navbarDropdown"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
+                      className="nav-link link-gray-01 fw-bold "
+                      to="/productlist?category=狗狗"
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       狗狗
                     </Link>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="navbarDropdown"
-                    >
-                      <li>
-                        <p className="link-gray-01 ps-3">食品—</p>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=狗狗,飼料"
-                        >
-                          飼料
-                        </NavLink>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=狗狗,零食"
-                        >
-                          零食
-                        </NavLink>
-                      </li>
-                      <li>
-                        <p className="link-gray-01 ps-3">用品—</p>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=狗狗,玩具"
-                        >
-                          玩具
-                        </NavLink>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=狗狗,衣服"
-                        >
-                          衣服
-                        </NavLink>
-                      </li>
-                    </ul>
                   </li>
 
-                  <li className="nav-item dropdown text-center">
+                  <li className="nav-item text-center">
                     <Link
-                      className="nav-link dropdown-toggle link-gray-01 fw-bold"
-                      to=""
-                      id="navbarDropdown2"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
+                      className="nav-link link-gray-01 fw-bold"
+                      to="/productlist?category=貓咪"
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       貓貓
                     </Link>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="navbarDropdown2"
-                    >
-                      <li>
-                        <p className="ps-3 link-gray-01">食品—</p>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=貓咪,飼料"
-                        >
-                          飼料
-                        </NavLink>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=貓咪,零食"
-                        >
-                          零食
-                        </NavLink>
-                      </li>
-                      <li>
-                        <p className="ps-3 link-gray-01">用品—</p>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=貓咪,玩具"
-                        >
-                          玩具
-                        </NavLink>
-                        <NavLink
-                          className="dropdown-item link-gray-01 ps-8"
-                          to="/productlist?category=貓咪,衣服"
-                        >
-                          衣服
-                        </NavLink>
-                      </li>
-                    </ul>
                   </li>
 
                   <li className="nav-item text-center">
                     <NavLink
                       className="nav-link link-gray-01 fw-bold"
                       to="/productlist?category=全部"
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
-                      主打商品
+                      全部商品
                     </NavLink>
                   </li>
 
@@ -183,6 +135,10 @@ export default function Header() {
                     <NavLink
                       className="nav-link link-gray-01 fw-bold register"
                       to=""
+                      onClick={(e) => {
+                        handleNavClick(e);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       註冊/登入
                     </NavLink>

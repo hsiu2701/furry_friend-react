@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router";
-import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
@@ -16,7 +16,17 @@ function ProductList() {
   //追蹤當前頁數
   const [pageInfo, setPageInfo] = useState({});
   const [loading, setLoading] = useState(false);
-
+  const [subCategory, setSubCategory] = useState(null);
+  const lastRequestedTimeRef = useRef(0);
+  const loadingRef = useRef(false);
+  const closeOffcanvas = () => {
+    const offcanvasEl = document.getElementById("offcanvasTop");
+    const bsOffcanvas = Offcanvas.getInstance(offcanvasEl);
+    if (bsOffcanvas) {
+      bsOffcanvas.hide();
+    }
+  };
+  const navigate = useNavigate();
   // nav
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -25,34 +35,75 @@ function ProductList() {
     categoryFromUrl || "全部"
   );
 
-  const getProducts = async (page = 1) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const params = { page };
-      if (selectedCategory !== "全部") {
-        params.category = selectedCategory;
+  //抓分類資料
+  const categoryGroups = useMemo(
+    () => ({
+      狗狗: ["狗狗,飼料", "狗狗,零食", "狗狗,衣服", "狗狗,玩具"],
+      貓咪: ["貓咪,飼料", "貓咪,零食", "貓咪,衣服", "貓咪,玩具"],
+      全部: [
+        "狗狗,飼料",
+        "貓咪,飼料",
+        "狗狗,零食",
+        "貓咪,零食",
+        "狗狗,衣服",
+        "貓咪,衣服",
+        "狗狗,玩具",
+        "貓咪,玩具",
+      ],
+    }),
+    []
+  );
+
+  const getProducts = useCallback(
+    async (page = 1, cat = selectedCategory, sub = subCategory) => {
+      const now = Date.now();
+      if (loading || now - lastRequestedTimeRef.current < 1000) return;
+      lastRequestedTimeRef.current = now;
+
+      setLoading(true);
+      try {
+        const categories = sub
+          ? cat === "全部"
+            ? [`狗狗,${sub}`, `貓咪,${sub}`]
+            : [`${cat},${sub}`]
+          : categoryGroups[cat] || [];
+
+        const responses = await Promise.all(
+          categories.map((cat) =>
+            axios
+              .get(`${API_URL}/v2/api/${API_PATH}/products`, {
+                params: { page, category: cat },
+              })
+              .catch((err) => {
+                console.warn("某個類別取得失敗", cat, err);
+                return null; // 讓失敗的請求不爆錯
+              })
+          )
+        );
+
+        const allProducts = responses
+          .filter((res) => res && res.data && res.data.products)
+          .flatMap((res) => res.data.products);
+
+        const hasNext = responses.some(
+          (res) => res?.data?.pagination?.has_next
+        );
+        const currentPage =
+          responses.find((res) => res?.data?.pagination)?.data.pagination
+            .current_page || 1;
+
+        setProducts((prev) =>
+          page === 1 ? allProducts : [...prev, ...allProducts]
+        );
+        setPageInfo({ has_next: hasNext, current_page: currentPage });
+      } catch (error) {
+        console.error("取得產品失敗", error);
+      } finally {
+        setLoading(false);
       }
-
-      const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
-        params,
-      });
-
-      setProducts((prevProducts) =>
-        page === 1 ? res.data.products : [...prevProducts, ...res.data.products]
-      );
-      setPageInfo(res.data.pagination);
-    } catch (error) {
-      console.error("取得產品失敗", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //取得資料
-  useEffect(() => {
-    getProducts(1);
-  }, [selectedCategory]);
+    },
+    [loading, selectedCategory, subCategory, categoryGroups]
+  );
 
   //滾動產品
   useEffect(() => {
@@ -69,7 +120,7 @@ function ProductList() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pageInfo, loading]);
+  }, [pageInfo, loading, getProducts]);
 
   //  BANNER
   const categoryMappings = {
@@ -84,13 +135,17 @@ function ProductList() {
   };
 
   const bannerTitle =
-    categoryMappings[selectedCategory] || selectedCategory || "主打商品";
+    categoryMappings[selectedCategory] ||
+    (selectedCategory === "狗狗"
+      ? "狗狗 "
+      : selectedCategory === "貓咪"
+      ? "貓貓 "
+      : selectedCategory || "全部商品");
 
-  // 商品列表按鈕
+  // 商品列表按鈕自動關閉 offcanvas
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
-        // 當視窗 >=768px (md 以上) 自動關閉 offcanvas
         const offcanvasElement = document.getElementById("offcanvasTop");
         const offcanvasInstance = Offcanvas.getInstance(offcanvasElement);
         if (offcanvasInstance) {
@@ -99,21 +154,86 @@ function ProductList() {
       }
     };
 
-    // 監聽視窗大小變化
     window.addEventListener("resize", handleResize);
 
-    // 清除監聽器
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   // nav
+
   useEffect(() => {
-    if (categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
-    }
-  }, [categoryFromUrl]);
+    const rawCategory =
+      new URLSearchParams(location.search).get("category") || "全部";
+    const [main, sub] = rawCategory.split(",");
+
+    setSelectedCategory(main || "全部");
+    setSubCategory(sub || null);
+
+    const now = Date.now();
+    if (loadingRef.current || now - lastRequestedTimeRef.current < 1000) return;
+    lastRequestedTimeRef.current = now;
+    loadingRef.current = true;
+
+    const categories = sub
+      ? main === "全部"
+        ? [`狗狗,${sub}`, `貓咪,${sub}`]
+        : [`${main},${sub}`]
+      : categoryGroups[main] || [];
+
+    setLoading(true);
+    Promise.all(
+      categories.map((cat) =>
+        axios
+          .get(`${API_URL}/v2/api/${API_PATH}/products`, {
+            params: { page: 1, category: cat },
+          })
+          .catch((err) => {
+            console.warn("某個類別取得失敗", cat, err);
+            return null;
+          })
+      )
+    )
+      .then((responses) => {
+        const allProducts = responses
+          .filter((res) => res?.data?.products)
+          .flatMap((res) => res.data.products);
+        const hasNext = responses.some(
+          (res) => res?.data?.pagination?.has_next
+        );
+        const currentPage =
+          responses.find((res) => res?.data?.pagination)?.data.pagination
+            .current_page || 1;
+
+        setProducts(allProducts);
+        setPageInfo({ has_next: hasNext, current_page: currentPage });
+      })
+      .catch((error) => {
+        console.error("取得產品失敗", error);
+      })
+      .finally(() => {
+        setLoading(false);
+        loadingRef.current = false;
+      });
+  }, [location.search, categoryGroups]);
+
+  const handleDesktopClick = (item) => {
+    const category = `${selectedCategory},${item}`;
+    const newUrl = `#/productlist?category=${encodeURIComponent(category)}`;
+
+    window.location.href = newUrl;
+
+    setSubCategory(item);
+
+    window.scrollTo({ top: 0 });
+  };
+
+  useEffect(() => {
+    getProducts(1);
+  }, [getProducts]);
+
+  //bb
 
   return (
     <>
@@ -122,7 +242,7 @@ function ProductList() {
         <div className="container">
           <div className="row">
             <div className="banner-dog-mt">
-              <h2 className="text-white text-center benner-style">
+              <h2 className="text-white text-center banner-text2">
                 {bannerTitle}
               </h2>
             </div>
@@ -157,155 +277,42 @@ function ProductList() {
             aria-label="Close"
           ></button>
         </div>
-        <div className=" rounded-3 mobilelist">
+        <div className="  mobilelist">
           <div>
-            <div>
-              <h5 className="ps-4 pt-1 text-gray-01 fw-bold">狗狗</h5>
-              <div className="accordion accordion-flush" id="dogAccordion">
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogOne">
-                    <button
-                      className="accordion-button collapsed  text-gray-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogOne"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogOne"
-                    >
-                      食品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogOne"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogOne"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn  broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,飼料")}
-                      >
-                        飼料
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,零食")}
-                      >
-                        零食
-                      </button>
-                    </div>
+            <div className="accordion accordion-flush" id="dogAccordion">
+              <div>
+                {Object.entries({
+                  食品: ["飼料", "零食"],
+                  用品: ["衣服", "玩具"],
+                }).map(([group, items]) => (
+                  <div key={group} className="accordion-item border-0">
+                    <h6 className="mb-2 text-gray-01 ps-1 fw-medium">
+                      {group}-
+                    </h6>
+                    <ul className="list-unstyled ps-8">
+                      {items.map((item) => (
+                        <li key={item}>
+                          <button
+                            className="d-block text-gray-02 border-0 btn btn-u"
+                            onClick={() => {
+                              const category = `${selectedCategory},${item}`;
+                              navigate(
+                                `/productlist?category=${encodeURIComponent(
+                                  category
+                                )}`
+                              );
+                              setSubCategory(item);
+                              closeOffcanvas();
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                          >
+                            {item}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingDogTwo">
-                    <button
-                      className="accordion-button collapsed text-gray-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseDogTwo"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseDogTwo"
-                    >
-                      用品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseDogTwo"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingDogTwo"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,衣服")}
-                      >
-                        衣服
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn "
-                        onClick={() => setSelectedCategory("狗狗,玩具")}
-                      >
-                        玩具
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h5 className="ps-4 pt-1 text-black fw-bold">貓貓</h5>
-              <div className="accordion accordion-flush" id="catAccordion">
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingCatOne">
-                    <button
-                      className="accordion-button collapsed text-gray-01 "
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseCatOne"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseCatOne"
-                    >
-                      食品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseCatOne"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingCatOne"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,飼料")}
-                      >
-                        飼料
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,零食")}
-                      >
-                        零食
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="accordion-item">
-                  <h2 className="accordion-header" id="flush-headingCatTwo">
-                    <button
-                      className="accordion-button collapsed text-gray-01"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseCatTwo"
-                      aria-expanded="false"
-                      aria-controls="flush-collapseCatTwo"
-                    >
-                      用品
-                    </button>
-                  </h2>
-                  <div
-                    id="flush-collapseCatTwo"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="flush-headingCatTwo"
-                  >
-                    <div className="accordion-body">
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,衣服")}
-                      >
-                        衣服
-                      </button>
-                      <button
-                        className="d-block text-gray-02 border-0 btn broduct-btn"
-                        onClick={() => setSelectedCategory("貓咪,玩具")}
-                      >
-                        玩具
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -318,165 +325,33 @@ function ProductList() {
           <div className="col col-md-3 d-none d-md-block">
             {/*  電腦版列表 */}
             <div className="border rounded-3 mb-2">
-              <div className="mb-6 list-h ">
-                <h4 className="bg-gray-04 rounded-top text-center">商品列表</h4>
-                <div>
-                  <h5 className="ps-4 pt-1 text-gray-01 fw-bold">狗狗</h5>
-                  <div
-                    className="accordion accordion-flush"
-                    id="dogAccordion-pc"
-                  >
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="flush-headingDogOne">
-                        <button
-                          className="accordion-button collapsed  text-gray-01 mb-1 "
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseDogOne-pc"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseDogOne-pc"
-                        >
-                          食品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseDogOne-pc"
-                        className="accordion-collapse collapse"
-                        aria-labelledby="flush-headingDogOne"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn "
-                            onClick={() => setSelectedCategory("狗狗,飼料")}
-                          >
-                            飼料
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("狗狗,零食")}
-                          >
-                            零食
-                          </button>
-                        </div>
-                      </div>
+              <div className="mb-6 list-h  ">
+                <h4 className="bg-gray-04 rounded-top text-center mb-3">
+                  商品列表
+                </h4>
+                <div className="px-1">
+                  {Object.entries({
+                    食品: ["飼料", "零食"],
+                    用品: ["衣服", "玩具"],
+                  }).map(([group, items]) => (
+                    <div className="accordion-item" key={group}>
+                      <h6 className="mb-2 text-gray-01 fw-medium ps-1">
+                        {group}-
+                      </h6>
+                      <ul className="list-unstyled ps-8">
+                        {items.map((item) => (
+                          <li key={item}>
+                            <button
+                              className="d-block text-gray-02 border-0 btn btn-u"
+                              onClick={() => handleDesktopClick(item)}
+                            >
+                              {item}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="flush-headingDogTwo">
-                        <button
-                          className="accordion-button collapsed text-gray-01"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseDogTwo"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseDogTwo"
-                        >
-                          用品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseDogTwo"
-                        className="accordion-collapse collapse"
-                        aria-labelledby="flush-headingDogTwo"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("狗狗,衣服")}
-                          >
-                            衣服
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("狗狗,玩具")}
-                          >
-                            玩具
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h5 className="ps-4 pt-1 text-black fw-bold">貓貓</h5>
-                  <div
-                    className="accordion accordion-flush"
-                    id="catAccordion-pc"
-                  >
-                    <div className="accordion-item">
-                      <h2
-                        className="accordion-header"
-                        id="flush-headingCatOne-pc"
-                      >
-                        <button
-                          className="accordion-button collapsed text-gray-01 mb-1"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseCatOne"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseCatOne"
-                        >
-                          食品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseCatOne"
-                        className="accordion-collapse collapse"
-                        aria-labelledby="flush-headingCatOne-pc"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn "
-                            onClick={() => setSelectedCategory("貓咪,飼料")}
-                          >
-                            飼料
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn  broduct-btn"
-                            onClick={() => setSelectedCategory("貓咪,零食")}
-                          >
-                            零食
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="accordion-item">
-                      <h2 className="accordion-header" id="flush-headingCatTwo">
-                        <button
-                          className="accordion-button collapsed text-gray-01 "
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#flush-collapseCatTwo"
-                          aria-expanded="false"
-                          aria-controls="flush-collapseCatTwo"
-                        >
-                          用品
-                        </button>
-                      </h2>
-                      <div
-                        id="flush-collapseCatTwo"
-                        className="accordion-collapse collapse "
-                        aria-labelledby="flush-headingCatTwo"
-                      >
-                        <div className="accordion-body">
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("貓咪,衣服")}
-                          >
-                            衣服
-                          </button>
-                          <button
-                            className="d-block text-gray-02 border-0 btn broduct-btn"
-                            onClick={() => setSelectedCategory("貓咪,玩具")}
-                          >
-                            玩具
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -486,10 +361,13 @@ function ProductList() {
 
           <div className="col-md-9">
             <div className="row">
-              <div className="d-flex justify-content-center justify-content-md-start  flex-wrap product-cards ">
+              <div className="d-flex   flex-wrap product-cards ">
                 {products.map((product) => (
                   <Link
                     to={`/product/${product.id}`}
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
                     className="product-card px-2 mt-1"
                     key={product.id}
                   >
@@ -509,7 +387,7 @@ function ProductList() {
                       </div>
                       <div className="product-bottom-details">
                         <div className="product-price text-brand-01">
-                          <p>NT${product.price}</p>
+                          <p>NT$ {product.price.toLocaleString("zh-TW")}</p>
                         </div>
                       </div>
                     </div>

@@ -91,13 +91,23 @@ function Home() {
     },
   ]);
 
+  useEffect(() => {
+    const headerEl =
+      document.querySelector("header") ||
+      document.querySelector(".logo-style")?.parentElement;
+    const placeholder = document.getElementById("headerPlaceholder");
+    if (headerEl && placeholder) {
+      placeholder.style.height = `${headerEl.offsetHeight}px`;
+    }
+  }, []);
+
   // 精選商品
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`);
-        setProducts(res.data.products);
+        setProducts(res.data?.products);
       } catch {
         alert("取得產品失敗");
       }
@@ -108,6 +118,7 @@ function Home() {
 
   return (
     <>
+      <div id="headerPlaceholder"></div>
       {/* banner */}
       <div className="banner-img">
         <div className="container">
@@ -126,7 +137,10 @@ function Home() {
               <button
                 type="button"
                 className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 py-1 px-3 "
-                onClick={() => bannerigate("/productlist")}
+                onClick={() => {
+                  bannerigate("/productlist");
+                  window.scrollTo({ top: 0, behavior: "auto" });
+                }}
               >
                 馬上選購
               </button>
@@ -204,7 +218,10 @@ function Home() {
 
                     <div className="button-container d-flex flex-wrap gap-1">
                       <Link
-                        to="/productlist?category=狗狗,飼料"
+                        to={`/productlist?category=狗狗,飼料`}
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -223,6 +240,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=狗狗,玩具"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -239,6 +259,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=狗狗,零食"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -255,6 +278,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=狗狗,衣服"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -293,6 +319,9 @@ function Home() {
                     <div className="button-container d-flex flex-wrap gap-1">
                       <Link
                         to="/productlist?category=貓咪,飼料"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center "
                       >
                         <svg
@@ -311,6 +340,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=貓咪,玩具"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -327,6 +359,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=貓咪,零食"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -343,6 +378,9 @@ function Home() {
                       </Link>
                       <Link
                         to="/productlist?category=貓咪,衣服"
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "auto" })
+                        }
                         className="btn btn-accessories d-flex align-items-center justify-content-center"
                       >
                         <svg
@@ -411,6 +449,9 @@ function Home() {
                     <Link
                       to={`/product/${product.id}`}
                       className="product-card px-2 mt-1"
+                      onClick={() =>
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
                     >
                       <div className="product-tumb d-flex justify-content-center align-items-end">
                         <img src={product.imageUrl} alt={product.title} />
@@ -429,7 +470,7 @@ function Home() {
 
                         <div className="product-bottom-details">
                           <div className="product-price text-brand-01">
-                            <p>NT${product.price}</p>
+                            <p>NT$ {product.price.toLocaleString("zh-TW")}</p>
                           </div>
                         </div>
                       </div>

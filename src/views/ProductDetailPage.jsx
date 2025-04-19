@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router"; // 使用 react-router
+import { useParams, Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { updateCartData } from "../redux/cartSlices";
+import { toast } from "react-toastify";
+
 const BASE_URL =
   import.meta.env.VITE_API_URL || "https://ec-course-api.hexschool.io";
 const API_PATH = import.meta.env.VITE_API_PATH || "furry_friend";
@@ -43,17 +45,25 @@ export default function ProductDetailPage() {
           qty: Number(qty),
         },
       });
+
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       dispatch(updateCartData(res.data.data));
+
+      toast.success("已加入購物車！", {
+        position: "top-right",
+        autoClose: 2000,
+      });
     } catch (error) {
-      alert("加入購物車失敗: " + error.message);
+      toast.error("加入購物車失敗: " + error.message, {
+        position: "top-right",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="mt-115">
       {isScreenLoading ? (
         <div className="text-center py-5">
           <div className="spinner-border" role="status">
@@ -63,26 +73,53 @@ export default function ProductDetailPage() {
       ) : (
         <>
           {/* 商品路徑 */}
-          <nav className="nav text-white text-center">
+          <nav className="nav">
             <ol className="breadcrumb mb-0 w-100" aria-label="breadcrumb">
               <li className="breadcrumb-item">
-                <Link to="/" className="text-white">
-                  首頁
-                </Link>
+                <Link to="/">首頁</Link>
               </li>
-              <li className="breadcrumb-item">
-                <Link to="/productlist" className="text-white">
-                  產品列表
-                </Link>
-              </li>
-              <li className="breadcrumb-item" aria-current="page">
-                產品資訊
+
+              {(() => {
+                const [animal, type] = (product.category || "").split(",");
+
+                return (
+                  <>
+                    {animal && (
+                      <li className="breadcrumb-item">
+                        <Link
+                          to={`/productlist?category=${encodeURIComponent(
+                            animal
+                          )}`}
+                        >
+                          {animal === "貓咪" ? "貓貓產品列表" : "狗狗產品列表"}
+                        </Link>
+                      </li>
+                    )}
+
+                    {animal && type && (
+                      <li className="breadcrumb-item">
+                        <Link
+                          to={`/productlist?category=${encodeURIComponent(
+                            `${animal},${type}`
+                          )}`}
+                        >
+                          {animal === "貓咪" ? "貓貓" : animal}
+                          {type}
+                        </Link>
+                      </li>
+                    )}
+                  </>
+                );
+              })()}
+
+              <li className="breadcrumb-item active" aria-current="page">
+                {product.title}
               </li>
             </ol>
           </nav>
 
           {/* 商品主要資訊 */}
-          <div className="container mt-9">
+          <div className="container ">
             <div className="row gx-0 align-items-stretch justify-content-center">
               {/* 左側：商品圖片 */}
               <div className="col-md-6 p-0 img-container d-flex justify-content-center align-items-center">
@@ -96,7 +133,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* 右側：商品資訊 */}
-              <div className="col-md-6 product-info d-flex flex-column justify-content-center">
+              <div className="col-md-6 product-info d-flex flex-column justify-content-start">
                 <h4 className="product-title">{product.title}</h4>
                 <h4 className="product-price mt-4">
                   {product.price !== product.origin_price ? (

@@ -7,28 +7,32 @@ html, body {
 
 .nav {
   width: 100%;
-  background-color: $brand-01;
   width: 100vw;
 }
 // 路徑
 .breadcrumb {
-  width: 100%;
-  max-width: 1296px; 
+  max-width: 100%;
+  max-width: 1296px;
+  width: 100vw;
   margin: 0 auto;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  height: 69px;
-  font-size: 24px;
-  flex-wrap: wrap;
+  font-size: 1rem;
+  overflow-x: auto;                
+  white-space: nowrap;             
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 2;
   a {
-    color: $gray-05;
+    color: $brand-01;
   }
   .breadcrumb-item.active {
-    color: $gray-01;
+    color: $brand-01;
     font-weight: bold;
   }
   li.breadcrumb-item::before {
-    color: $gray-05;
+    color: $brand-03;
   }
 }
 
@@ -43,24 +47,36 @@ html, body {
   justify-content: center;
 }
 
+.img-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-top: 1rem
+}
+
 .main-img {
   width: 100%;
+  max-width: 400px;
+  max-height: 360px;
   height: auto;
-  max-height: 100%; 
-  object-fit: contain; 
+  object-fit: contain;
+  display: block;
 }
 
 .product-info {
-  padding: 4rem;
+  padding:0 4rem 4rem;
   color: $gray-01;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.quantity-container {
-  max-width: 180px;
+.quantity-group {
+  width: 100px;
+  flex: 0 0 auto;
 }
+
+
 
 .btn-quantity {
   width: 40px !important;
@@ -144,3 +160,12 @@ td {
   display: block;
   margin: 12px 0 12px 40px;
 } 
+
+.product-sale-price {
+  font-size: 1.875rem; 
+  font-weight: bold;
+}
+
+.product-origin-price {
+  font-size: 1.25rem; 
+}
