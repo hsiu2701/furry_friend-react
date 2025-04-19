@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router";
-import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 
 import axios from "axios";
 import { Offcanvas } from "bootstrap";
@@ -17,7 +17,8 @@ function ProductList() {
   const [pageInfo, setPageInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [subCategory, setSubCategory] = useState(null);
-
+  const lastRequestedTimeRef = useRef(0);
+  const loadingRef = useRef(false);
   const closeOffcanvas = () => {
     const offcanvasEl = document.getElementById("offcanvasTop");
     const bsOffcanvas = Offcanvas.getInstance(offcanvasEl);
@@ -25,7 +26,7 @@ function ProductList() {
       bsOffcanvas.hide();
     }
   };
-
+  const navigate = useNavigate();
   // nav
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -35,67 +36,75 @@ function ProductList() {
   );
 
   //抓分類資料
-  const categoryGroups = {
-    狗狗: ["狗狗,飼料", "狗狗,零食", "狗狗,衣服", "狗狗,玩具"],
-    貓咪: ["貓咪,飼料", "貓咪,零食", "貓咪,衣服", "貓咪,玩具"],
-    全部: [
-      "狗狗,飼料",
-      "貓咪,飼料",
-      "狗狗,零食",
-      "貓咪,零食",
-      "狗狗,衣服",
-      "貓咪,衣服",
-      "狗狗,玩具",
-      "貓咪,玩具",
-    ],
-  };
+  const categoryGroups = useMemo(
+    () => ({
+      狗狗: ["狗狗,飼料", "狗狗,零食", "狗狗,衣服", "狗狗,玩具"],
+      貓咪: ["貓咪,飼料", "貓咪,零食", "貓咪,衣服", "貓咪,玩具"],
+      全部: [
+        "狗狗,飼料",
+        "貓咪,飼料",
+        "狗狗,零食",
+        "貓咪,零食",
+        "狗狗,衣服",
+        "貓咪,衣服",
+        "狗狗,玩具",
+        "貓咪,玩具",
+      ],
+    }),
+    []
+  );
 
-  const getProducts = async (page = 1) => {
-    if (loading) return;
-    setLoading(true);
+  const getProducts = useCallback(
+    async (page = 1, cat = selectedCategory, sub = subCategory) => {
+      const now = Date.now();
+      if (loading || now - lastRequestedTimeRef.current < 1000) return;
+      lastRequestedTimeRef.current = now;
 
-    try {
-      let categories = [];
+      setLoading(true);
+      try {
+        const categories = sub
+          ? cat === "全部"
+            ? [`狗狗,${sub}`, `貓咪,${sub}`]
+            : [`${cat},${sub}`]
+          : categoryGroups[cat] || [];
 
-      if (subCategory) {
-        if (selectedCategory === "全部") {
-          categories = [`狗狗,${subCategory}`, `貓咪,${subCategory}`];
-        } else {
-          categories = [`${selectedCategory},${subCategory}`];
-        }
-      } else {
-        categories = categoryGroups[selectedCategory] || [];
+        const responses = await Promise.all(
+          categories.map((cat) =>
+            axios
+              .get(`${API_URL}/v2/api/${API_PATH}/products`, {
+                params: { page, category: cat },
+              })
+              .catch((err) => {
+                console.warn("某個類別取得失敗", cat, err);
+                return null; // 讓失敗的請求不爆錯
+              })
+          )
+        );
+
+        const allProducts = responses
+          .filter((res) => res && res.data && res.data.products)
+          .flatMap((res) => res.data.products);
+
+        const hasNext = responses.some(
+          (res) => res?.data?.pagination?.has_next
+        );
+        const currentPage =
+          responses.find((res) => res?.data?.pagination)?.data.pagination
+            .current_page || 1;
+
+        setProducts((prev) =>
+          page === 1 ? allProducts : [...prev, ...allProducts]
+        );
+        setPageInfo({ has_next: hasNext, current_page: currentPage });
+      } catch (error) {
+        console.error("取得產品失敗", error);
+      } finally {
+        setLoading(false);
       }
+    },
+    [loading, selectedCategory, subCategory, categoryGroups]
+  );
 
-      const requests = categories.map((cat) =>
-        axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
-          params: { page, category: cat },
-        })
-      );
-
-      const responses = await Promise.all(requests);
-      let allProducts = [];
-      responses.forEach((res) => {
-        allProducts = allProducts.concat(res.data.products);
-      });
-
-      const hasNext = responses.some((res) => res.data.pagination.has_next);
-      const currentPage = responses[0].data.pagination.current_page;
-
-      setProducts((prev) =>
-        page === 1 ? allProducts : [...prev, ...allProducts]
-      );
-      setPageInfo({ has_next: hasNext, current_page: currentPage });
-    } catch (error) {
-      console.error("取得產品失敗", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getProducts(1);
-  }, [selectedCategory, subCategory]);
   //滾動產品
   useEffect(() => {
     const handleScroll = () => {
@@ -111,7 +120,7 @@ function ProductList() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pageInfo, loading]);
+  }, [pageInfo, loading, getProducts]);
 
   //  BANNER
   const categoryMappings = {
@@ -152,36 +161,8 @@ function ProductList() {
     };
   }, []);
 
-  const fetchProductsNow = async (categories, page = 1) => {
-    if (loading) return;
-    setLoading(true);
-
-    try {
-      const requests = categories.map((cat) =>
-        axios.get(`${API_URL}/v2/api/${API_PATH}/products`, {
-          params: { page, category: cat },
-        })
-      );
-
-      const responses = await Promise.all(requests);
-      let allProducts = [];
-      responses.forEach((res) => {
-        allProducts = allProducts.concat(res.data.products);
-      });
-
-      const hasNext = responses.some((res) => res.data.pagination.has_next);
-      const currentPage = responses[0].data.pagination.current_page;
-
-      setProducts(page === 1 ? allProducts : [...products, ...allProducts]);
-      setPageInfo({ has_next: hasNext, current_page: currentPage });
-    } catch (error) {
-      console.error("取得產品失敗", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // nav
+
   useEffect(() => {
     const rawCategory =
       new URLSearchParams(location.search).get("category") || "全部";
@@ -190,25 +171,69 @@ function ProductList() {
     setSelectedCategory(main || "全部");
     setSubCategory(sub || null);
 
-    const categoriesToFetch = sub
+    const now = Date.now();
+    if (loadingRef.current || now - lastRequestedTimeRef.current < 1000) return;
+    lastRequestedTimeRef.current = now;
+    loadingRef.current = true;
+
+    const categories = sub
       ? main === "全部"
         ? [`狗狗,${sub}`, `貓咪,${sub}`]
         : [`${main},${sub}`]
       : categoryGroups[main] || [];
 
-    fetchProductsNow(categoriesToFetch);
-  }, [location.search]);
+    setLoading(true);
+    Promise.all(
+      categories.map((cat) =>
+        axios
+          .get(`${API_URL}/v2/api/${API_PATH}/products`, {
+            params: { page: 1, category: cat },
+          })
+          .catch((err) => {
+            console.warn("某個類別取得失敗", cat, err);
+            return null;
+          })
+      )
+    )
+      .then((responses) => {
+        const allProducts = responses
+          .filter((res) => res?.data?.products)
+          .flatMap((res) => res.data.products);
+        const hasNext = responses.some(
+          (res) => res?.data?.pagination?.has_next
+        );
+        const currentPage =
+          responses.find((res) => res?.data?.pagination)?.data.pagination
+            .current_page || 1;
+
+        setProducts(allProducts);
+        setPageInfo({ has_next: hasNext, current_page: currentPage });
+      })
+      .catch((error) => {
+        console.error("取得產品失敗", error);
+      })
+      .finally(() => {
+        setLoading(false);
+        loadingRef.current = false;
+      });
+  }, [location.search, categoryGroups]);
 
   const handleDesktopClick = (item) => {
     const category = `${selectedCategory},${item}`;
     const newUrl = `#/productlist?category=${encodeURIComponent(category)}`;
 
-    window.history.pushState(null, "", newUrl);
+    window.location.href = newUrl;
 
     setSubCategory(item);
 
     window.scrollTo({ top: 0 });
   };
+
+  useEffect(() => {
+    getProducts(1);
+  }, [getProducts]);
+
+  //bb
 
   return (
     <>
@@ -271,20 +296,14 @@ function ProductList() {
                             className="d-block text-gray-02 border-0 btn btn-u"
                             onClick={() => {
                               const category = `${selectedCategory},${item}`;
-                              const newUrl = `#/productlist?category=${encodeURIComponent(
-                                category
-                              )}`;
-
-                              window.history.pushState(null, "", newUrl);
+                              navigate(
+                                `/productlist?category=${encodeURIComponent(
+                                  category
+                                )}`
+                              );
                               setSubCategory(item);
                               closeOffcanvas();
                               window.scrollTo({ top: 0, behavior: "smooth" });
-
-                              const categoriesToFetch =
-                                selectedCategory === "全部"
-                                  ? [`狗狗,${item}`, `貓咪,${item}`]
-                                  : [`${selectedCategory},${item}`];
-                              fetchProductsNow(categoriesToFetch);
                             }}
                           >
                             {item}

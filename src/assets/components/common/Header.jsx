@@ -92,9 +92,9 @@ export default function Header() {
                 id="navbarSupportedContent"
               >
                 <ul className="navbar-nav w-100 justify-content-lg-center d-lg-flex nav-gap pt-8 pt-lg-0">
-                  <li className="nav-item   text-center">
+                  <li className="nav-item text-center ">
                     <Link
-                      className="nav-link link-gray-01 fw-bold"
+                      className="nav-link link-gray-01 fw-bold "
                       to="/productlist?category=狗狗"
                       onClick={(e) => {
                         handleNavClick(e);

@@ -63,7 +63,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div>
+    <div className="mt-115">
       {isScreenLoading ? (
         <div className="text-center py-5">
           <div className="spinner-border" role="status">

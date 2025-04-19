@@ -107,7 +107,7 @@ function Home() {
     const getProducts = async () => {
       try {
         const res = await axios.get(`${API_URL}/v2/api/${API_PATH}/products`);
-        setProducts(res.data.products);
+        setProducts(res.data?.products);
       } catch {
         alert("取得產品失敗");
       }
@@ -137,7 +137,10 @@ function Home() {
               <button
                 type="button"
                 className="btn btn-brand-02 border border-white text-white rounded-pill h5 mt-9 py-1 px-3 "
-                onClick={() => bannerigate("/productlist")}
+                onClick={() => {
+                  bannerigate("/productlist");
+                  window.scrollTo({ top: 0, behavior: "auto" });
+                }}
               >
                 馬上選購
               </button>
@@ -215,7 +218,7 @@ function Home() {
 
                     <div className="button-container d-flex flex-wrap gap-1">
                       <Link
-                        to="/productlist?category=狗狗,飼料"
+                        to={`/productlist?category=狗狗,飼料`}
                         onClick={() =>
                           window.scrollTo({ top: 0, behavior: "auto" })
                         }
