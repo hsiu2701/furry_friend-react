@@ -5,6 +5,27 @@ html, body {
   padding: 0;
 }
 
+.custom-toast-success {
+  background-color: #f9f9f9 !important;
+  color: $gray-01 !important;
+
+  .Toastify__toast-icon {
+    svg {
+      fill: $brand-01 !important;
+    }
+  }
+
+  .Toastify__progress-bar--success {
+    background: $brand-01 !important;
+  }
+}
+
+.custom-toast-progress {
+  background: $brand-01 !important;
+}
+
+
+
 .nav {
   width: 100%;
   width: 100vw;

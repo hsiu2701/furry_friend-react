@@ -52,6 +52,9 @@ export default function ProductDetailPage() {
       toast.success("已加入購物車！", {
         position: "top-right",
         autoClose: 2000,
+        className: "custom-toast-success",
+        bodyClassName: "custom-toast-body",
+        progressClassName: "custom-toast-progress",
       });
     } catch (error) {
       toast.error("加入購物車失敗: " + error.message, {
