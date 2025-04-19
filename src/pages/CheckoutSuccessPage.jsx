@@ -87,24 +87,6 @@ export default function CheckoutSuccess() {
 
   return (
     <section className="order-success-section">
-<<<<<<< HEAD
-      {/* Banner */}
-      <div
-        className="order-success-banner"
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1415369629372-26f2fe60c467?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="order-success-title">
-          {error ? "訂單失敗" : "訂單完成"}
-        </div>
-      </div>
-
-=======
->>>>>>> dev
       {/* 錯誤訊息 */}
       {error && (
         <div className="error-message">

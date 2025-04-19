@@ -48,22 +48,13 @@ export default function Footer() {
                   <div>
                     <Link
                       className="haver-brand-01 py-4 ps-4 mb-lg-2 ps-lg-0 py-lg-0 link-style footer-active"
-<<<<<<< HEAD
-                      href="tel:+886-1-111111"
-=======
                       to="tel:+886-1-1111111"
->>>>>>> dev
                     >
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         call{" "}
                       </span>
-<<<<<<< HEAD
-                      服務電話 111-111-112
-                    </a>
-=======
                       服務電話 111-111-111
                     </Link>
->>>>>>> dev
                     <p className="py-4 ps-4 pb-lg-2 ps-lg-0 py-lg-0 text-gray-01">
                       <span className="material-symbols-outlined text-brand-01 align-middle">
                         store{" "}
