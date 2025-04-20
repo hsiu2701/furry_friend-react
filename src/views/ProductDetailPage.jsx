@@ -210,7 +210,7 @@ export default function ProductDetailPage() {
             <div className="offset-md-2 col-md-8">
               <div className="about-product">
                 <h4 className="text-center mb-5 fs-2 text-dark">商品資訊</h4>
-                <p className="text-dark">{product.content}</p>
+                <p className="text-dark product-content">{product.content}</p>
               </div>
             </div>
           </div>

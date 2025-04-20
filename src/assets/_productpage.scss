@@ -41,14 +41,14 @@ html, body {
   position: relative;
   z-index: 2;
   a {
-    color: #112A46;
+    color: $brand-01;
   }
   .breadcrumb-item.active {
-    color: #112A46;
+    color: $brand-01;
     font-weight: bold;
   }
   li.breadcrumb-item::before {
-    color: #112A46;
+    color: $brand-01;
   }
 }
 
@@ -222,4 +222,12 @@ td {
 
 .product-origin-price {
   font-size: 1.25rem; 
+}
+
+.product-content {
+  white-space: pre-line;
+}
+
+.product-content {
+  white-space: pre-line;
 }
